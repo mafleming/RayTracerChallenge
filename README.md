@@ -7,20 +7,13 @@ from The Pragmatic Programmers
 https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 Sincere thanks to Dyalog Ltd. for making available a non-commercial,
-personal license of their APL interpreter and environment. APL is certainly
-the language of the future, and has been for the last 50 years.
+personal license of their APL interpreter and environment.
 
 The Ray Tracer code was developed within a set of three Jupyter notebooks,
 one for the code itself, another for the tests, and a third for the demo
 scenes at the end of each chapter. Tests started in the code notebook and,
 once all were passing, were then transferred to the test notebook. The
 Jupyter Lab application facilitated the management of these notebooks.
-
-The Jupyter notebook provides a means of describing and documenting the
-APL code developed for the ray tracer. More however remains to be done.
-For proper packaging and distribution the code needs to be put in its
-own Namespace. Doing so will also allow source code management using
-SALT in conjunction with Git.
 
 ## Finished and/or Partial Chapters
 + Chapter  1. Tuples, Points, and Vectors
@@ -49,3 +42,11 @@ SALT in conjunction with Git.
 + Area light source
 + Full Wavefront OBJ file support
 + Scene description language support (YAML?)
+
+## Changelog
+19-March-2019. Put ray tracer code in its own namespace (RayTracer).
+The Test and Demo notebooks have not yet been updated to take this
+change into account.
+
+20-March-2019. Fixed issue with reflection overriding transparency
+for objects having both attributes.

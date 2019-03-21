@@ -13,8 +13,6 @@ INFINITY←9.9E99
 
 MAX_RECURSION←5
 
-RECURSE←5
-
 TRUE←1
 
 black←3⍴0
@@ -226,17 +224,18 @@ white←3⍴1
  checker_pattern←{pat_checker identity4 ⍺ ⍵}
 
  color_at←{
-        ⍝ world  color_at  ray → color
-     inter←⍺ intersect_world ⍵
+        ⍝ world  color_at  ray remaining → color
+     (wray remaining)←⍵
+     inter←⍺ intersect_world wray
         ⍝ Return black if no intersections
         ⍝ 0=≢inter: 0 0 0
         ⍝ Take first positive intersection as the hit
      h←hit inter
         ⍝ Return black if no hit
      0=≢h:0 0 0
-     comps←h prepare_computations ⍵
+     comps←h prepare_computations wray
      comps←comps compute_n1n2 inter h
-     ⍺ shade_hit comps
+     ⍺ shade_hit comps remaining
  }
 
 ∇ Z←COMPS compute_n1n2 ARGS;XS;H;i;con;obj;last
@@ -716,19 +715,17 @@ white←3⍴1
  reflect←{⍺-⍵×2×⍺ dot ⍵}
 
  reflected_color←{
-        ⍝ world  reflected_color  comps → color
+        ⍝ world  reflected_color  comps remaining → color
      ~EVAL_REFLECTION:0 0 0
         ⍝ Limit recursion. Set RECURSE before calling
-     0≥RECURSE:0 0 0   ⍝ black if too deep
-        ⍝ world  reflected_color  comps
-     o←⊃⍵[hit_object]
+     (comps remaining)←⍵
+     0≥remaining:0 0 0   ⍝ black if too deep
+        ⍝
+     o←⊃comps[hit_object]
      m←⊃o[obj_material]
      0=m[material_reflective]:0 0 0
-     rray←(⊃⍵[hit_overpt])ray⊃⍵[hit_reflectv]
-     last←RECURSE
-     RECURSE-←1     ⍝ Reduce recursion count (push)
-     c←⍺ color_at rray
-     RECURSE←last   ⍝ Restore recursion count (pop)
+     rray←(⊃comps[hit_overpt])ray⊃comps[hit_reflectv]
+     c←⍺ color_at rray(remaining-1)
      c×m[material_reflective]
  }
 
@@ -737,22 +734,22 @@ white←3⍴1
      ~EVAL_REFRACTION:0 0 0
        ⍝ Fixes #5 but breaks #8
        ⍝ Infinite loop: refracted_color, color_at, shade_hit
-     0≥RECURSE:0 0 0  ⍝ Added for Test#5
+     (comps remaining)←⍵
+     0≥remaining:0 0 0  ⍝ Added for Test#5
+       ⍝ Black if object is opaque
+     0=hit_object obj_material material_transparency⊃comps:0 0 0
      
-     n_ratio←(hit_n1⊃⍵)÷hit_n2⊃⍵
-     cos_i←(hit_eyev⊃⍵)dot hit_normalv⊃⍵
+     n_ratio←(hit_n1⊃comps)÷hit_n2⊃comps
+     cos_i←(hit_eyev⊃comps)dot hit_normalv⊃comps
      sin2_t←(1-cos_i*2)×n_ratio*2
        ⍝
      1<sin2_t:0 0 0
        ⍝
      cos_t←(1-sin2_t)*0.5
-     dir←((hit_normalv⊃⍵)×((n_ratio×cos_i)-cos_t))-(hit_eyev⊃⍵)×n_ratio
-     rray←(hit_underpt⊃⍵)ray dir
-     last←RECURSE
-     RECURSE-←1      ⍝ Reduce recursion count
-     color←(hit_object obj_material material_transparency⊃⍵)×⍺ color_at rray
-     RECURSE←last   ⍝ Restore recursion count
-     color
+     dir←((hit_normalv⊃comps)×((n_ratio×cos_i)-cos_t))-(hit_eyev⊃comps)×n_ratio
+     rray←(hit_underpt⊃comps)ray dir
+     color←⍺ color_at rray(remaining-1)
+     (hit_object obj_material material_transparency⊃comps)×color
  }
 
 ∇ Z←W render C;x;y;r;c;row
@@ -767,8 +764,7 @@ white←3⍴1
               ⍝ When this was C ray_for_pixel x-1,y-1 data was skewed
               ⍝ I guess it should have been (x-1),y-1 eh?
          r←C ray_for_pixel x y
-         RECURSE←MAX_RECURSION
-         c←W color_at r
+         c←W color_at r MAX_RECURSION
               ⍝ x=columns, y=rows. Small values to zero.
          row[x+1]←⊂{⍵<EPSILON:0 ⋄ ⍵}¨c
      :EndFor
@@ -820,8 +816,6 @@ white←3⍴1
      :If sin2_t>1
          Z←1
          :Return
-         ⍝:Else
-         ⍝  cos← (1-sin2_t)*0.5
      :EndIf
      cos←(1-sin2_t)*0.5
  :EndIf
@@ -830,16 +824,17 @@ white←3⍴1
 ∇
 
  shade_hit←{
-     ⍝ world  shade_hit  comps → color
+     ⍝ world  shade_hit  comps remaining → color
+     (comps remaining)←⍵
      wlight←⊃⊃⍺[1]
-     obj←⊃⍵[hit_object]
+     obj←⊃comps[hit_object]
      mtrl←⊃obj[obj_material]
-     insh←⍺ is_shadowed⊃⍵[hit_overpt]
-     surface←lighting mtrl wlight(⊃⍵[hit_overpt])(⊃⍵[hit_eyev])(⊃⍵[hit_normalv])insh obj
+     insh←⍺ is_shadowed⊃comps[hit_overpt]
+     surface←lighting mtrl wlight(⊃comps[hit_overpt])(⊃comps[hit_eyev])(⊃comps[hit_normalv])insh obj
      reflected←⍺ reflected_color ⍵
      refracted←⍺ refracted_color ⍵
      flag←∧/0<mtrl[material_reflective material_transparency]
-     reflectance←schlick ⍵
+     reflectance←schlick comps
      1=flag:surface+(refracted×1-reflectance)+reflected×reflectance
      surface+reflected+refracted
  }
