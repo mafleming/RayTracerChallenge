@@ -50,3 +50,10 @@ change into account.
 
 20-March-2019. Fixed issue with reflection overriding transparency
 for objects having both attributes.
+
+23-March-2019. Updated the Demo notebook so that the individual
+scenes would work with the new arrangement of ray tracer code in
+a separate namespace. Updated the code so that the inverse of each
+object's transform matrix is precomputed and stored in the object
+during scene construction. This results in a speed improvement of
+about ten percent.
