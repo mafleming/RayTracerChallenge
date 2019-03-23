@@ -17,31 +17,39 @@ TRUE←1
 
 black←3⍴0
 
+blue←0 0 1
+
 camera_fview←3
 
-camera_halfh←7
+camera_halfh←8
 
-camera_halfw←6
+camera_halfw←7
 
 camera_hsize←1
 
-camera_psize←5
+camera_inverse←5
+
+camera_psize←6
 
 camera_transform←4
 
 camera_vsize←2
 
-cone_closed←6
+cone_closed←7
 
-cone_maximum←5
+cone_maximum←6
 
-cone_minimum←4
+cone_minimum←5
 
-cylinder_closed←6
+cyan←0 1 1
 
-cylinder_maximum←5
+cylinder_closed←7
 
-cylinder_minimum←4
+cylinder_maximum←6
+
+cylinder_minimum←5
+
+green←0 1 0
 
 group_members←4
 
@@ -71,6 +79,8 @@ light_color←2
 
 light_point←1
 
+magenta←1 0 1
+
 material_ambient←2
 
 material_color←1
@@ -89,7 +99,9 @@ material_specular←4
 
 material_transparency←8
 
-obj_material←3
+obj_inverse←3
+
+obj_material←4
 
 obj_tag←1
 
@@ -105,9 +117,11 @@ pat_stripe←1
 
 pat_test←0
 
-pattern_color1←3
+pattern_color1←4
 
-pattern_color2←4
+pattern_color2←5
+
+pattern_inverse←3
 
 pattern_transform←2
 
@@ -116,6 +130,8 @@ pattern_type←1
 ray_direction←2
 
 ray_origin←1
+
+red←1 0 0
 
 shape_cone←5
 
@@ -135,13 +151,15 @@ shape_test←0
 
 shape_triangle←7
 
-triangle_edges←5
+triangle_edges←6
 
-triangle_normal←6
+triangle_normal←7
 
-triangle_points←4
+triangle_points←5
 
 white←3⍴1
+
+yellow←1 1 0
 
 
 ⍝ === End of variables definition ===
@@ -162,10 +180,26 @@ white←3⍴1
  ⎕NUNTIE tn
 ∇
 
+ add_pattern_transform←{
+       ⍝ pattern  pattern_transform  pattern → pattern
+     p←⍺
+     p[pattern_transform]←⊂⍵
+     p[pattern_inverse]←⊂⌹⍵
+     p
+ }
+
+ add_shape_transform←{
+       ⍝ pattern  pattern_transform  pattern → pattern
+     s←⍺
+     s[obj_transform]←⊂⍵
+     s[obj_inverse]←⊂⌹⍵
+     s
+ }
+
 ∇ Z←camera W;half_view;aspect;halfh;halfv;psize
         ⍝ camera  hsize vsize field_of_view → camera_structure
  (hsize vsize fview)←W
- Z←hsize vsize fview(identity 4)
+ Z←hsize vsize fview(identity 4)(identity 4)
  half_view←3○0.5×fview
  aspect←hsize÷vsize
  :If aspect≥1
@@ -221,7 +255,7 @@ white←3⍴1
      (r×r)≥(x×x)+z×z
  }
 
- checker_pattern←{pat_checker identity4 ⍺ ⍵}
+ checker_pattern←{pat_checker identity4 identity4 ⍺ ⍵}
 
  color_at←{
         ⍝ world  color_at  ray remaining → color
@@ -238,7 +272,7 @@ white←3⍴1
      ⍺ shade_hit comps remaining
  }
 
-∇ Z←COMPS compute_n1n2 ARGS;XS;H;i;con;obj;last
+∇ Z←COMPS compute_n1n2 ARGS;XS;H;i;con;p;obj;last
        ⍝ COMPS  compute_n1n2  XS HIT → COMPS
        ⍝ Compute the n1 and n2 attributes
        ⍝ for a result returned by prepare_computations
@@ -285,7 +319,7 @@ white←3⍴1
 ∇
 
 ∇ Z←cone
- Z←shape_cone identity4 material(¯1×INFINITY)INFINITY FALSE
+ Z←shape_cone identity4 identity4 material(¯1×INFINITY)INFINITY FALSE
 ∇
 
 ∇ Z←C cone_intersect R;a;b;c;disc;t0;t1;y0;y1;t
@@ -362,7 +396,7 @@ white←3⍴1
  }
 
 ∇ Z←cube
- Z←shape_cube identity4 material
+ Z←shape_cube identity4 identity4 material
 ∇
 
  cube_intersect←{
@@ -387,7 +421,7 @@ white←3⍴1
  }
 
 ∇ Z←cylinder
- Z←shape_cylinder identity4 material(¯1×INFINITY)INFINITY FALSE
+ Z←shape_cylinder identity4 identity4 material(¯1×INFINITY)INFINITY FALSE
 ∇
 
 ∇ Z←CYL cylinder_intersect R;a;b;c;disc;t0;t1;y0;y1;t
@@ -458,6 +492,7 @@ white←3⍴1
  s1[obj_material]←⊂m
  s2←sphere
  s2[obj_transform]←⊂scaling 0.5 0.5 0.5
+ s2[obj_inverse]←⊂⌹scaling 0.5 0.5 0.5
  Z←world
  Z[1],←⊂⊂light
  Z[2]←⊂⊂s1  ⍝ Have to enclose twice!
@@ -476,6 +511,7 @@ white←3⍴1
          Z,←obj flatten_group gt
      :Else
          obj[obj_transform]←⊂T+.×gt+.×⊃obj[obj_transform]
+         obj[obj_inverse]←⊂⌹⊃obj[obj_transform]
          Z,←⊂obj
      :EndIf
  :EndFor
@@ -486,13 +522,13 @@ white←3⍴1
 ∇
 
 ∇ Z←glass_sphere
- Z←shape_sphere identity4 glass
+ Z←shape_sphere identity4 identity4 glass
 ∇
 
- gradient_pattern←{pat_gradient identity4 ⍺ ⍵}
+ gradient_pattern←{pat_gradient identity4 identity4 ⍺ ⍵}
 
 ∇ Z←group
- Z←shape_group identity4 ⍬ ⍬
+ Z←shape_group identity4 identity4 ⍬ ⍬
 ∇
 
 ∇ Z←G group_intersect R;obj
@@ -525,8 +561,9 @@ white←3⍴1
  intersect←{
         ⍝ object  intersect  ray → ⍬ or intersection list
      t←⍺[obj_tag]
-     m←⊃⍺[obj_transform]
-     local_ray←(⌹m)transform ⍵
+        ⍝ m←⊃⍺[obj_transform]
+        ⍝ local_ray← (⌹m) transform ⍵
+     local_ray←(⊃⍺[obj_inverse])transform ⍵
      shape_test=t:local_ray
      shape_sphere=t:⍺ sphere_intersect local_ray
      shape_plane=t:⍺ plane_intersect local_ray
@@ -562,7 +599,7 @@ white←3⍴1
      h[hit_distance]<dist
  }
 
-∇ Z←lighting Args;matl;point;eyev;normalv;insh;obj;ec;lv;am;ldn;di;sp;rv;rde
+∇ Z←lighting Args;matl;point;eyev;normalv;insh;obj;ec;lv;am;ldn;di;f;sp;rv;rde
  (matl light point eyev normalv insh obj)←Args
  :If 3=≢⊃matl[material_color]
      clr←⊃matl[material_color]
@@ -600,12 +637,14 @@ white←3⍴1
  normal_at←{
         ⍝ shape normal_at point → vector
      fixup←{
-         wn←(⍉(⌹⊃⍺[obj_transform]))+.×⍵
+          ⍝ wn← (⍉(⌹⊃⍺[obj_transform])) +.× ⍵
+         wn←(⍉⊃⍺[obj_inverse])+.×⍵
          wn[4]←0
          normalize wn
      }
-     lp←(⌹⊃⍺[obj_transform])+.×⍵
         ⍝ lp← ⍵⌹⊃⍺[obj_transform]   Doesn't work!?
+        ⍝ lp← (⌹⊃⍺[obj_transform]) +.× ⍵
+     lp←(⊃⍺[obj_inverse])+.×⍵
      t←⍺[obj_tag]
      shape_test=t:⍺ fixup vector lp[1 2 3]  ⍝ Here, or at end?
      shape_sphere=t:⍺ fixup ⍺ sphere_normal_at lp
@@ -644,11 +683,12 @@ white←3⍴1
  pattern_at_shape←{
        ⍝ pattern  pattern_at_shape  object point → color
      (obj wpoint)←⍵
-     ⍺ pattern_at(⌹⊃⍺[pattern_transform])+.×(⌹⊃obj[obj_transform])+.×wpoint
+       ⍝ ⍺ pattern_at (⌹⊃⍺[pattern_transform]) +.× (⌹⊃obj[obj_transform]) +.× wpoint
+     ⍺ pattern_at(⊃⍺[pattern_inverse])+.×(⊃obj[obj_inverse])+.×wpoint
  }
 
 ∇ Z←plane
- Z←shape_plane identity4 material
+ Z←shape_plane identity4 identity4 material
 ∇
 
  plane_intersect←{
@@ -705,7 +745,8 @@ white←3⍴1
         ⍝ This is actually slightly slower than the above!
         ⍝ world_x← ⍺[camera_halfw]-⍺[camera_psize]×px+0.5
         ⍝ world_y← ⍺[camera_halfh]-⍺[camera_psize]×py+0.5
-     it←⌹⊃⍺[camera_transform]
+        ⍝ it←      ⌹⊃⍺[camera_transform]
+     it←⊃⍺[camera_inverse]
      pixel←it+.×point world_x world_y ¯1
      origin←it+.×point 0 0 0
      directn←normalize pixel-origin
@@ -772,7 +813,7 @@ white←3⍴1
  :EndFor
 ∇
 
- ring_pattern←{pat_ring identity4 ⍺ ⍵}
+ ring_pattern←{pat_ring identity4 identity4 ⍺ ⍵}
 
  rotation_x←{
         ⍝ rotation_x  angle_in_radians → transform_matrix
@@ -847,7 +888,7 @@ white←3⍴1
  }
 
 ∇ Z←sphere
- Z←shape_sphere identity4 material
+ Z←shape_sphere identity4 identity4 material
 ∇
 
  sphere_intersect←{
@@ -866,19 +907,20 @@ white←3⍴1
  sphere_normal_at←{
        ⍝ ⍺=sphere  normal_at  ⍵=point → vector
      on←⍵-0 0 0 1         ⍝ Is this necessary? Yes, creates vector
-     wn←(⍉⌹⊃⍺[obj_transform])+.×on
+       ⍝ wn← (⍉⌹⊃⍺[obj_transform]) +.× on
+     wn←(⍉⊃⍺[obj_inverse])+.×on
      wn[4]←0                ⍝ Make world_normal a vector
      normalize wn
  }
 
- stripe_pattern←{pat_stripe identity4 ⍺ ⍵}
+ stripe_pattern←{pat_stripe identity4 identity4 ⍺ ⍵}
 
 ∇ Z←test_pattern
- Z←pat_test identity4(0 0 0)(1 1 1)
+ Z←pat_test identity4 identity4(0 0 0)(1 1 1)
 ∇
 
 ∇ Z←test_shape
- Z←shape_test identity4 material
+ Z←shape_test identity4 identity4 material
 ∇
 
  transform←{(⍺+.×⊃⍵[ray_origin])(⍺+.×⊃⍵[ray_direction])}
@@ -894,7 +936,7 @@ white←3⍴1
        ⍝ triangle  p1 p2 p3 → shape_triangle identity4 material points edges normalv
      edges←(⍵[2]-⍵[1]),(⍵[3]-⍵[1])
      normv←normalize(⊃edges[2])cross⊃edges[1]
-     shape_triangle identity4 material(⍵)edges normv
+     shape_triangle identity4 identity4 material(⍵)edges normv
  }
 
  vector←{⍵,0}
