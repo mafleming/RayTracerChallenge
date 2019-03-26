@@ -51,7 +51,7 @@ cylinder_minimum←5
 
 green←0 1 0
 
-group_members←4
+group_members←5
 
 hit_distance←2
 
@@ -238,8 +238,6 @@ yellow←1 1 0
 
  check_cap←{
        ⍝ ray  check_cap  distance → Boolean
-       ⍝ x← (1⌷⊃⍺[ray_origin]) + ⍵×1⌷⊃⍺[ray_direction]
-       ⍝ z← (3⌷⊃⍺[ray_origin]) + ⍵×3⌷⊃⍺[ray_direction]
      x←(ray_origin 1⊃⍺)+⍵×ray_direction 1⊃⍺
      z←(ray_origin 3⊃⍺)+⍵×ray_direction 3⊃⍺
      1≥(x×x)+z×z
@@ -353,25 +351,24 @@ yellow←1 1 0
          :EndIf
      :EndIf
  :EndIf
+     
        ⍝ Check for intersection with caps of closed cylinder
-       ⍝ :If C[cone_closed]^(EPSILON<|2⌷⊃R[ray_direction])
  :If C[cone_closed]∧(EPSILON<|ray_direction 2⊃R)
-         ⍝ t← (C[cone_minimum]-2⌷⊃R[ray_origin])÷2⌷⊃R[ray_direction]
      t←(C[cone_minimum]-ray_origin 2⊃R)÷ray_direction 2⊃R
      :If R check_cap2 t,C[cone_minimum]
          Z←Z,⊂C intersection t
      :EndIf
-         ⍝ t← (C[cone_maximum]-2⌷⊃R[ray_origin])÷2⌷⊃R[ray_direction]
      t←(C[cone_maximum]-ray_origin 2⊃R)÷ray_direction 2⊃R
      :If R check_cap2 t,C[cone_maximum]
          Z←Z,⊂C intersection t
      :EndIf
  :EndIf
- :If 1=≢Z
-     Z←Z,Z
- :EndIf
+     
+       ⍝:If 1=≢Z
+       ⍝  Z← Z,Z
+       ⍝:EndIf
        ⍝ I also need to make sure the list is sorted by distance
- :If Z≢⍬
+ :If 1<≢Z
      t←2⌷¨Z
      Z←Z[⍋t]
  :EndIf
@@ -453,6 +450,7 @@ yellow←1 1 0
          :EndIf
      :EndIf
  :EndIf
+     
        ⍝ Check for intersection with caps of closed cylinder
  :If CYL[cylinder_closed]∧(EPSILON<|2⌷⊃R[ray_direction])
          ⍝ t← (CYL[cylinder_minimum]-2⌷⊃R[ray_origin])÷2⌷⊃R[ray_direction]
@@ -466,11 +464,12 @@ yellow←1 1 0
          Z←Z,⊂CYL intersection t
      :EndIf
  :EndIf
- :If 1=≢Z
-     Z←Z,Z
- :EndIf
+     
+       ⍝:If 1=≢Z
+       ⍝  Z← Z,Z
+       ⍝:EndIf
        ⍝ I also need to make sure the list is sorted by distance
- :If Z≢⍬
+ :If 1<≢Z
      t←2⌷¨Z
      Z←Z[⍋t]
  :EndIf
@@ -480,7 +479,7 @@ yellow←1 1 0
        ⍝ cylinder  cylinder_normal_at  point → vector
      dist←(⍵[1]*2)+⍵[3]*2
      (1>dist)∧⍵[2]≥⍺[cylinder_maximum]-EPSILON:vector 0 1 0
-     (1>dist)∧⍵[2]≤⍺[cylinder_minimum]+EPSILON:vector 0 ¯1 0
+     (1>dist)∧⍵[2]≤EPSILON+⍺[cylinder_minimum]:vector 0 ¯1 0
      vector(⍵[1])0(⍵[3])
  }
 
@@ -573,14 +572,45 @@ yellow←1 1 0
      ⍬
  }
 
- intersect_world←{
-       ⍝ world  intersect_world  ray → ⍬ or sorted intersection list
-     ilist←((⍴2⊃⍺)⍴⊂⍵)intersect⍨¨2⊃⍺  ⍝ List of intersection pairs and nulls
-     ilist←(~ilist∊⊂⍬)/ilist          ⍝ Remove nulls
-     0=≢ilist:⍬                      ⍝ Return null if no intersections at all
-     ilist←(⊃¨1↑¨ilist),⊃¨1↓¨ilist    ⍝ Remove intersections from pairs
-     ∪ilist[⍋hit_distance⊃¨ilist]     ⍝ Sort by distance
- }
+∇ Z←CYL intersect_caps R;t
+ Z←⍬
+       ⍝ cylinder  intersect_caps  ray → ⍬ or intersection intersection
+ :If (0=CYL[cylinder_closed])∨EPSILON>ray_direction 2⊃R
+     :Return
+ :EndIf
+       ⍝ Check for intersection with lower end
+ t←(CYL[cylinder_minimum]-ray_origin 2⊃R)÷ray_direction 2⊃R
+ :If R check_cap t
+     Z←Z,⊂CYL intersection t
+ :EndIf
+ t←(CYL[cylinder_maximum]-ray_origin 2⊃R)÷ray_direction 2⊃R
+ :If R check_cap t
+     Z←Z,⊂CYL intersection t
+ :EndIf
+∇
+
+∇ Z←W intersect_world R;objs;obj;inter;d;idx
+        ⍝ world  intersect_world  ray → intersection_list
+ objs←⊃W[2]   ⍝ List of objects
+ Z←⍬
+ d←⍬
+ :For obj :In objs
+     inter←obj intersect R
+          ⍝:If 2=≢inter
+     :If ⍬≢inter   ⍝ Allows for differing # of returned intersections
+             ⍝ Z,← inter[1] ⋄ d,← hit_distance⌷⊃inter[1]
+             ⍝ Z,← inter[2] ⋄ d,← hit_distance⌷⊃inter[2]
+         :For i :In inter
+             Z,←⊂i
+             d,←i[hit_distance]
+         :EndFor
+     :EndIf
+ :EndFor
+ :If 0≠≢Z
+     idx←⍋d
+     Z←Z[idx]
+ :EndIf
+∇
 
  intersection←{⍺⍵}
 
@@ -699,10 +729,14 @@ yellow←1 1 0
      EPSILON>|d[2]:⍬          ⍝ No intersection
      t←-(o[2])÷d[2]           ⍝ Distance
         ⍝ Return two instead of one for compatibility with sphere et al
-     (⍺ t)(⍺ t)               ⍝ Intersection
+        ⍝ (⍺ t) (⍺ t)               ⍝ Intersection
+     ⊂⍺ t
  }
 
- plane_normal_at←{0 1 0 0}
+∇ Z←OBJ plane_normal_at R
+       ⍝ plane  plane_normal_at  ray → vector
+ Z←0 1 0 0
+∇
 
  point←{⍵,1}
 
