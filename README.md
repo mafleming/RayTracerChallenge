@@ -57,3 +57,7 @@ a separate namespace. Updated the code so that the inverse of each
 object's transform matrix is precomputed and stored in the object
 during scene construction. This results in a speed improvement of
 about ten percent.
+
+2-April-2019. Fixed issue with incorrect reflection calculation.
+Reflection was only working with Plane objects due to an incorrect
+calculation of the reflectv vector in prepare_computations.

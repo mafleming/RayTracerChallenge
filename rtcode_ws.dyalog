@@ -229,7 +229,10 @@ yellow←1 1 0
  check_axis←{
        ⍝ check_axis  numeric numeric → numeric numeric
      (o d)←⍵
-     EPSILON>|d:(INFINITY×¯1-o)(INFINITY×1-o)
+     emin←INFINITY×¯1-o
+     emax←INFINITY×1-o
+     (EPSILON>|d)∧emin>emax:emax emin
+     EPSILON>|d:emax emin
      tmin←(¯1-o)÷d
      tmax←(1-o)÷d
      tmin>tmax:tmax tmin
@@ -246,8 +249,6 @@ yellow←1 1 0
  check_cap2←{
        ⍝ ray  check_cap2  distance radius → Boolean
      (d r)←⍵
-       ⍝ x← (1⌷⊃⍺[ray_origin]) + d×1⌷⊃⍺[ray_direction]
-       ⍝ z← (3⌷⊃⍺[ray_origin]) + d×3⌷⊃⍺[ray_direction]
      x←(ray_origin 1⊃⍺)+d×ray_direction 1⊃⍺
      z←(ray_origin 3⊃⍺)+d×ray_direction 3⊃⍺
      (r×r)≥(x×x)+z×z
@@ -330,7 +331,6 @@ yellow←1 1 0
  :If (EPSILON>|a)∧EPSILON<|b
      t←-c÷2×b
      Z←⊂C intersection t
-         ⍝Z← Z,Z
  :ElseIf EPSILON<|a
      disc←(b*2)-4×a×c
      :If 0≤disc
@@ -339,12 +339,10 @@ yellow←1 1 0
          :If t0>t1
              t0 t1←t1 t0
          :EndIf
-           ⍝ y0← (2⌷⊃R[ray_origin])+t0×2⌷⊃R[ray_direction]
          y0←(ray_origin 2⊃R)+t0×ray_direction 2⊃R
          :If (y0>C[cone_minimum])∧y0<C[cone_maximum]
              Z←⊂C intersection t0
          :EndIf
-           ⍝ y1← (2⌷⊃R[ray_origin])+t1×2⌷⊃R[ray_direction]
          y1←(ray_origin 2⊃R)+t1×ray_direction 2⊃R
          :If (y1>C[cone_minimum])∧y1<C[cone_maximum]
              Z←Z,⊂C intersection t1
@@ -363,24 +361,15 @@ yellow←1 1 0
          Z←Z,⊂C intersection t
      :EndIf
  :EndIf
-     
-       ⍝:If 1=≢Z
-       ⍝  Z← Z,Z
-       ⍝:EndIf
-       ⍝ I also need to make sure the list is sorted by distance
- :If 1<≢Z
-     t←2⌷¨Z
-     Z←Z[⍋t]
- :EndIf
 ∇
 
  cone_normal_at←{
        ⍝ cone  cone_normal_at  point → vector
      dist←(⍵[1]*2)+⍵[3]*2
-     (1>dist)∧⍵[2]≥⍺[cylinder_maximum]-EPSILON:vector 0 1 0
-     (1>dist)∧⍵[2]≤⍺[cylinder_minimum]+EPSILON:vector 0 ¯1 0
+     (⍺[cone_closed])∧(1>dist)∧⍵[2]≥⍺[cylinder_maximum]-EPSILON:vector 0 1 0
+     (⍺[cone_closed])∧(1>dist)∧⍵[2]≤⍺[cylinder_minimum]+EPSILON:vector 0 ¯1 0
      y←(+/⍵[1 3]*2)*0.5
-     ⍵[2]>0:vector(⍵[1])(-y)(⍵[3])
+     ⍵[2]>0:vector(⍵[1])(¯1×y)(⍵[3])
      vector(⍵[1])y(⍵[3])
  }
 
@@ -412,7 +401,7 @@ yellow←1 1 0
  cube_normal_at←{
        ⍝ cube  cube_normal_at  point → vector
      maxc←⌈/|⍵[1 2 3]
-     maxc=|⍵[1]:⍵[1]0 0 0 ⍝ vector ⍵[1] 0 0
+     maxc=|⍵[1]:(⍵[1])0 0 0 ⍝ vector ⍵[1] 0 0
      maxc=|⍵[2]:0(⍵[2])0 0 ⍝ vector 0 ⍵[2] 0
      0 0(⍵[3])0             ⍝ vector 0 0 ⍵[3]
  }
@@ -424,26 +413,21 @@ yellow←1 1 0
 ∇ Z←CYL cylinder_intersect R;a;b;c;disc;t0;t1;y0;y1;t
        ⍝ cylinder  cylinder_intersect  ray → ⍬ or intersection intersection
  Z←⍬
-       ⍝ a← ((1⌷⊃R[ray_direction])*2)+(3⌷⊃R[ray_direction])*2
  a←((ray_direction 1⊃R)*2)+(ray_direction 3⊃R)*2
- :If EPSILON<a
-         ⍝ b← (2×(1⌷⊃R[ray_origin])×(1⌷⊃R[ray_direction]))+2×(3⌷⊃R[ray_origin])×(3⌷⊃R[ray_direction])
-         ⍝ c← ¯1+((1⌷⊃R[ray_origin])*2)+(3⌷⊃R[ray_origin])*2
-     b←(2×(ray_origin 1⊃R)×(ray_direction 1⊃R))+2×(ray_origin 3⊃R)×(ray_direction 3⊃R)
+ :If EPSILON<|a
+     b←(2×(ray_origin 1⊃R)×ray_direction 1⊃R)+2×(ray_origin 3⊃R)×ray_direction 3⊃R
      c←¯1+((ray_origin 1⊃R)*2)+(ray_origin 3⊃R)*2
      disc←(b*2)-4×a×c
-     :If 0≤disc
+     :If 0<disc
          t0←((-b)-disc*0.5)÷2×a
          t1←((-b)+disc*0.5)÷2×a
          :If t0>t1
              t0 t1←t1 t0
          :EndIf
-           ⍝ y0← (2⌷⊃R[ray_origin])+t0×2⌷⊃R[ray_direction]
          y0←(ray_origin 2⊃R)+t0×ray_direction 2⊃R
          :If (y0>CYL[cylinder_minimum])∧y0<CYL[cylinder_maximum]
              Z←⊂CYL intersection t0
          :EndIf
-           ⍝ y1← (2⌷⊃R[ray_origin])+t1×2⌷⊃R[ray_direction]
          y1←(ray_origin 2⊃R)+t1×ray_direction 2⊃R
          :If (y1>CYL[cylinder_minimum])∧y1<CYL[cylinder_maximum]
              Z←Z,⊂CYL intersection t1
@@ -452,34 +436,25 @@ yellow←1 1 0
  :EndIf
      
        ⍝ Check for intersection with caps of closed cylinder
- :If CYL[cylinder_closed]∧(EPSILON<|2⌷⊃R[ray_direction])
-         ⍝ t← (CYL[cylinder_minimum]-2⌷⊃R[ray_origin])÷2⌷⊃R[ray_direction]
+       ⍝ :If CYL[cylinder_closed]^(EPSILON<|2⌷⊃R[ray_direction])
+ :If CYL[cylinder_closed]∧EPSILON<|ray_direction 2⊃R
      t←(CYL[cylinder_minimum]-ray_origin 2⊃R)÷ray_direction 2⊃R
      :If R check_cap t
          Z←Z,⊂CYL intersection t
      :EndIf
-         ⍝ t← (CYL[cylinder_maximum]-2⌷⊃R[ray_origin])÷2⌷⊃R[ray_direction]
      t←(CYL[cylinder_maximum]-ray_origin 2⊃R)÷ray_direction 2⊃R
      :If R check_cap t
          Z←Z,⊂CYL intersection t
      :EndIf
  :EndIf
-     
-       ⍝:If 1=≢Z
-       ⍝  Z← Z,Z
-       ⍝:EndIf
-       ⍝ I also need to make sure the list is sorted by distance
- :If 1<≢Z
-     t←2⌷¨Z
-     Z←Z[⍋t]
- :EndIf
 ∇
 
  cylinder_normal_at←{
        ⍝ cylinder  cylinder_normal_at  point → vector
-     dist←(⍵[1]*2)+⍵[3]*2
-     (1>dist)∧⍵[2]≥⍺[cylinder_maximum]-EPSILON:vector 0 1 0
-     (1>dist)∧⍵[2]≤EPSILON+⍺[cylinder_minimum]:vector 0 ¯1 0
+       ⍝ dist← (⍵[1]*2)+⍵[3]*2
+     dist←+/⍵[1 3]*2
+     (⍺[cylinder_closed])∧(1>dist)∧⍵[2]≥⍺[cylinder_maximum]-EPSILON:vector 0 1 0
+     (⍺[cylinder_closed])∧(1>dist)∧⍵[2]≤EPSILON+⍺[cylinder_minimum]:vector 0 ¯1 0
      vector(⍵[1])0(⍵[3])
  }
 
@@ -575,7 +550,7 @@ yellow←1 1 0
 ∇ Z←CYL intersect_caps R;t
  Z←⍬
        ⍝ cylinder  intersect_caps  ray → ⍬ or intersection intersection
- :If (0=CYL[cylinder_closed])∨EPSILON>ray_direction 2⊃R
+ :If (0=CYL[cylinder_closed])∨EPSILON>|ray_direction 2⊃R
      :Return
  :EndIf
        ⍝ Check for intersection with lower end
@@ -747,23 +722,18 @@ yellow←1 1 0
  prepare_computations←{
      ⍝ intersection  prepare_computations  ray → hit
      Z←⍺,0,0,0,0,0,0,0,0,0
-        ⍝ Z[hit_point]←   ⊂ray position Z[hit_distance]
      Z[hit_point]←⊂⍵ position Z[hit_distance]
      Z[hit_eyev]←-⍵[ray_direction]
      Z[hit_normalv]←⊂(⊃Z[hit_object])normal_at⊃Z[hit_point]
-        ⍝ :If 0≥ (⊃Z[hit_normalv]) dot ⊃Z[hit_eyev]
-        ⍝    Z[hit_inside]← 1
-        ⍝    Z[hit_normalv]← -Z[hit_normalv]
-        ⍝ :Else
-        ⍝    Z[hit_inside]← 0
-        ⍝ :EndIf
-     Z[hit_inside]←0≥(⊃Z[hit_normalv])dot⊃Z[hit_eyev]
+     
+     Z[hit_inside]←0>(⊃Z[hit_normalv])dot⊃Z[hit_eyev]
         ⍝ Z[hit_normalv]← Z[hit_normalv]×(1 ¯1)[1+hit_inside⊃Z]
      Z[hit_normalv]×←(1 ¯1)[1+hit_inside⊃Z]
         ⍝ Note the arithmetic with enclosed vectors!
      Z[hit_overpt]←Z[hit_point]+Z[hit_normalv]×EPSILON ⍝ Added for acne
      Z[hit_underpt]←Z[hit_point]-Z[hit_normalv]×EPSILON ⍝ Added for acne
-     Z[hit_reflectv]←⍵[ray_direction]reflect Z[hit_normalv]
+        ⍝ I forgot to disclose, causing failure in reflection!
+     Z[hit_reflectv]←⊂(⊃⍵[ray_direction])reflect⊃Z[hit_normalv]
      Z
  }
 
@@ -940,7 +910,7 @@ yellow←1 1 0
 
  sphere_normal_at←{
        ⍝ ⍺=sphere  normal_at  ⍵=point → vector
-     on←⍵-0 0 0 1         ⍝ Is this necessary? Yes, creates vector
+     on←⍵-0 0 0 1         ⍝ Creates vector from origin
        ⍝ wn← (⍉⌹⊃⍺[obj_transform]) +.× on
      wn←(⍉⊃⍺[obj_inverse])+.×on
      wn[4]←0                ⍝ Make world_normal a vector
