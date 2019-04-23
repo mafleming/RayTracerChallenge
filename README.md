@@ -36,7 +36,6 @@ Jupyter Lab application facilitated the management of these notebooks.
 + Chapter 16. Constructive Solid Geometry
 
 ## Planned Enhancements
-+ Precompute matrix inversions
 + Add additional Patterns
 + Multiple light sources
 + Area light source

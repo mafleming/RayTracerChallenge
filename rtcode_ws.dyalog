@@ -537,7 +537,9 @@ yellow←1 1 0
      t←⍺[obj_tag]
         ⍝ m←⊃⍺[obj_transform]
         ⍝ local_ray← (⌹m) transform ⍵
-     local_ray←(⊃⍺[obj_inverse])transform ⍵
+        ⍝ local_ray← (⊃⍺[obj_inverse]) transform ⍵
+     tm←⊃⍺[obj_inverse]
+     local_ray←{tm+.×⍵}¨⍵
      shape_test=t:local_ray
      shape_sphere=t:⍺ sphere_intersect local_ray
      shape_plane=t:⍺ plane_intersect local_ray
@@ -927,7 +929,7 @@ yellow←1 1 0
  Z←shape_test identity4 identity4 material
 ∇
 
- transform←{(⍺+.×⊃⍵[ray_origin])(⍺+.×⊃⍵[ray_direction])}
+ transform←{tm←⍺ ⋄ {tm+.×⍵}¨⍵}
 
  translation←{
         ⍝ translation  x y z → transform_matrix
