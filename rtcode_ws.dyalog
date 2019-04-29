@@ -227,14 +227,13 @@ yellow←1 1 0
  }
 
  check_axis←{
-       ⍝ check_axis  numeric numeric → numeric numeric
-     (o d)←⍵
-     emin←INFINITY×¯1-o
-     emax←INFINITY×1-o
-     (EPSILON>|d)∧emin>emax:emax emin
-     EPSILON>|d:emax emin
-     tmin←(¯1-o)÷d
-     tmax←(1-o)÷d
+       ⍝ numeric  check_axis  numeric → numeric numeric
+     emin←INFINITY×¯1-⍺
+     emax←INFINITY×1-⍺
+     (EPSILON>|⍵)∧emin>emax:emax emin
+     EPSILON>|⍵:emax emin
+     tmin←(¯1-⍺)÷⍵
+     tmax←(1-⍺)÷⍵
      tmin>tmax:tmax tmin
      tmin tmax
  }
@@ -389,9 +388,9 @@ yellow←1 1 0
        ⍝ cube  cube_intersect  ray → intersection intersection
      ori←⊃⍵[1]
      dir←⊃⍵[2]
-     xm←check_axis ori[1],dir[1]
-     ym←check_axis ori[2],dir[2]
-     zm←check_axis ori[3],dir[3]
+     xm←ori[1]check_axis dir[1]
+     ym←ori[2]check_axis dir[2]
+     zm←ori[3]check_axis dir[3]
      tmin←⌈/xm[1],ym[1],zm[1]
      tmax←⌊/xm[2],ym[2],zm[2]
      tmin>tmax:⍬
