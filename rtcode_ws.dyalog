@@ -566,28 +566,16 @@ yellow←1 1 0
  :EndIf
 ∇
 
-∇ Z←W intersect_world R;objs;obj;inter;d;idx
-        ⍝ world  intersect_world  ray → intersection_list
- objs←⊃W[2]   ⍝ List of objects
- Z←⍬
- d←⍬
- :For obj :In objs
-     inter←obj intersect R
-          ⍝:If 2=≢inter
-     :If ⍬≢inter   ⍝ Allows for differing # of returned intersections
-             ⍝ Z,← inter[1] ⋄ d,← hit_distance⌷⊃inter[1]
-             ⍝ Z,← inter[2] ⋄ d,← hit_distance⌷⊃inter[2]
-         :For i :In inter
-             Z,←⊂i
-             d,←i[hit_distance]
-         :EndFor
-     :EndIf
- :EndFor
- :If 0≠≢Z
-     idx←⍋d
-     Z←Z[idx]
- :EndIf
-∇
+ intersect_world←{
+        ⍝ world  intersect_world  ray → intersection list
+     Z←⍬
+     objs←⊃⍺[2]
+     r←⍵
+     fun←{~⍬≡⍵:{Z,←⊂⍵}¨⍵ ⋄ ⍵}
+     x←fun¨{⍵ intersect r}¨objs
+     ~⍬≡Z:Z[⍋2⊃¨Z]
+     ⍬
+ }
 
  intersection←{⍺⍵}
 
