@@ -230,7 +230,7 @@ yellow←1 1 0
        ⍝ numeric  check_axis  numeric → numeric numeric
      emin←INFINITY×¯1-⍺
      emax←INFINITY×1-⍺
-     (EPSILON>|⍵)∧emin>emax:emax emin
+     (EPSILON>|⍵)∧emin>emax:emin emax
      EPSILON>|⍵:emax emin
      tmin←(¯1-⍺)÷⍵
      tmax←(1-⍺)÷⍵
@@ -688,10 +688,14 @@ yellow←1 1 0
  plane_intersect←{
         ⍝ plane plane_intersect ray → ⍬ or intersection_list
         ⍝ Must return a list of intersections
-     o←⊃⍵[ray_origin]         ⍝ Ray origin
-     d←⊃⍵[ray_direction]      ⍝ Ray direction
-     EPSILON>|d[2]:⍬          ⍝ No intersection
-     t←-(o[2])÷d[2]           ⍝ Distance
+        ⍝ o← ⊃⍵[ray_origin]         ⍝ Ray origin
+        ⍝ d← ⊃⍵[ray_direction]      ⍝ Ray direction
+        ⍝ EPSILON>|d[2]: ⍬          ⍝ No intersection
+        ⍝ t← -(o[2])÷d[2]           ⍝ Distance
+     
+     (oy dy)←⍵[(ray_origin 2)(ray_direction 2)]
+     EPSILON>|dy:⍬              ⍝ No intersection
+     t←-oy÷dy                 ⍝ Distance
         ⍝ Return two instead of one for compatibility with sphere et al
         ⍝ (⍺ t) (⍺ t)               ⍝ Intersection
      ⊂⍺ t
