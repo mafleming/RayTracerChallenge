@@ -593,7 +593,7 @@ yellow←1 1 0
      h[hit_distance]<dist
  }
 
-∇ Z←lighting Args;matl;point;eyev;normalv;insh;obj;ec;lv;am;ldn;di;f;sp;rv;rde
+∇ Z←lighting Args;matl;light;point;eyev;normalv;insh;obj;clr;ec;lv;am;ldn;di;f;sp;rv;rde
  (matl light point eyev normalv insh obj)←Args
  :If 3=≢⊃matl[material_color]
      clr←⊃matl[material_color]
@@ -647,8 +647,8 @@ yellow←1 1 0
      shape_cube=t:⍺ fixup ⍺ cube_normal_at lp
      shape_cylinder=t:⍺ fixup ⍺ cylinder_normal_at lp
      shape_cone=t:⍺ fixup ⍺ cone_normal_at lp
-     shape_triangle=t:⍺ triangle_normal_at lp
-     shape_smtriangle=t:⍺ smtriangle_normal_at lp
+        ⍝ shape_triangle=t:   ⍺ triangle_normal_at         lp
+        ⍝ shape_smtriangle=t: ⍺ smtriangle_normal_at       lp
      0 0 0 0
  }
 
@@ -786,23 +786,30 @@ yellow←1 1 0
      (hit_object obj_material material_transparency⊃comps)×color
  }
 
-∇ Z←W render C;x;y;r;c;row
+∇ Z←W render C;y
         ⍝ world  render  camera → canvas
-        ⍝ Z← canvas C[camera_hsize], C[camera_vsize]
+     
+        ⍝ drow← {W render_row C ⍵}
+        ⍝ Z← drow¨¯1+⍳C[camera_vsize]
+     
  Z←C[camera_vsize]⍴0
-        ⍝ I changed from ⍳N to ¯1+⍳N and it worked
  :For y :In ¯1+⍳C[camera_vsize]
-           ⍝ row← (y+1)⊃Z
-     row←C[camera_hsize]⍴⊂0 0 0
-     :For x :In ¯1+⍳C[camera_hsize]
-              ⍝ When this was C ray_for_pixel x-1,y-1 data was skewed
-              ⍝ I guess it should have been (x-1),y-1 eh?
-         r←C ray_for_pixel x y
-         c←W color_at r MAX_RECURSION
-              ⍝ x=columns, y=rows. Small values to zero.
-         row[x+1]←⊂{⍵<EPSILON:0 ⋄ ⍵}¨c
-     :EndFor
-     Z[y+1]←⊂row
+     Z[y+1]←⊂W render_row C y
+ :EndFor
+∇
+
+∇ ROW←W render_row ARGS;C;Y;dpnt;i;r;c
+       ⍝ Render and return a single image row
+       ⍝ world  render_row  camera x\y
+       ⍝ x is row number
+ (C Y)←ARGS
+ dpnt←{r←C ray_for_pixel ⍵ Y ⋄ {⍵<EPSILON:0 ⋄ ⍵}¨W color_at r MAX_RECURSION}
+     
+       ⍝ ROW←dpnt¨¯1+⍳C[camera_hsize]
+     
+ ROW←C[camera_hsize]⍴⊂0 0 0
+ :For i :In ¯1+⍳C[camera_hsize]
+     ROW[i+1]←⊂dpnt i
  :EndFor
 ∇
 
