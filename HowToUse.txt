@@ -1,0 +1,32 @@
+How To Use
+
+Start by loading the SALT files (*.dyalog) for the RayTracer and
+RTDemo namespace. Use your own path to these files in the commands
+
+]load C:\...\rtcode_ws
+]load C:\...\rtdemo_ws
+)copy dfns time         Optional if you'd like to time rendering
+⎕PATH←'#.RayTracer'
+
+To generate an image in one of the demo namespaces, change to the
+namespace first, the do the commands
+
+)CS RTDemo.Chapter11
+im← w render c   (or use im← w render #.time c for timing)
+ppm← canvas_to_ppm ppm
+'Chap11.ppm' savePPM ppm
+
+All of the demo namespaces have the 'w' and 'c' variables that
+represent the scene world of lights and objects ('w') and the
+camera ('c'). The above commands, with an appropriate change to
+the demo namespace name and output file name will work in any of
+the demo namespaces.
+
+When you've finished a rendering and have saved the result to a
+PPM image file, you can view the file with a suitable program such
+as GIMP. If you are going to save the workspace for later, you may
+want to get rid of the large intermediate variables before saving
+
+)ERASE im ppm
+
+A more detailed description of how to create scenes will follow.

@@ -581,12 +581,12 @@ yellow←1 1 0
  intersections←{⍵[⍋hit_distance⊃¨⍵]}
 
  is_shadowed←{
-        ⍝ world  is_shadowed  point → Boolean
-     l←⊃⊃⍺[1]
-     v←(⊃l[light_point])-⍵
+        ⍝ world  is_shadowed  point light → Boolean
+     (p l)←⍵   ⍝ point and light
+     v←(⊃l[light_point])-p
      dist←magnitude v
      dir←normalize v
-     r←⍵ ray dir
+     r←p ray dir
      inter←⍺ intersect_world r
      h←hit inter
      0=≢h:0
@@ -871,11 +871,14 @@ yellow←1 1 0
  shade_hit←{
      ⍝ world  shade_hit  comps remaining → color
      (comps remaining)←⍵
-     wlight←⊃⊃⍺[1]
+     w←⍺
      obj←⊃comps[hit_object]
      mtrl←⊃obj[obj_material]
-     insh←⍺ is_shadowed⊃comps[hit_overpt]
-     surface←lighting mtrl wlight(⊃comps[hit_overpt])(⊃comps[hit_eyev])(⊃comps[hit_normalv])insh obj
+     dolight←{
+         insh←w is_shadowed(⊃comps[hit_overpt])⍵
+         lighting mtrl ⍵(⊃comps[hit_overpt])(⊃comps[hit_eyev])(⊃comps[hit_normalv])insh obj
+     }
+     surface←⊃+/dolight¨⊃⍺[1]  ⍝ sum enclosed colors, unenclose result
      reflected←⍺ reflected_color ⍵
      refracted←⍺ refracted_color ⍵
      flag←∧/0<mtrl[material_reflective material_transparency]
