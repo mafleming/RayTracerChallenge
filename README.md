@@ -37,8 +37,6 @@ Jupyter Lab application facilitated the management of these notebooks.
 
 ## Planned Enhancements
 + Add additional Patterns
-+ Multiple light sources
-+ Area light source
 + Full Wavefront OBJ file support
 + Scene description language support (YAML?)
 
@@ -60,3 +58,8 @@ about ten percent.
 2-April-2019. Fixed issue with incorrect reflection calculation.
 Reflection was only working with Plane objects due to an incorrect
 calculation of the reflectv vector in prepare_computations.
+
+6-May-2019. Added support for multiple light sources. Modified the
+definition of a point light source so that it can have a radius
+from which rays are emitted. Rays are emitted in a normal (Gaussian)
+scatter about the light center point.

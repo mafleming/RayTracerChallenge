@@ -77,7 +77,11 @@ hit_underpt←9
 
 light_color←2
 
+light_iteration←4
+
 light_point←1
+
+light_radius←3
 
 magenta←1 0 1
 
@@ -165,6 +169,12 @@ yellow←1 1 0
 ⍝ === End of variables definition ===
 
 (⎕IO ⎕ML ⎕WX)←1 1 3
+
+ NormRand←{                          ⍝ Random numbers with a normal distribution
+     depth←10*9                           ⍝ randomness depth - can be larger from v14.0
+     (x y)←⊂[1+⍳⍴,⍵](?(2,⍵)⍴depth)÷depth  ⍝ two random variables within ]0;1]
+     ((¯2×⍟x)*0.5)×1○○2×y                 ⍝ Box-Muller distribution
+ }
 
 ∇ r←text PutText name;tn
           ⍝ Write text to file (must be single byte text)
@@ -580,9 +590,24 @@ yellow←1 1 0
 
  intersections←{⍵[⍋hit_distance⊃¨⍵]}
 
+ is_shaded←{
+       ⍝ world  is_shaded  point light  → numeric
+     (p l)←⍵
+     (0=l[light_radius])∧1≥l[light_iteration]:~⍺ is_shadowed ⍵
+     w←⍺
+     sample←{lpt←l ⋄ lpt[light_point]+←⊂⍵×point NormRand 3 ⋄ w is_shadowed p lpt}
+     1-(+/sample¨l[light_iteration]⍴l[light_radius])÷l[light_iteration]
+ }
+
  is_shadowed←{
         ⍝ world  is_shadowed  point light → Boolean
      (p l)←⍵   ⍝ point and light
+     
+        ⍝ lp←⊃l[light_point]
+        ⍝ lp+←0.5×point ¯1+2×?0 0 0  ⍝ random scatter
+        ⍝ lp+←0.15×point NormRand 3  ⍝ normal random scatter
+        ⍝ v←lp-p
+     
      v←(⊃l[light_point])-p
      dist←magnitude v
      dir←normalize v
@@ -605,7 +630,7 @@ yellow←1 1 0
  lv←normalize(⊃light[light_point])-point
  am←ec×matl[material_ambient]
  ldn←lv dot normalv
- :If insh∨ldn<0   ⍝ A little bit quicker checking insh than zeroing above
+ :If ldn<0   ⍝ A little bit quicker checking insh than zeroing above
      di←0 0 0
      sp←0 0 0
  :Else
@@ -619,7 +644,7 @@ yellow←1 1 0
          sp←matl[material_specular]×f×⊃light[light_color]
      :EndIf
  :EndIf
- Z←am+di+sp
+ Z←am+insh×di+sp
 ∇
 
  magnitude←{(+/⍵*2)*0.5}
@@ -708,7 +733,7 @@ yellow←1 1 0
 
  point←{⍵,1}
 
- point_light←{⍺⍵}
+ point_light←{⍺ ⍵ 0 1}
 
  position←{(⊃⍺[ray_origin])+⍵×⊃⍺[ray_direction]}
 
@@ -875,7 +900,8 @@ yellow←1 1 0
      obj←⊃comps[hit_object]
      mtrl←⊃obj[obj_material]
      dolight←{
-         insh←w is_shadowed(⊃comps[hit_overpt])⍵
+          ⍝ insh← w is_shadowed (⊃comps[hit_overpt]) ⍵
+         insh←w is_shaded(⊃comps[hit_overpt])⍵
          lighting mtrl ⍵(⊃comps[hit_overpt])(⊃comps[hit_eyev])(⊃comps[hit_normalv])insh obj
      }
      surface←⊃+/dolight¨⊃⍺[1]  ⍝ sum enclosed colors, unenclose result
