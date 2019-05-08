@@ -618,33 +618,39 @@ yellow←1 1 0
      h[hit_distance]<dist
  }
 
-∇ Z←lighting Args;matl;light;point;eyev;normalv;insh;obj;clr;ec;lv;am;ldn;di;f;sp;rv;rde
- (matl light point eyev normalv insh obj)←Args
+∇ Z←lighting Args;matl;light;pnt;eyev;normalv;insh;obj;clr;ec;lv;am;ldn;di;f;sp;rv;rde;i;sum
+ (matl light pnt eyev normalv insh obj)←Args
  :If 3=≢⊃matl[material_color]
      clr←⊃matl[material_color]
  :Else
          ⍝ None of the earlier test cases have materials with patterns
-     clr←(⊃matl[material_color])pattern_at_shape obj point
+     clr←(⊃matl[material_color])pattern_at_shape obj pnt
  :EndIf
+     
  ec←clr×⊃light[light_color]      ⍝ Effective color
- lv←normalize(⊃light[light_point])-point
  am←ec×matl[material_ambient]
- ldn←lv dot normalv
- :If ldn<0   ⍝ A little bit quicker checking insh than zeroing above
-     di←0 0 0
-     sp←0 0 0
- :Else
-     di←ec×matl[material_diffuse]×ldn
-     rv←(-lv)reflect normalv
-     rde←(rv dot eyev)
-     :If rde≤0
+     
+ sum←0 0 0
+ :For i :In ⍳light[light_iteration]
+     lv←normalize(⊃light[light_point])-pnt
+     ldn←lv dot normalv
+     :If ldn<0   ⍝ A little bit quicker checking insh than zeroing above
+         di←0 0 0
          sp←0 0 0
      :Else
-         f←rde*matl[material_shininess]
-         sp←matl[material_specular]×f×⊃light[light_color]
+         di←ec×matl[material_diffuse]×ldn
+         rv←(-lv)reflect normalv
+         rde←(rv dot eyev)
+         :If rde≤0
+             sp←0 0 0
+         :Else
+             f←rde*matl[material_shininess]
+             sp←matl[material_specular]×f×⊃light[light_color]
+         :EndIf
      :EndIf
- :EndIf
- Z←am+insh×di+sp
+     sum+←di+sp
+ :EndFor
+ Z←am+insh×sum÷light[light_iteration]
 ∇
 
  magnitude←{(+/⍵*2)*0.5}

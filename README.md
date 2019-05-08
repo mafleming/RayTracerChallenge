@@ -7,7 +7,9 @@ from The Pragmatic Programmers
 https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 Sincere thanks to Dyalog Ltd. for making available a non-commercial,
-personal license of their APL interpreter and environment.
+personal license of their APL interpreter and environment. To learn more
+about APL visit tryapl.org for an online interpreter with demos, tutorials,
+and more.
 
 The Ray Tracer code was developed within a set of three Jupyter notebooks,
 one for the code itself, another for the tests, and a third for the demo
