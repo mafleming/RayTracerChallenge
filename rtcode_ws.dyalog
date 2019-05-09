@@ -35,23 +35,23 @@ camera_transform←4
 
 camera_vsize←2
 
-cone_closed←7
+cone_closed←8
 
-cone_maximum←6
+cone_maximum←7
 
-cone_minimum←5
+cone_minimum←6
 
 cyan←0 1 1
 
-cylinder_closed←7
+cylinder_closed←8
 
-cylinder_maximum←6
+cylinder_maximum←7
 
-cylinder_minimum←5
+cylinder_minimum←6
 
 green←0 1 0
 
-group_members←5
+group_members←6
 
 hit_distance←2
 
@@ -107,6 +107,8 @@ obj_inverse←3
 
 obj_material←4
 
+obj_shadow←5
+
 obj_tag←1
 
 obj_transform←2
@@ -155,11 +157,11 @@ shape_test←0
 
 shape_triangle←7
 
-triangle_edges←6
+triangle_edges←7
 
-triangle_normal←7
+triangle_normal←8
 
-triangle_points←5
+triangle_points←6
 
 white←3⍴1
 
@@ -327,7 +329,7 @@ yellow←1 1 0
 ∇
 
 ∇ Z←cone
- Z←shape_cone identity4 identity4 material(¯1×INFINITY)INFINITY FALSE
+ Z←shape_cone identity4 identity4 material TRUE(¯1×INFINITY)INFINITY FALSE
 ∇
 
 ∇ Z←C cone_intersect R;a;b;c;disc;t0;t1;y0;y1;t
@@ -391,7 +393,7 @@ yellow←1 1 0
  }
 
 ∇ Z←cube
- Z←shape_cube identity4 identity4 material
+ Z←shape_cube identity4 identity4 material TRUE
 ∇
 
  cube_intersect←{
@@ -416,7 +418,7 @@ yellow←1 1 0
  }
 
 ∇ Z←cylinder
- Z←shape_cylinder identity4 identity4 material(¯1×INFINITY)INFINITY FALSE
+ Z←shape_cylinder identity4 identity4 material TRUE(¯1×INFINITY)INFINITY FALSE
 ∇
 
 ∇ Z←CYL cylinder_intersect R;a;b;c;disc;t0;t1;y0;y1;t
@@ -505,13 +507,13 @@ yellow←1 1 0
 ∇
 
 ∇ Z←glass_sphere
- Z←shape_sphere identity4 identity4 glass
+ Z←shape_sphere identity4 identity4 glass TRUE
 ∇
 
  gradient_pattern←{pat_gradient identity4 identity4 ⍺ ⍵}
 
 ∇ Z←group
- Z←shape_group identity4 identity4 ⍬ ⍬
+ Z←shape_group identity4 identity4 TRUE ⍬ ⍬
 ∇
 
 ∇ Z←G group_intersect R;obj
@@ -613,7 +615,8 @@ yellow←1 1 0
      dir←normalize v
      r←p ray dir
      inter←⍺ intersect_world r
-     h←hit inter
+     0=≢inter:0
+     h←hit({hit_object obj_shadow⊃⍵}¨inter)/inter
      0=≢h:0
      h[hit_distance]<dist
  }
@@ -713,7 +716,7 @@ yellow←1 1 0
  }
 
 ∇ Z←plane
- Z←shape_plane identity4 identity4 material
+ Z←shape_plane identity4 identity4 material TRUE
 ∇
 
  plane_intersect←{
@@ -927,7 +930,7 @@ yellow←1 1 0
  }
 
 ∇ Z←sphere
- Z←shape_sphere identity4 identity4 material
+ Z←shape_sphere identity4 identity4 material TRUE
 ∇
 
  sphere_intersect←{
@@ -959,7 +962,7 @@ yellow←1 1 0
 ∇
 
 ∇ Z←test_shape
- Z←shape_test identity4 identity4 material
+ Z←shape_test identity4 identity4 material TRUE
 ∇
 
  transform←{tm←⍺ ⋄ {tm+.×⍵}¨⍵}
@@ -975,7 +978,7 @@ yellow←1 1 0
        ⍝ triangle  p1 p2 p3 → shape_triangle identity4 material points edges normalv
      edges←(⍵[2]-⍵[1]),(⍵[3]-⍵[1])
      normv←normalize(⊃edges[2])cross⊃edges[1]
-     shape_triangle identity4 identity4 material(⍵)edges normv
+     shape_triangle identity4 identity4 material TRUE(⍵)edges normv
  }
 
  vector←{⍵,0}
