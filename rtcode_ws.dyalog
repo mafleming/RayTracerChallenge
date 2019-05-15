@@ -588,6 +588,19 @@ yellow←1 1 0
      ⍬
  }
 
+ intersect_world_nos←{
+        ⍝ world  intersect_world_nos  ray → intersection list
+     Z←⍬
+     objs←⊃⍺[3]
+     r←⍵
+     objs←({obj_shadow⊃⍵}¨objs)/objs
+     0=≢objs:⍬
+     fun←{~⍬≡⍵:{Z,←⊂⍵}¨⍵ ⋄ ⍵}
+     x←fun¨{⍵ intersect r}¨objs
+     ~⍬≡Z:Z[⍋2⊃¨Z]
+     ⍬
+ }
+
  intersection←{⍺⍵}
 
  intersections←{⍵[⍋hit_distance⊃¨⍵]}
@@ -616,6 +629,7 @@ yellow←1 1 0
      r←p ray dir
      inter←⍺ intersect_world r
      0=≢inter:0
+        ⍝ Strip intersections that cast no shadow
      h←hit({hit_object obj_shadow⊃⍵}¨inter)/inter
      0=≢h:0
      h[hit_distance]<dist
@@ -745,6 +759,23 @@ yellow←1 1 0
  point_light←{⍺ ⍵ 0 1}
 
  position←{(⊃⍺[ray_origin])+⍵×⊃⍺[ray_direction]}
+
+∇ Z←W prender C;y;L
+ L←{W C ⍵}¨¯1+⍳C[camera_vsize]
+ Z←prender_row #.ll.Each L
+∇
+
+∇ ROW←prender_row ARGS;W;C;Y;dpnt;i;r;c
+       ⍝ Render and return a single image row
+ 'RayTracer'#.⎕CY'C:\Users\Mark\Jupyter\rtdemo_ws'
+ #.⎕PATH←'#.RayTracer'
+ #.⎕CS'#.RayTracer'
+     
+ (W C Y)←ARGS
+ dpnt←{r←C ray_for_pixel ⍵ Y ⋄ {⍵<EPSILON:0 ⋄ ⍵}¨W color_at r MAX_RECURSION}
+     
+ ROW←dpnt¨¯1+⍳C[camera_hsize]
+∇
 
  prepare_computations←{
      ⍝ intersection  prepare_computations  ray → hit
