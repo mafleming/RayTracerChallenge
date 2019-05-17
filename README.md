@@ -65,3 +65,7 @@ calculation of the reflectv vector in prepare_computations.
 definition of a point light source so that it can have a radius
 from which rays are emitted. Rays are emitted in a normal (Gaussian)
 scatter about the light center point.
+
+16-May-2019. Added parallel rendering using isolates. Result is
+roughly a 2.5 times speedup on a 4 CPU machine. See new rendering
+command llrender. Be sure to "")copy isolate" before running.

@@ -386,9 +386,15 @@ yellow←1 1 0
 
  cross←{
         ⍝ vector  cross  vector → vector
-     a←(⍺[2]×⍵[3])-⍺[3]×⍵[2]
-     b←(⍺[3]×⍵[1])-⍺[1]×⍵[3]
-     c←(⍺[1]×⍵[2])-⍺[2]×⍵[1]
+        ⍝ a←(⍺[2]×⍵[3])-⍺[3]×⍵[2]
+        ⍝ b←(⍺[3]×⍵[1])-⍺[1]×⍵[3]
+        ⍝ c←(⍺[1]×⍵[2])-⍺[2]×⍵[1]
+     
+        ⍝ Pick runs about 10% faster on ]runtime benchmark
+        ⍝ In real life rendering though, no noticable difference
+     a←((2⊃⍺)×3⊃⍵)-(3⊃⍺)×2⊃⍵
+     b←((3⊃⍺)×1⊃⍵)-(1⊃⍺)×3⊃⍵
+     c←((1⊃⍺)×2⊃⍵)-(2⊃⍺)×1⊃⍵
      a,b,c,0
  }
 
@@ -670,6 +676,23 @@ yellow←1 1 0
  Z←am+insh×sum÷light[light_iteration]
 ∇
 
+∇ Z←W llrender C;y;L
+ L←{W C ⍵}¨¯1+⍳C[camera_vsize]
+ Z←llrender_row #.ll.Each L
+∇
+
+∇ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
+       ⍝ Render and return a single image row
+ 'RayTracer'#.⎕CY'C:\Users\Mark\Jupyter\rtdemo_ws'
+ #.⎕PATH←'#.RayTracer'
+      ⍝#.⎕CS'#.RayTracer'   ⍝ Not needed
+     
+ (W C Y)←ARGS
+ dpnt←{r←C ray_for_pixel ⍵ Y ⋄ {⍵<#.RayTracer.EPSILON:0 ⋄ ⍵}¨W color_at r #.RayTracer.MAX_RECURSION}
+     
+ ROW←dpnt¨¯1+⍳C[#.RayTracer.camera_hsize]
+∇
+
  magnitude←{(+/⍵*2)*0.5}
 
 ∇ Z←material
@@ -759,23 +782,6 @@ yellow←1 1 0
  point_light←{⍺ ⍵ 0 1}
 
  position←{(⊃⍺[ray_origin])+⍵×⊃⍺[ray_direction]}
-
-∇ Z←W prender C;y;L
- L←{W C ⍵}¨¯1+⍳C[camera_vsize]
- Z←prender_row #.ll.Each L
-∇
-
-∇ ROW←prender_row ARGS;W;C;Y;dpnt;i;r;c
-       ⍝ Render and return a single image row
- 'RayTracer'#.⎕CY'C:\Users\Mark\Jupyter\rtdemo_ws'
- #.⎕PATH←'#.RayTracer'
- #.⎕CS'#.RayTracer'
-     
- (W C Y)←ARGS
- dpnt←{r←C ray_for_pixel ⍵ Y ⋄ {⍵<EPSILON:0 ⋄ ⍵}¨W color_at r MAX_RECURSION}
-     
- ROW←dpnt¨¯1+⍳C[camera_hsize]
-∇
 
  prepare_computations←{
      ⍝ intersection  prepare_computations  ray → hit
