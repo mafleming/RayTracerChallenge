@@ -69,3 +69,7 @@ scatter about the light center point.
 16-May-2019. Added parallel rendering using isolates. Result is
 roughly a 2.5 times speedup on a 4 CPU machine. See new rendering
 command llrender. Be sure to "")copy isolate" before running.
+
+31-May-2019. Added Radial Gradient and Blend patterns. Patterns can
+now be nested, allowing patterns in place of simple color in the
+pattern specification.

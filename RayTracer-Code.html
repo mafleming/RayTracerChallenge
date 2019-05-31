@@ -12645,6 +12645,12 @@ im← w render c
 <li><em>color</em> <strong>checker_pattern</strong> <em>color</em> → <em>pattern</em></li>
 <li><em>pattern</em> <strong>add_pattern_transform</strong> <em>transform_matrix</em> → <em>pattern</em></li>
 </ul>
+<p>From the end of Chapter 10, Patterns, I have added the following new patterns, Radial Gradient and Blend</p>
+<ul>
+<li><em>color</em> <strong>radgrad_pattern</strong> <em>color</em> → <em>pattern</em></li>
+<li><em>color</em> <strong>blend_pattern</strong> <em>color</em> → <em>pattern</em></li>
+</ul>
+<p>Radial Gradient is a combination of the Ring and Gradient patterns, while Blend averages the two colors it is given. Blend is interesting because now <em>nested patterns</em> are supported. Rather than just a <em>color</em> each pattern can be passed a <em>pattern</em> as well.</p>
 
 </div>
 </div>
@@ -12667,6 +12673,8 @@ im← w render c
 <span class="nv">pat_gradient</span><span class="kd">←</span>      <span class="m">2</span>
 <span class="nv">pat_ring</span><span class="kd">←</span>          <span class="m">3</span>
 <span class="nv">pat_checker</span><span class="kd">←</span>       <span class="m">4</span>
+<span class="nv">pat_radgradient</span><span class="kd">←</span>   <span class="m">5</span>  <span class="c1">⍝ radial gradient</span>
+<span class="nv">pat_blend</span><span class="kd">←</span>         <span class="m">6</span>
 
 <span class="c1">⍝ Patterns</span>
 <span class="c1">⍝ test_pattern←      pat_test identity4 (0 0 0) (1 1 1)</span>
@@ -12674,6 +12682,8 @@ im← w render c
 <span class="nv">gradient_pattern</span><span class="kd">←</span>  <span class="kt">{</span><span class="nv">pat_gradient</span> <span class="nv">identity4</span> <span class="nv">identity4</span> <span class="bp">⍺</span> <span class="bp">⍵</span><span class="kt">}</span>
 <span class="nv">ring_pattern</span><span class="kd">←</span>      <span class="kt">{</span><span class="nv">pat_ring</span> <span class="nv">identity4</span> <span class="nv">identity4</span> <span class="bp">⍺</span> <span class="bp">⍵</span><span class="kt">}</span>
 <span class="nv">checker_pattern</span><span class="kd">←</span>   <span class="kt">{</span><span class="nv">pat_checker</span> <span class="nv">identity4</span> <span class="nv">identity4</span> <span class="bp">⍺</span> <span class="bp">⍵</span><span class="kt">}</span>
+<span class="nv">radgrad_pattern</span><span class="kd">←</span>   <span class="kt">{</span><span class="nv">pat_radgradient</span> <span class="nv">identity4</span> <span class="nv">identity4</span> <span class="bp">⍺</span> <span class="bp">⍵</span><span class="kt">}</span>
+<span class="nv">blend_pattern</span><span class="kd">←</span>     <span class="kt">{</span><span class="nv">pat_blend</span> <span class="nv">identity4</span> <span class="nv">identity4</span> <span class="bp">⍺</span> <span class="bp">⍵</span><span class="kt">}</span>
 
 <span class="m">1</span> <span class="m">1</span> <span class="m">1</span> <span class="nv">stripe_pattern</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span>
 </pre></div>
@@ -13777,6 +13787,7 @@ im← w render c
 <li><em>pattern</em> <strong>pattern_at_shape</strong> shape <em>point</em> → <em>color</em></li>
 </ul>
 <p>Both the <strong>pattern_at</strong> and <strong>pattern_at_shape</strong> function would be a good candidate for conversion to a defined function (d'fn).</p>
+<p>To support nested patterns, I need a helper function that checks to see if the pattern colors c1 and c2 are simple colors or patterns. If one is a pattern, then I need to invoke the pattern_at function recursively to find the pattern color. Don't forget to apply the pattern's inverse transformation matrix to the point when doing the recursive call! This could be done in a tail-recursive manner, but I won't bother for now since I don't expect deeply nested patterns.</p>
 
 </div>
 </div>
@@ -13792,19 +13803,30 @@ im← w render c
   <span class="nv">tag</span><span class="kd">←</span> <span class="nv">pattern_type</span><span class="o">⊃</span><span class="bp">⍺</span>
   <span class="nv">c1</span><span class="kd">←</span> <span class="nv">pattern_color1</span><span class="o">⊃</span><span class="bp">⍺</span>
   <span class="nv">c2</span><span class="kd">←</span> <span class="nv">pattern_color2</span><span class="o">⊃</span><span class="bp">⍺</span>
+  <span class="nv">true_color</span><span class="kd">←</span><span class="kt">{</span><span class="m">3</span><span class="o">=≢</span><span class="bp">⍵:⍵</span><span class="p">⋄</span><span class="bp">⍵</span> <span class="nv">pattern_at</span> <span class="p">(</span><span class="nv">pattern_inverse</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span><span class="o">+</span><span class="na">.</span><span class="o">×</span><span class="bp">⍺</span><span class="kt">}</span>
+  <span class="nv">c1</span><span class="kd">←</span> <span class="bp">⍵</span> <span class="nv">true_color</span> <span class="nv">c1</span>
+  <span class="nv">c2</span><span class="kd">←</span> <span class="bp">⍵</span> <span class="nv">true_color</span> <span class="nv">c2</span>
+  
   <span class="c1">⍝ Pattern used during testing</span>
   <span class="nv">tag</span><span class="o">=</span><span class="nv">pat_test</span><span class="bp">:</span> <span class="m">3</span><span class="o">↑</span><span class="bp">⍵</span>
   <span class="c1">⍝ Stripe pattern</span>
-  <span class="p">(</span><span class="nv">tag</span><span class="o">=</span><span class="nv">pat_stripe</span><span class="p">)</span><span class="err">^</span><span class="m">0</span><span class="o">=⌊</span><span class="m">2</span><span class="o">|</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span><span class="bp">:</span> <span class="nv">c1</span>
-  <span class="p">(</span><span class="nv">tag</span><span class="o">=</span><span class="nv">pat_stripe</span><span class="p">)</span><span class="err">^</span><span class="m">0</span><span class="o">≠⌊</span><span class="m">2</span><span class="o">|</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span><span class="bp">:</span> <span class="nv">c2</span>
+  <span class="p">(</span><span class="nv">tag</span><span class="o">=</span><span class="nv">pat_stripe</span><span class="p">)</span><span class="err">^</span><span class="m">0</span><span class="o">=⌊</span><span class="m">2</span><span class="o">|</span><span class="m">1</span><span class="o">⊃</span><span class="bp">⍵:</span> <span class="nv">c1</span>  <span class="c1">⍝ Pick faster than Index</span>
+  <span class="p">(</span><span class="nv">tag</span><span class="o">=</span><span class="nv">pat_stripe</span><span class="p">)</span><span class="err">^</span><span class="m">0</span><span class="o">≠⌊</span><span class="m">2</span><span class="o">|</span><span class="m">1</span><span class="o">⊃</span><span class="bp">⍵:</span> <span class="nv">c2</span>
   <span class="c1">⍝ Gradient pattern</span>
-  <span class="nv">tag</span><span class="o">=</span><span class="nv">pat_gradient</span><span class="bp">:</span> <span class="nv">c1</span><span class="o">+</span><span class="p">(</span><span class="nv">c2</span><span class="o">-</span><span class="nv">c1</span><span class="p">)</span><span class="o">×</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span><span class="o">-⌊</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span>
+  <span class="nv">tag</span><span class="o">=</span><span class="nv">pat_gradient</span><span class="bp">:</span> <span class="nv">c1</span><span class="o">+</span><span class="p">(</span><span class="nv">c2</span><span class="o">-</span><span class="nv">c1</span><span class="p">)</span><span class="o">×</span><span class="p">(</span><span class="m">1</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span><span class="o">-⌊</span><span class="m">1</span><span class="o">⊃</span><span class="bp">⍵</span>  <span class="c1">⍝ Pick faster than Index</span>
   <span class="c1">⍝ Ring pattern</span>
   <span class="p">(</span><span class="nv">tag</span><span class="o">=</span><span class="nv">pat_ring</span><span class="p">)</span><span class="err">^</span><span class="m">0</span><span class="o">=⌊</span><span class="m">2</span><span class="o">|</span><span class="p">(</span><span class="o">+</span><span class="na">/</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span> <span class="m">3</span><span class="sr">]</span><span class="o">×</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span> <span class="m">3</span><span class="sr">]</span><span class="p">)</span><span class="o">*</span><span class="m">0.5</span><span class="bp">:</span> <span class="nv">c1</span>
   <span class="p">(</span><span class="nv">tag</span><span class="o">=</span><span class="nv">pat_ring</span><span class="p">)</span><span class="err">^</span><span class="m">0</span><span class="o">≠⌊</span><span class="m">2</span><span class="o">|</span><span class="p">(</span><span class="o">+</span><span class="na">/</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span> <span class="m">3</span><span class="sr">]</span><span class="o">×</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span> <span class="m">3</span><span class="sr">]</span><span class="p">)</span><span class="o">*</span><span class="m">0.5</span><span class="bp">:</span> <span class="nv">c2</span>
   <span class="c1">⍝ Checker pattern</span>
   <span class="p">(</span><span class="nv">tag</span><span class="o">=</span><span class="nv">pat_checker</span><span class="p">)</span><span class="err">^</span><span class="m">0</span><span class="o">=</span><span class="m">2</span><span class="o">|+</span><span class="na">/</span><span class="o">⌊</span><span class="m">3</span><span class="o">↑</span><span class="bp">⍵:</span> <span class="nv">c1</span>
   <span class="p">(</span><span class="nv">tag</span><span class="o">=</span><span class="nv">pat_checker</span><span class="p">)</span><span class="err">^</span><span class="m">0</span><span class="o">≠</span><span class="m">2</span><span class="o">|+</span><span class="na">/</span><span class="o">⌊</span><span class="m">3</span><span class="o">↑</span><span class="bp">⍵:</span> <span class="nv">c2</span>
+  <span class="c1">⍝ Radial Gradient pattern</span>
+  <span class="nv">m</span><span class="kd">←</span> <span class="nv">magnitude</span> <span class="bp">⍵</span>
+  <span class="nv">tag</span><span class="o">=</span><span class="nv">pat_radgradient</span><span class="bp">:</span><span class="nv">c1</span><span class="o">+</span><span class="p">(</span><span class="nv">c2</span><span class="o">-</span><span class="nv">c1</span><span class="p">)</span><span class="o">×</span><span class="nv">m</span><span class="o">-⌊</span><span class="nv">m</span>
+  <span class="c1">⍝ Blend pattern</span>
+  <span class="nv">tag</span><span class="o">=</span><span class="nv">pat_blend</span><span class="bp">:</span> <span class="m">0.5</span><span class="o">×</span><span class="nv">c1</span><span class="o">+</span><span class="nv">c2</span>
+  <span class="c1">⍝ Unknown pattern</span>
+  <span class="m">0</span> <span class="m">0</span> <span class="m">0</span>
   <span class="kt">}</span>
 </pre></div>
 
@@ -13823,7 +13845,7 @@ im← w render c
   <span class="c1">⍝ pattern  pattern_at_shape  object point → color</span>
   <span class="p">(</span><span class="nv">obj</span> <span class="nv">wpoint</span><span class="p">)</span><span class="kd">←</span> <span class="bp">⍵</span>
   <span class="c1">⍝ ⍺ pattern_at (⌹⊃⍺[pattern_transform]) +.× (⌹⊃obj[obj_transform]) +.× wpoint</span>
-  <span class="bp">⍺</span> <span class="nv">pattern_at</span> <span class="p">(</span><span class="o">⊃</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">pattern_inverse</span><span class="sr">]</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="p">(</span><span class="o">⊃</span><span class="nv">obj</span><span class="sr">[</span><span class="nv">obj_inverse</span><span class="sr">]</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="nv">wpoint</span>
+  <span class="bp">⍺</span> <span class="nv">pattern_at</span> <span class="p">(</span><span class="nv">pattern_inverse</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="p">(</span><span class="nv">obj_inverse</span><span class="o">⊃</span><span class="nv">obj</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="nv">wpoint</span>
   <span class="kt">}</span>
 </pre></div>
 
@@ -13862,9 +13884,9 @@ im← w render c
 <div class=" highlight hl-APL"><pre><span></span><span class="sr">]</span><span class="nv">dinput</span>
 <span class="nv">sphere_intersect</span><span class="kd">←</span> <span class="kt">{</span>
   <span class="c1">⍝ sphere  intersect  ray → ⍬ or intersection_list</span>
-  <span class="nv">s2r</span><span class="kd">←</span> <span class="p">(</span><span class="o">⊃</span><span class="bp">⍵</span><span class="sr">[</span><span class="nv">ray_origin</span><span class="sr">]</span><span class="p">)</span> <span class="o">-</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1</span>
-  <span class="nv">a</span><span class="kd">←</span> <span class="p">(</span><span class="o">⊃</span><span class="bp">⍵</span><span class="sr">[</span><span class="nv">ray_direction</span><span class="sr">]</span><span class="p">)</span> <span class="nv">dot</span> <span class="o">⊃</span><span class="bp">⍵</span><span class="sr">[</span><span class="nv">ray_direction</span><span class="sr">]</span>
-  <span class="nv">b</span><span class="kd">←</span> <span class="m">2</span><span class="o">×</span> <span class="p">(</span><span class="o">⊃</span><span class="bp">⍵</span><span class="sr">[</span><span class="nv">ray_direction</span><span class="sr">]</span><span class="p">)</span> <span class="nv">dot</span> <span class="nv">s2r</span>
+  <span class="nv">s2r</span><span class="kd">←</span> <span class="p">(</span><span class="nv">ray_origin</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span> <span class="o">-</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1</span>
+  <span class="nv">a</span><span class="kd">←</span> <span class="p">(</span><span class="nv">ray_direction</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span> <span class="nv">dot</span> <span class="nv">ray_direction</span><span class="o">⊃</span><span class="bp">⍵</span>
+  <span class="nv">b</span><span class="kd">←</span> <span class="m">2</span><span class="o">×</span> <span class="p">(</span><span class="nv">ray_direction</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span> <span class="nv">dot</span> <span class="nv">s2r</span>
   <span class="nv">c</span><span class="kd">←</span> <span class="m">¯1</span><span class="o">+</span> <span class="nv">s2r</span> <span class="nv">dot</span> <span class="nv">s2r</span>
   <span class="nv">d</span><span class="kd">←</span> <span class="p">(</span><span class="nv">b</span><span class="o">×</span><span class="nv">b</span><span class="p">)</span><span class="o">-</span><span class="m">4</span><span class="o">×</span><span class="nv">a</span><span class="o">×</span><span class="nv">c</span>
   <span class="nv">d</span><span class="o">&lt;</span><span class="m">0</span><span class="bp">:</span> <span class="no">⍬</span>
@@ -13889,7 +13911,7 @@ im← w render c
   <span class="c1">⍝ ⍺=sphere  normal_at  ⍵=point → vector</span>
   <span class="nv">on</span><span class="kd">←</span> <span class="bp">⍵</span> <span class="o">-</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1</span>         <span class="c1">⍝ Creates vector from origin</span>
   <span class="c1">⍝ wn← (⍉⌹⊃⍺[obj_transform]) +.× on</span>
-  <span class="nv">wn</span><span class="kd">←</span> <span class="p">(</span><span class="o">⍉⊃</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">obj_inverse</span><span class="sr">]</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="nv">on</span>
+  <span class="nv">wn</span><span class="kd">←</span> <span class="p">(</span><span class="o">⍉</span><span class="nv">obj_inverse</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="nv">on</span>
   <span class="nv">wn</span><span class="sr">[</span><span class="m">4</span><span class="sr">]</span><span class="kd">←</span> <span class="m">0</span>                <span class="c1">⍝ Make world_normal a vector</span>
   <span class="nv">normalize</span> <span class="nv">wn</span>
   <span class="kt">}</span>
@@ -13921,17 +13943,9 @@ im← w render c
 <div class=" highlight hl-APL"><pre><span></span><span class="sr">]</span><span class="nv">dinput</span>
 <span class="nv">plane_intersect</span><span class="kd">←</span><span class="kt">{</span>
    <span class="c1">⍝ plane plane_intersect ray → ⍬ or intersection_list</span>
-   <span class="c1">⍝ Must return a list of intersections</span>
-   <span class="c1">⍝ o← ⊃⍵[ray_origin]         ⍝ Ray origin</span>
-   <span class="c1">⍝ d← ⊃⍵[ray_direction]      ⍝ Ray direction</span>
-   <span class="c1">⍝ EPSILON&gt;|d[2]: ⍬          ⍝ No intersection</span>
-   <span class="c1">⍝ t← -(o[2])÷d[2]           ⍝ Distance</span>
-
    <span class="p">(</span><span class="nv">oy</span> <span class="nv">dy</span><span class="p">)</span><span class="kd">←</span> <span class="bp">⍵</span><span class="sr">[</span><span class="p">(</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="p">)(</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="p">)</span><span class="sr">]</span>
    <span class="nv">EPSILON</span><span class="o">&gt;|</span><span class="nv">dy</span><span class="bp">:</span> <span class="no">⍬</span>              <span class="c1">⍝ No intersection</span>
    <span class="nv">t</span><span class="kd">←</span> <span class="o">-</span><span class="nv">oy</span><span class="o">÷</span><span class="nv">dy</span>                 <span class="c1">⍝ Distance</span>
-   <span class="c1">⍝ Return two instead of one for compatibility with sphere et al</span>
-   <span class="c1">⍝ (⍺ t) (⍺ t)               ⍝ Intersection</span>
    <span class="o">⊂</span> <span class="bp">⍺</span> <span class="nv">t</span>
    <span class="kt">}</span>
 </pre></div>
@@ -14012,13 +14026,13 @@ im← w render c
 <div class=" highlight hl-APL"><pre><span></span><span class="sr">]</span><span class="nv">dinput</span>
 <span class="nv">cube_intersect</span><span class="kd">←</span><span class="kt">{</span>
   <span class="c1">⍝ cube  cube_intersect  ray → intersection intersection</span>
-  <span class="nv">ori</span><span class="kd">←</span> <span class="o">⊃</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span>
-  <span class="nv">dir</span><span class="kd">←</span> <span class="o">⊃</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span>
-  <span class="nv">xm</span><span class="kd">←</span>  <span class="nv">ori</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span> <span class="nv">check_axis</span> <span class="nv">dir</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span>
-  <span class="nv">ym</span><span class="kd">←</span>  <span class="nv">ori</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span> <span class="nv">check_axis</span> <span class="nv">dir</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span>
-  <span class="nv">zm</span><span class="kd">←</span>  <span class="nv">ori</span><span class="sr">[</span><span class="m">3</span><span class="sr">]</span> <span class="nv">check_axis</span> <span class="nv">dir</span><span class="sr">[</span><span class="m">3</span><span class="sr">]</span>
-  <span class="nv">tmin</span><span class="kd">←</span> <span class="o">⌈</span><span class="na">/</span><span class="nv">xm</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span><span class="o">,</span> <span class="nv">ym</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span><span class="o">,</span> <span class="nv">zm</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span>
-  <span class="nv">tmax</span><span class="kd">←</span> <span class="o">⌊</span><span class="na">/</span><span class="nv">xm</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span><span class="o">,</span> <span class="nv">ym</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span><span class="o">,</span> <span class="nv">zm</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span>
+  <span class="nv">ori</span><span class="kd">←</span> <span class="m">1</span><span class="o">⊃</span><span class="bp">⍵</span>
+  <span class="nv">dir</span><span class="kd">←</span> <span class="m">2</span><span class="o">⊃</span><span class="bp">⍵</span>
+  <span class="nv">xm</span><span class="kd">←</span>  <span class="p">(</span><span class="m">1</span><span class="o">⊃</span><span class="nv">ori</span><span class="p">)</span> <span class="nv">check_axis</span> <span class="m">1</span><span class="o">⊃</span><span class="nv">dir</span>
+  <span class="nv">ym</span><span class="kd">←</span>  <span class="p">(</span><span class="m">2</span><span class="o">⊃</span><span class="nv">ori</span><span class="p">)</span> <span class="nv">check_axis</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">dir</span>
+  <span class="nv">zm</span><span class="kd">←</span>  <span class="p">(</span><span class="m">3</span><span class="o">⊃</span><span class="nv">ori</span><span class="p">)</span> <span class="nv">check_axis</span> <span class="m">3</span><span class="o">⊃</span><span class="nv">dir</span>
+  <span class="nv">tmin</span><span class="kd">←</span> <span class="o">⌈</span><span class="na">/</span><span class="p">(</span><span class="m">1</span><span class="o">⊃</span><span class="nv">xm</span><span class="p">)</span><span class="o">,</span> <span class="p">(</span><span class="m">1</span><span class="o">⊃</span><span class="nv">ym</span><span class="p">)</span><span class="o">,</span> <span class="m">1</span><span class="o">⊃</span><span class="nv">zm</span>
+  <span class="nv">tmax</span><span class="kd">←</span> <span class="o">⌊</span><span class="na">/</span><span class="p">(</span><span class="m">2</span><span class="o">⊃</span><span class="nv">xm</span><span class="p">)</span><span class="o">,</span> <span class="p">(</span><span class="m">2</span><span class="o">⊃</span><span class="nv">ym</span><span class="p">)</span><span class="o">,</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">zm</span>
   <span class="nv">tmin</span><span class="o">&gt;</span><span class="nv">tmax</span><span class="bp">:</span> <span class="no">⍬</span>
   <span class="p">(</span><span class="bp">⍺</span> <span class="nv">tmin</span><span class="p">)(</span><span class="bp">⍺</span> <span class="nv">tmax</span><span class="p">)</span>
   <span class="kt">}</span>
@@ -14038,8 +14052,8 @@ im← w render c
 <span class="nv">cube_normal_at</span><span class="kd">←</span><span class="kt">{</span>
   <span class="c1">⍝ cube  cube_normal_at  point → vector</span>
   <span class="nv">maxc</span><span class="kd">←</span> <span class="o">⌈</span><span class="na">/</span><span class="o">|</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span> <span class="m">2</span> <span class="m">3</span><span class="sr">]</span>
-  <span class="nv">maxc</span><span class="o">=|</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span><span class="bp">:</span> <span class="p">(</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span><span class="p">)</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="c1">⍝ vector ⍵[1] 0 0</span>
-  <span class="nv">maxc</span><span class="o">=|</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span><span class="bp">:</span> <span class="m">0</span> <span class="p">(</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span><span class="p">)</span> <span class="m">0</span> <span class="m">0</span> <span class="c1">⍝ vector 0 ⍵[2] 0</span>
+  <span class="nv">maxc</span><span class="o">=|</span><span class="m">1</span><span class="o">⊃</span><span class="bp">⍵:</span> <span class="p">(</span><span class="m">1</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="c1">⍝ vector ⍵[1] 0 0</span>
+  <span class="nv">maxc</span><span class="o">=|</span><span class="m">2</span><span class="o">⊃</span><span class="bp">⍵:</span> <span class="m">0</span> <span class="p">(</span><span class="m">2</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span> <span class="m">0</span> <span class="m">0</span> <span class="c1">⍝ vector 0 ⍵[2] 0</span>
   <span class="m">0</span> <span class="m">0</span> <span class="p">(</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">3</span><span class="sr">]</span><span class="p">)</span> <span class="m">0</span>             <span class="c1">⍝ vector 0 0 ⍵[3]</span>
   <span class="kt">}</span>
 </pre></div>
@@ -14090,15 +14104,15 @@ im← w render c
 <div class=" highlight hl-APL"><pre><span></span><span class="bp">∇</span><span class="nv">Z</span><span class="kd">←</span> <span class="nv">CYL</span> <span class="nv">intersect_caps</span> <span class="nv">R</span><span class="sr">;</span><span class="nv">t</span>
   <span class="nv">Z</span><span class="kd">←</span> <span class="no">⍬</span>
   <span class="c1">⍝ cylinder  intersect_caps  ray → ⍬ or intersection intersection</span>
-  <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="m">0</span><span class="o">=</span><span class="nv">CYL</span><span class="sr">[</span><span class="nv">cylinder_closed</span><span class="sr">]</span><span class="p">)</span> <span class="o">∨</span> <span class="nv">EPSILON</span><span class="o">&gt;|</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
+  <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="m">0</span><span class="o">=</span><span class="nv">cylinder_closed</span><span class="o">⊃</span><span class="nv">CYL</span><span class="p">)</span> <span class="o">∨</span> <span class="nv">EPSILON</span><span class="o">&gt;|</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
     <span class="bp">:</span><span class="nv">Return</span>
   <span class="bp">:</span><span class="nv">EndIf</span>
   <span class="c1">⍝ Check for intersection with lower end</span>
-  <span class="nv">t</span><span class="kd">←</span> <span class="p">(</span><span class="nv">CYL</span><span class="sr">[</span><span class="nv">cylinder_minimum</span><span class="sr">]</span><span class="o">-</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">÷</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
+  <span class="nv">t</span><span class="kd">←</span> <span class="p">((</span><span class="nv">cylinder_minimum</span><span class="o">⊃</span><span class="nv">CYL</span><span class="p">)</span><span class="o">-</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">÷</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
   <span class="bp">:</span><span class="nv">If</span> <span class="nv">R</span> <span class="nv">check_cap</span> <span class="nv">t</span>
     <span class="nv">Z</span><span class="kd">←</span> <span class="nv">Z</span><span class="o">,⊂</span><span class="nv">CYL</span> <span class="nv">intersection</span> <span class="nv">t</span>
   <span class="bp">:</span><span class="nv">EndIf</span>
-  <span class="nv">t</span><span class="kd">←</span> <span class="p">(</span><span class="nv">CYL</span><span class="sr">[</span><span class="nv">cylinder_maximum</span><span class="sr">]</span><span class="o">-</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">÷</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
+  <span class="nv">t</span><span class="kd">←</span> <span class="p">((</span><span class="nv">cylinder_maximum</span><span class="o">⊃</span><span class="nv">CYL</span><span class="p">)</span><span class="o">-</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">÷</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
   <span class="bp">:</span><span class="nv">If</span> <span class="nv">R</span> <span class="nv">check_cap</span> <span class="nv">t</span>
     <span class="nv">Z</span><span class="kd">←</span> <span class="nv">Z</span><span class="o">,⊂</span><span class="nv">CYL</span> <span class="nv">intersection</span> <span class="nv">t</span>
   <span class="bp">:</span><span class="nv">EndIf</span>
@@ -14139,11 +14153,11 @@ im← w render c
         <span class="nv">t0</span> <span class="nv">t1</span><span class="kd">←</span> <span class="nv">t1</span> <span class="nv">t0</span>
       <span class="bp">:</span><span class="nv">EndIf</span>
       <span class="nv">y0</span><span class="kd">←</span> <span class="p">(</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">+</span><span class="nv">t0</span><span class="o">×</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
-      <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="nv">y0</span><span class="o">&gt;</span><span class="nv">CYL</span><span class="sr">[</span><span class="nv">cylinder_minimum</span><span class="sr">]</span><span class="p">)</span><span class="err">^</span><span class="nv">y0</span><span class="o">&lt;</span><span class="nv">CYL</span><span class="sr">[</span><span class="nv">cylinder_maximum</span><span class="sr">]</span>
+      <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="nv">y0</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">cylinder_minimum</span><span class="o">⊃</span><span class="nv">CYL</span><span class="p">))</span><span class="err">^</span><span class="nv">y0</span><span class="o">&lt;</span><span class="nv">cylinder_maximum</span><span class="o">⊃</span><span class="nv">CYL</span>
         <span class="nv">Z</span><span class="kd">←</span> <span class="o">⊂</span> <span class="nv">CYL</span> <span class="nv">intersection</span> <span class="nv">t0</span>
       <span class="bp">:</span><span class="nv">EndIf</span>
       <span class="nv">y1</span><span class="kd">←</span> <span class="p">(</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">+</span><span class="nv">t1</span><span class="o">×</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
-      <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="nv">y1</span><span class="o">&gt;</span><span class="nv">CYL</span><span class="sr">[</span><span class="nv">cylinder_minimum</span><span class="sr">]</span><span class="p">)</span><span class="err">^</span><span class="nv">y1</span><span class="o">&lt;</span><span class="nv">CYL</span><span class="sr">[</span><span class="nv">cylinder_maximum</span><span class="sr">]</span>
+      <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="nv">y1</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">cylinder_minimum</span><span class="o">⊃</span><span class="nv">CYL</span><span class="p">))</span><span class="err">^</span><span class="nv">y1</span><span class="o">&lt;</span><span class="nv">cylinder_maximum</span><span class="o">⊃</span><span class="nv">CYL</span>
         <span class="nv">Z</span><span class="kd">←</span> <span class="nv">Z</span><span class="o">,⊂</span> <span class="nv">CYL</span> <span class="nv">intersection</span> <span class="nv">t1</span>
       <span class="bp">:</span><span class="nv">EndIf</span>
     <span class="bp">:</span><span class="nv">EndIf</span>
@@ -14151,12 +14165,12 @@ im← w render c
 
   <span class="c1">⍝ Check for intersection with caps of closed cylinder</span>
   <span class="c1">⍝ :If CYL[cylinder_closed]^(EPSILON&lt;|2⌷⊃R[ray_direction])</span>
-  <span class="bp">:</span><span class="nv">If</span> <span class="nv">CYL</span><span class="sr">[</span><span class="nv">cylinder_closed</span><span class="sr">]</span><span class="err">^</span><span class="nv">EPSILON</span><span class="o">&lt;|</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
-    <span class="nv">t</span><span class="kd">←</span> <span class="p">(</span><span class="nv">CYL</span><span class="sr">[</span><span class="nv">cylinder_minimum</span><span class="sr">]</span><span class="o">-</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">÷</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
+  <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="nv">cylinder_closed</span><span class="o">⊃</span><span class="nv">CYL</span><span class="p">)</span><span class="err">^</span><span class="nv">EPSILON</span><span class="o">&lt;|</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
+    <span class="nv">t</span><span class="kd">←</span> <span class="p">((</span><span class="nv">cylinder_minimum</span><span class="o">⊃</span><span class="nv">CYL</span><span class="p">)</span><span class="o">-</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">÷</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
     <span class="bp">:</span><span class="nv">If</span> <span class="nv">R</span> <span class="nv">check_cap</span> <span class="nv">t</span>
       <span class="nv">Z</span><span class="kd">←</span> <span class="nv">Z</span><span class="o">,⊂</span><span class="nv">CYL</span> <span class="nv">intersection</span> <span class="nv">t</span>
     <span class="bp">:</span><span class="nv">EndIf</span>
-    <span class="nv">t</span><span class="kd">←</span> <span class="p">(</span><span class="nv">CYL</span><span class="sr">[</span><span class="nv">cylinder_maximum</span><span class="sr">]</span><span class="o">-</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">÷</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
+    <span class="nv">t</span><span class="kd">←</span> <span class="p">((</span><span class="nv">cylinder_maximum</span><span class="o">⊃</span><span class="nv">CYL</span><span class="p">)</span><span class="o">-</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">÷</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
     <span class="bp">:</span><span class="nv">If</span> <span class="nv">R</span> <span class="nv">check_cap</span> <span class="nv">t</span>
       <span class="nv">Z</span><span class="kd">←</span> <span class="nv">Z</span><span class="o">,⊂</span><span class="nv">CYL</span> <span class="nv">intersection</span> <span class="nv">t</span>
     <span class="bp">:</span><span class="nv">EndIf</span>
@@ -14179,9 +14193,9 @@ im← w render c
   <span class="c1">⍝ cylinder  cylinder_normal_at  point → vector</span>
   <span class="c1">⍝ dist← (⍵[1]*2)+⍵[3]*2</span>
   <span class="nv">dist</span><span class="kd">←</span> <span class="o">+</span><span class="na">/</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span> <span class="m">3</span><span class="sr">]</span><span class="o">*</span><span class="m">2</span>
-  <span class="p">(</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">cylinder_closed</span><span class="sr">]</span><span class="p">)</span><span class="err">^</span><span class="p">(</span><span class="m">1</span><span class="o">&gt;</span><span class="nv">dist</span><span class="p">)</span> <span class="err">^</span> <span class="bp">⍵</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span><span class="o">≥</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">cylinder_maximum</span><span class="sr">]</span><span class="o">-</span><span class="nv">EPSILON</span><span class="bp">:</span> <span class="nv">vector</span> <span class="m">0</span> <span class="m">1</span> <span class="m">0</span>
-  <span class="p">(</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">cylinder_closed</span><span class="sr">]</span><span class="p">)</span><span class="err">^</span><span class="p">(</span><span class="m">1</span><span class="o">&gt;</span><span class="nv">dist</span><span class="p">)</span> <span class="err">^</span> <span class="bp">⍵</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span><span class="o">≤</span><span class="nv">EPSILON</span><span class="o">+</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">cylinder_minimum</span><span class="sr">]</span><span class="bp">:</span> <span class="nv">vector</span> <span class="m">0</span> <span class="m">¯1</span> <span class="m">0</span>
-  <span class="nv">vector</span> <span class="p">(</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span><span class="p">)</span> <span class="m">0</span> <span class="p">(</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">3</span><span class="sr">]</span><span class="p">)</span>
+  <span class="p">(</span><span class="nv">cylinder_closed</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span><span class="err">^</span><span class="p">(</span><span class="m">1</span><span class="o">&gt;</span><span class="nv">dist</span><span class="p">)</span> <span class="err">^</span> <span class="p">(</span><span class="m">2</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span><span class="o">≥</span><span class="p">(</span><span class="nv">cylinder_maximum</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span><span class="o">-</span><span class="nv">EPSILON</span><span class="bp">:</span> <span class="nv">vector</span> <span class="m">0</span> <span class="m">1</span> <span class="m">0</span>
+  <span class="p">(</span><span class="nv">cylinder_closed</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span><span class="err">^</span><span class="p">(</span><span class="m">1</span><span class="o">&gt;</span><span class="nv">dist</span><span class="p">)</span> <span class="err">^</span> <span class="p">(</span><span class="m">2</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span><span class="o">≤</span><span class="nv">EPSILON</span><span class="o">+</span><span class="nv">cylinder_minimum</span><span class="o">⊃</span><span class="bp">⍺:</span> <span class="nv">vector</span> <span class="m">0</span> <span class="m">¯1</span> <span class="m">0</span>
+  <span class="nv">vector</span> <span class="p">(</span><span class="m">1</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span> <span class="m">0</span> <span class="p">(</span><span class="m">3</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span>
   <span class="kt">}</span>
 </pre></div>
 
@@ -14231,9 +14245,9 @@ im← w render c
 <div class=" highlight hl-APL"><pre><span></span><span class="bp">∇</span><span class="nv">Z</span><span class="kd">←</span> <span class="nv">C</span> <span class="nv">cone_intersect</span> <span class="nv">R</span><span class="sr">;</span><span class="nv">a</span><span class="sr">;</span><span class="nv">b</span><span class="sr">;</span><span class="nv">c</span><span class="sr">;</span><span class="nv">disc</span><span class="sr">;</span><span class="nv">t0</span><span class="sr">;</span><span class="nv">t1</span><span class="sr">;</span><span class="nv">y0</span><span class="sr">;</span><span class="nv">y1</span><span class="sr">;</span><span class="nv">t</span>
   <span class="c1">⍝ cone  cone_intersect  ray → ⍬ or intersection intersection</span>
   <span class="nv">Z</span><span class="kd">←</span> <span class="no">⍬</span>
-  <span class="nv">a</span><span class="kd">←</span> <span class="o">-</span><span class="na">/</span><span class="p">(</span><span class="o">⊃</span><span class="nv">R</span><span class="sr">[</span><span class="nv">ray_direction</span><span class="sr">]</span><span class="p">)</span><span class="o">*</span><span class="m">2</span>
-  <span class="nv">b</span><span class="kd">←</span> <span class="o">-</span><span class="na">/</span><span class="m">2</span><span class="o">×</span><span class="p">(</span><span class="o">⊃</span><span class="nv">R</span><span class="sr">[</span><span class="nv">ray_origin</span><span class="sr">]</span><span class="p">)</span><span class="o">×⊃</span><span class="nv">R</span><span class="sr">[</span><span class="nv">ray_direction</span><span class="sr">]</span>
-  <span class="nv">c</span><span class="kd">←</span> <span class="o">⊃</span><span class="nv">R</span><span class="sr">[</span><span class="nv">ray_origin</span><span class="sr">]</span>
+  <span class="nv">a</span><span class="kd">←</span> <span class="o">-</span><span class="na">/</span><span class="p">(</span><span class="nv">ray_direction</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">*</span><span class="m">2</span>
+  <span class="nv">b</span><span class="kd">←</span> <span class="o">-</span><span class="na">/</span><span class="m">2</span><span class="o">×</span><span class="p">(</span><span class="nv">ray_origin</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">×</span><span class="nv">ray_direction</span><span class="o">⊃</span><span class="nv">R</span>
+  <span class="nv">c</span><span class="kd">←</span> <span class="nv">ray_origin</span><span class="o">⊃</span><span class="nv">R</span>
   <span class="nv">c</span><span class="kd">←</span> <span class="o">-</span><span class="na">/</span><span class="nv">c</span><span class="sr">[</span><span class="m">1</span> <span class="m">2</span> <span class="m">3</span><span class="sr">]</span><span class="o">*</span><span class="m">2</span>
   <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="nv">EPSILON</span><span class="o">&gt;|</span><span class="nv">a</span><span class="p">)</span> <span class="err">^</span> <span class="nv">EPSILON</span><span class="o">&lt;|</span><span class="nv">b</span>
     <span class="nv">t</span><span class="kd">←</span> <span class="o">-</span><span class="nv">c</span><span class="o">÷</span><span class="m">2</span><span class="o">×</span><span class="nv">b</span>
@@ -14247,24 +14261,24 @@ im← w render c
         <span class="nv">t0</span> <span class="nv">t1</span><span class="kd">←</span> <span class="nv">t1</span> <span class="nv">t0</span>
       <span class="bp">:</span><span class="nv">EndIf</span>
       <span class="nv">y0</span><span class="kd">←</span> <span class="p">(</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">+</span><span class="nv">t0</span><span class="o">×</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
-      <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="nv">y0</span><span class="o">&gt;</span><span class="nv">C</span><span class="sr">[</span><span class="nv">cone_minimum</span><span class="sr">]</span><span class="p">)</span><span class="err">^</span><span class="nv">y0</span><span class="o">&lt;</span><span class="nv">C</span><span class="sr">[</span><span class="nv">cone_maximum</span><span class="sr">]</span>
+      <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="nv">y0</span><span class="o">&gt;</span><span class="nv">cone_minimum</span><span class="o">⊃</span><span class="nv">C</span><span class="p">)</span><span class="err">^</span><span class="nv">y0</span><span class="o">&lt;</span><span class="nv">cone_maximum</span><span class="o">⊃</span><span class="nv">C</span>
         <span class="nv">Z</span><span class="kd">←</span> <span class="o">⊂</span> <span class="nv">C</span> <span class="nv">intersection</span> <span class="nv">t0</span>
       <span class="bp">:</span><span class="nv">EndIf</span>
       <span class="nv">y1</span><span class="kd">←</span> <span class="p">(</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">+</span><span class="nv">t1</span><span class="o">×</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
-      <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="nv">y1</span><span class="o">&gt;</span><span class="nv">C</span><span class="sr">[</span><span class="nv">cone_minimum</span><span class="sr">]</span><span class="p">)</span><span class="err">^</span><span class="nv">y1</span><span class="o">&lt;</span><span class="nv">C</span><span class="sr">[</span><span class="nv">cone_maximum</span><span class="sr">]</span>
+      <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="nv">y1</span><span class="o">&gt;</span><span class="nv">cone_minimum</span><span class="o">⊃</span><span class="nv">C</span><span class="p">)</span><span class="err">^</span><span class="nv">y1</span><span class="o">&lt;</span><span class="nv">cone_maximum</span><span class="o">⊃</span><span class="nv">C</span>
         <span class="nv">Z</span><span class="kd">←</span> <span class="nv">Z</span><span class="o">,⊂</span> <span class="nv">C</span> <span class="nv">intersection</span> <span class="nv">t1</span>
       <span class="bp">:</span><span class="nv">EndIf</span>
     <span class="bp">:</span><span class="nv">EndIf</span>
   <span class="bp">:</span><span class="nv">EndIf</span>
 
   <span class="c1">⍝ Check for intersection with caps of closed cylinder</span>
-  <span class="bp">:</span><span class="nv">If</span> <span class="nv">C</span><span class="sr">[</span><span class="nv">cone_closed</span><span class="sr">]</span><span class="err">^</span><span class="p">(</span><span class="nv">EPSILON</span><span class="o">&lt;|</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span>
-    <span class="nv">t</span><span class="kd">←</span> <span class="p">(</span><span class="nv">C</span><span class="sr">[</span><span class="nv">cone_minimum</span><span class="sr">]</span><span class="o">-</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">÷</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
-    <span class="bp">:</span><span class="nv">If</span> <span class="nv">R</span> <span class="nv">check_cap2</span> <span class="nv">t</span><span class="o">,</span> <span class="nv">C</span><span class="sr">[</span><span class="nv">cone_minimum</span><span class="sr">]</span>
+  <span class="bp">:</span><span class="nv">If</span> <span class="p">(</span><span class="nv">cone_closed</span><span class="o">⊃</span><span class="nv">C</span><span class="p">)</span><span class="err">^</span><span class="p">(</span><span class="nv">EPSILON</span><span class="o">&lt;|</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span>
+    <span class="nv">t</span><span class="kd">←</span> <span class="p">((</span><span class="nv">cone_minimum</span><span class="o">⊃</span><span class="nv">C</span><span class="p">)</span><span class="o">-</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">÷</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
+    <span class="bp">:</span><span class="nv">If</span> <span class="nv">R</span> <span class="nv">check_cap2</span> <span class="nv">t</span><span class="o">,</span> <span class="nv">cone_minimum</span><span class="o">⊃</span><span class="nv">C</span>
       <span class="nv">Z</span><span class="kd">←</span> <span class="nv">Z</span><span class="o">,⊂</span><span class="nv">C</span> <span class="nv">intersection</span> <span class="nv">t</span>
     <span class="bp">:</span><span class="nv">EndIf</span>
-    <span class="nv">t</span><span class="kd">←</span> <span class="p">(</span><span class="nv">C</span><span class="sr">[</span><span class="nv">cone_maximum</span><span class="sr">]</span><span class="o">-</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">÷</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
-    <span class="bp">:</span><span class="nv">If</span> <span class="nv">R</span> <span class="nv">check_cap2</span> <span class="nv">t</span><span class="o">,</span> <span class="nv">C</span><span class="sr">[</span><span class="nv">cone_maximum</span><span class="sr">]</span>
+    <span class="nv">t</span><span class="kd">←</span> <span class="p">((</span><span class="nv">cone_maximum</span><span class="o">⊃</span><span class="nv">C</span><span class="p">)</span><span class="o">-</span><span class="nv">ray_origin</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span><span class="p">)</span><span class="o">÷</span><span class="nv">ray_direction</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">R</span>
+    <span class="bp">:</span><span class="nv">If</span> <span class="nv">R</span> <span class="nv">check_cap2</span> <span class="nv">t</span><span class="o">,</span> <span class="nv">cone_maximum</span><span class="o">⊃</span><span class="nv">C</span>
       <span class="nv">Z</span><span class="kd">←</span> <span class="nv">Z</span><span class="o">,⊂</span><span class="nv">C</span> <span class="nv">intersection</span> <span class="nv">t</span>
     <span class="bp">:</span><span class="nv">EndIf</span>
   <span class="bp">:</span><span class="nv">EndIf</span>
@@ -14284,12 +14298,12 @@ im← w render c
 <div class=" highlight hl-APL"><pre><span></span><span class="sr">]</span><span class="nv">dinput</span>
 <span class="nv">cone_normal_at</span><span class="kd">←</span><span class="kt">{</span>
   <span class="c1">⍝ cone  cone_normal_at  point → vector</span>
-  <span class="nv">dist</span><span class="kd">←</span> <span class="p">(</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span><span class="o">*</span><span class="m">2</span><span class="p">)</span><span class="o">+</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">3</span><span class="sr">]</span><span class="o">*</span><span class="m">2</span>
-  <span class="p">(</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">cone_closed</span><span class="sr">]</span><span class="p">)</span> <span class="err">^</span> <span class="p">(</span><span class="m">1</span><span class="o">&gt;</span><span class="nv">dist</span><span class="p">)</span> <span class="err">^</span> <span class="bp">⍵</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span><span class="o">≥</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">cylinder_maximum</span><span class="sr">]</span><span class="o">-</span><span class="nv">EPSILON</span><span class="bp">:</span> <span class="nv">vector</span> <span class="m">0</span> <span class="m">1</span> <span class="m">0</span>
-  <span class="p">(</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">cone_closed</span><span class="sr">]</span><span class="p">)</span> <span class="err">^</span> <span class="p">(</span><span class="m">1</span><span class="o">&gt;</span><span class="nv">dist</span><span class="p">)</span> <span class="err">^</span> <span class="bp">⍵</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span><span class="o">≤</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">cylinder_minimum</span><span class="sr">]</span><span class="o">+</span><span class="nv">EPSILON</span><span class="bp">:</span> <span class="nv">vector</span> <span class="m">0</span> <span class="m">¯1</span> <span class="m">0</span>
+  <span class="nv">dist</span><span class="kd">←</span> <span class="p">((</span><span class="m">1</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span><span class="o">*</span><span class="m">2</span><span class="p">)</span><span class="o">+</span><span class="p">(</span><span class="m">3</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span><span class="o">*</span><span class="m">2</span>
+  <span class="p">(</span><span class="nv">cone_closed</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span> <span class="err">^</span> <span class="p">(</span><span class="m">1</span><span class="o">&gt;</span><span class="nv">dist</span><span class="p">)</span> <span class="err">^</span> <span class="p">(</span><span class="m">2</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span><span class="o">≥</span><span class="p">(</span><span class="nv">cylinder_maximum</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span><span class="o">-</span><span class="nv">EPSILON</span><span class="bp">:</span> <span class="nv">vector</span> <span class="m">0</span> <span class="m">1</span> <span class="m">0</span>
+  <span class="p">(</span><span class="nv">cone_closed</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span> <span class="err">^</span> <span class="p">(</span><span class="m">1</span><span class="o">&gt;</span><span class="nv">dist</span><span class="p">)</span> <span class="err">^</span> <span class="p">(</span><span class="m">2</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span><span class="o">≤</span><span class="p">(</span><span class="nv">cylinder_minimum</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span><span class="o">+</span><span class="nv">EPSILON</span><span class="bp">:</span> <span class="nv">vector</span> <span class="m">0</span> <span class="m">¯1</span> <span class="m">0</span>
   <span class="nv">y</span><span class="kd">←</span> <span class="p">(</span><span class="o">+</span><span class="na">/</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span> <span class="m">3</span><span class="sr">]</span><span class="o">*</span><span class="m">2</span><span class="p">)</span><span class="o">*</span><span class="m">0.5</span>
-  <span class="bp">⍵</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span><span class="o">&gt;</span><span class="m">0</span><span class="bp">:</span> <span class="nv">vector</span> <span class="p">(</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span><span class="p">)</span> <span class="p">(</span><span class="m">¯1</span><span class="o">×</span><span class="nv">y</span><span class="p">)</span> <span class="p">(</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">3</span><span class="sr">]</span><span class="p">)</span>
-  <span class="nv">vector</span> <span class="p">(</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span><span class="p">)</span> <span class="nv">y</span> <span class="p">(</span><span class="bp">⍵</span><span class="sr">[</span><span class="m">3</span><span class="sr">]</span><span class="p">)</span>
+  <span class="p">(</span><span class="m">2</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span><span class="o">&gt;</span><span class="m">0</span><span class="bp">:</span> <span class="nv">vector</span> <span class="p">(</span><span class="m">1</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span> <span class="p">(</span><span class="m">¯1</span><span class="o">×</span><span class="nv">y</span><span class="p">)</span> <span class="p">(</span><span class="m">3</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span>
+  <span class="nv">vector</span> <span class="p">(</span><span class="m">1</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span> <span class="nv">y</span> <span class="p">(</span><span class="m">3</span><span class="o">⊃</span><span class="bp">⍵</span><span class="p">)</span>
   <span class="kt">}</span>
 </pre></div>
 
@@ -14319,11 +14333,11 @@ im← w render c
 <div class=" highlight hl-APL"><pre><span></span><span class="sr">]</span><span class="nv">dinput</span>
 <span class="nv">intersect</span><span class="kd">←</span><span class="kt">{</span>
    <span class="c1">⍝ object  intersect  ray → ⍬ or intersection list</span>
-   <span class="nv">t</span><span class="kd">←</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">obj_tag</span><span class="sr">]</span>
+   <span class="nv">t</span><span class="kd">←</span><span class="nv">obj_tag</span><span class="o">⊃</span><span class="bp">⍺</span>
    <span class="c1">⍝ m←⊃⍺[obj_transform]</span>
    <span class="c1">⍝ local_ray← (⌹m) transform ⍵</span>
    <span class="c1">⍝ local_ray← (⊃⍺[obj_inverse]) transform ⍵</span>
-   <span class="nv">tm</span><span class="kd">←</span> <span class="o">⊃</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">obj_inverse</span><span class="sr">]</span>
+   <span class="nv">tm</span><span class="kd">←</span> <span class="nv">obj_inverse</span><span class="o">⊃</span><span class="bp">⍺</span>
    <span class="nv">local_ray</span><span class="kd">←</span> <span class="kt">{</span><span class="nv">tm</span><span class="o">+</span><span class="na">.</span><span class="o">×</span><span class="bp">⍵</span><span class="kt">}</span><span class="na">¨</span><span class="bp">⍵</span>
    <span class="nv">shape_test</span><span class="o">=</span><span class="nv">t</span><span class="bp">:</span>       <span class="nv">local_ray</span>
    <span class="nv">shape_sphere</span><span class="o">=</span><span class="nv">t</span><span class="bp">:</span>     <span class="bp">⍺</span> <span class="nv">sphere_intersect</span>   <span class="nv">local_ray</span>
@@ -14350,14 +14364,14 @@ im← w render c
    <span class="c1">⍝ shape normal_at point → vector</span>
    <span class="nv">fixup</span><span class="kd">←</span><span class="kt">{</span>
      <span class="c1">⍝ wn← (⍉(⌹⊃⍺[obj_transform])) +.× ⍵</span>
-     <span class="nv">wn</span><span class="kd">←</span> <span class="p">(</span><span class="o">⍉⊃</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">obj_inverse</span><span class="sr">]</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="bp">⍵</span>
+     <span class="nv">wn</span><span class="kd">←</span> <span class="p">(</span><span class="o">⍉</span><span class="nv">obj_inverse</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="bp">⍵</span>
      <span class="nv">wn</span><span class="sr">[</span><span class="m">4</span><span class="sr">]</span><span class="kd">←</span> <span class="m">0</span>
      <span class="nv">normalize</span> <span class="nv">wn</span>
      <span class="kt">}</span>
    <span class="c1">⍝ lp← ⍵⌹⊃⍺[obj_transform]   Doesn&#39;t work!?</span>
    <span class="c1">⍝ lp← (⌹⊃⍺[obj_transform]) +.× ⍵</span>
-   <span class="nv">lp</span><span class="kd">←</span> <span class="p">(</span><span class="o">⊃</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">obj_inverse</span><span class="sr">]</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="bp">⍵</span>
-   <span class="nv">t</span><span class="kd">←</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">obj_tag</span><span class="sr">]</span>
+   <span class="nv">lp</span><span class="kd">←</span> <span class="p">(</span><span class="nv">obj_inverse</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="bp">⍵</span>
+   <span class="nv">t</span><span class="kd">←</span><span class="nv">obj_tag</span><span class="o">⊃</span><span class="bp">⍺</span>
    <span class="nv">shape_test</span><span class="o">=</span><span class="nv">t</span><span class="bp">:</span>       <span class="bp">⍺</span> <span class="nv">fixup</span> <span class="nv">vector</span> <span class="nv">lp</span><span class="sr">[</span><span class="m">1</span> <span class="m">2</span> <span class="m">3</span><span class="sr">]</span>  <span class="c1">⍝ Here, or at end?</span>
    <span class="nv">shape_sphere</span><span class="o">=</span><span class="nv">t</span><span class="bp">:</span>     <span class="bp">⍺</span> <span class="nv">fixup</span> <span class="bp">⍺</span> <span class="nv">sphere_normal_at</span>   <span class="nv">lp</span>
    <span class="c1">⍝ Is this correct? plane_normal_at is a constant!</span>
@@ -14477,6 +14491,7 @@ im← w render c
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>The old version of the canvas_to_ppm function where a canvas was an NxM matrix.</p>
 
 <pre><code>]dinput
 canvas_to_ppm←{
@@ -14707,15 +14722,15 @@ canvas_to_ppm←{
 <span class="nv">ray_for_pixel</span><span class="kd">←</span><span class="kt">{</span>
    <span class="c1">⍝ camera ray_for_pixel x y → ray</span>
    <span class="p">(</span><span class="nv">px</span> <span class="nv">py</span><span class="p">)</span><span class="kd">←</span> <span class="bp">⍵</span>
-   <span class="nv">xoffset</span><span class="kd">←</span> <span class="bp">⍺</span><span class="sr">[</span><span class="nv">camera_psize</span><span class="sr">]</span><span class="o">×</span><span class="nv">px</span><span class="o">+</span><span class="m">0.5</span>
-   <span class="nv">yoffset</span><span class="kd">←</span> <span class="bp">⍺</span><span class="sr">[</span><span class="nv">camera_psize</span><span class="sr">]</span><span class="o">×</span><span class="nv">py</span><span class="o">+</span><span class="m">0.5</span>
-   <span class="nv">world_x</span><span class="kd">←</span> <span class="bp">⍺</span><span class="sr">[</span><span class="nv">camera_halfw</span><span class="sr">]</span><span class="o">-</span><span class="nv">xoffset</span>
-   <span class="nv">world_y</span><span class="kd">←</span> <span class="bp">⍺</span><span class="sr">[</span><span class="nv">camera_halfh</span><span class="sr">]</span><span class="o">-</span><span class="nv">yoffset</span>
+   <span class="nv">xoffset</span><span class="kd">←</span> <span class="p">(</span><span class="nv">camera_psize</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span><span class="o">×</span><span class="nv">px</span><span class="o">+</span><span class="m">0.5</span>
+   <span class="nv">yoffset</span><span class="kd">←</span> <span class="p">(</span><span class="nv">camera_psize</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span><span class="o">×</span><span class="nv">py</span><span class="o">+</span><span class="m">0.5</span>
+   <span class="nv">world_x</span><span class="kd">←</span> <span class="p">(</span><span class="nv">camera_halfw</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span><span class="o">-</span><span class="nv">xoffset</span>
+   <span class="nv">world_y</span><span class="kd">←</span> <span class="p">(</span><span class="nv">camera_halfh</span><span class="o">⊃</span><span class="bp">⍺</span><span class="p">)</span><span class="o">-</span><span class="nv">yoffset</span>
    <span class="c1">⍝ This is actually slightly slower than the above!</span>
    <span class="c1">⍝ world_x← ⍺[camera_halfw]-⍺[camera_psize]×px+0.5</span>
    <span class="c1">⍝ world_y← ⍺[camera_halfh]-⍺[camera_psize]×py+0.5</span>
    <span class="c1">⍝ it←      ⌹⊃⍺[camera_transform]</span>
-   <span class="nv">it</span><span class="kd">←</span>      <span class="o">⊃</span><span class="bp">⍺</span><span class="sr">[</span><span class="nv">camera_inverse</span><span class="sr">]</span>
+   <span class="nv">it</span><span class="kd">←</span>      <span class="nv">camera_inverse</span><span class="o">⊃</span><span class="bp">⍺</span>
    <span class="nv">pixel</span><span class="kd">←</span>   <span class="nv">it</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="nv">point</span> <span class="nv">world_x</span> <span class="nv">world_y</span> <span class="m">¯1</span>
    <span class="nv">origin</span><span class="kd">←</span>  <span class="nv">it</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="nv">point</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span>
    <span class="nv">directn</span><span class="kd">←</span> <span class="nv">normalize</span> <span class="nv">pixel</span><span class="o">-</span><span class="nv">origin</span>
@@ -14748,7 +14763,7 @@ canvas_to_ppm←{
    <span class="p">(</span><span class="nv">wray</span> <span class="nv">remaining</span><span class="p">)</span><span class="kd">←</span> <span class="bp">⍵</span>
    <span class="nv">inter</span><span class="kd">←</span> <span class="bp">⍺</span> <span class="nv">intersect_world</span> <span class="nv">wray</span>
    <span class="c1">⍝ Return black if no intersections</span>
-   <span class="c1">⍝ 0=≢inter: 0 0 0</span>
+   <span class="m">0</span><span class="o">=≢</span><span class="nv">inter</span><span class="bp">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span>
    <span class="c1">⍝ Take first positive intersection as the hit</span>
    <span class="nv">h</span><span class="kd">←</span> <span class="nv">hit</span> <span class="nv">inter</span>
    <span class="c1">⍝ Return black if no hit</span>
@@ -14854,7 +14869,7 @@ w intersect_world r</code></pre>
 <span class="nv">intersect_world</span><span class="kd">←</span><span class="kt">{</span>
    <span class="c1">⍝ world  intersect_world  ray → intersection list</span>
      <span class="nv">Z</span><span class="kd">←</span><span class="no">⍬</span>
-     <span class="nv">objs</span><span class="kd">←</span><span class="o">⊃</span><span class="bp">⍺</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span>
+     <span class="nv">objs</span><span class="kd">←</span><span class="o">⊃</span><span class="bp">⍺</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span>  <span class="c1">⍝ Using Pick INCREASES execution time!</span>
      <span class="nv">r</span><span class="kd">←</span><span class="bp">⍵</span>
      <span class="nv">fun</span><span class="kd">←</span><span class="kt">{</span><span class="o">~</span><span class="no">⍬</span><span class="o">≡</span><span class="bp">⍵:</span><span class="kt">{</span><span class="nv">Z</span><span class="o">,</span><span class="kd">←</span><span class="o">⊂</span><span class="bp">⍵</span><span class="kt">}</span><span class="na">¨</span><span class="bp">⍵</span> <span class="p">⋄</span> <span class="bp">⍵</span><span class="kt">}</span>
      <span class="nv">x</span><span class="kd">←</span><span class="nv">fun</span><span class="na">¨</span><span class="kt">{</span><span class="bp">⍵</span> <span class="nv">intersect</span> <span class="nv">r</span><span class="kt">}</span><span class="na">¨</span><span class="nv">objs</span>
@@ -15618,7 +15633,7 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
-<span style="white-space:pre; font-family: monospace">rtcode_ws.dws saved Thu May 16 17:06:13 2019
+<span style="white-space:pre; font-family: monospace">rtcode_ws.dws saved Fri May 31 15:15:10 2019
 </span>
 </div>
 
@@ -15645,7 +15660,7 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>To save time while working on the code in a chapter, I can load up the previously saved workspace instead of executing all of the above cells. Now that I've put everything in a namespace, I can't seem to load that namespace! I'm now having to load the SALT text file instead. Not a good things since I'm currently creating that file externally in the Dyalog GUI.</p>
+<p>To save time while working on the code in a chapter, I can load up the previously saved workspace instead of executing all of the above cells.</p>
 
 </div>
 </div>
@@ -15656,7 +15671,7 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-APL"><pre><span></span><span class="o">⊃</span><span class="m">1</span> <span class="nf">⎕NPARTS</span> <span class="s1">&#39;&#39;</span>
-
+<span class="p">)</span><span class="nv">cs</span>
 <span class="p">)</span><span class="nv">load</span> <span class="nv">rtcode_ws</span>
 <span class="p">)</span><span class="nv">objects</span>
 <span class="p">)</span><span class="nv">fns</span>
@@ -15691,7 +15706,20 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
-<span style="white-space:pre; font-family: monospace">.\rtcode_ws.dws saved Wed May  8 15:24:13 2019
+<span style="white-space:pre; font-family: monospace">#
+</span>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<span style="white-space:pre; font-family: monospace">.\rtcode_ws.dws saved Tue May 21 11:00:59 2019
 </span>
 </div>
 
@@ -15705,6 +15733,49 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <span style="white-space:pre; font-family: monospace">RayTracer       
+</span>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If I load a workspace using the above commands and want to continue working on the code, I need to chance into the RayTracer namespace in order to resolve references to variables and save changes to the right place.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-APL"><pre><span></span><span class="p">)</span><span class="nv">cs</span> <span class="c1">#.RayTracer</span>
+<span class="nf">⎕PATH</span><span class="kd">←</span><span class="s1">&#39;# #.RayTracer&#39;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<span style="white-space:pre; font-family: monospace">#.RayTracer
 </span>
 </div>
 
@@ -15813,12 +15884,13 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-APL"><pre><span></span><span class="p">)</span><span class="nv">CS</span> <span class="c1">#</span>
 <span class="c1">⍝ )copy display</span>
 <span class="p">)</span><span class="nv">copy</span> <span class="nv">dfns</span> <span class="nv">time</span>
+<span class="p">)</span><span class="nv">copy</span> <span class="nv">isolate</span>  <span class="c1">⍝ For parallel rendering</span>
 </pre></div>
 
 </div>
@@ -15831,7 +15903,7 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[2]:</div>
+<div class="prompt output_prompt">Out[11]:</div>
 
 
 
@@ -15844,12 +15916,25 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[2]:</div>
+<div class="prompt output_prompt">Out[11]:</div>
 
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <span style="white-space:pre; font-family: monospace">E:\Mark\APL\Dyalog\APL_Files\dfns.dws saved Sat May  5 02:58:11 2018
+</span>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<span style="white-space:pre; font-family: monospace">C:\Program Files\Dyalog\Dyalog APL-64 17.0 Unicode\ws\isolate.dws saved Mon Aug 13 20:24:46 2018
 </span>
 </div>
 
@@ -15871,10 +15956,265 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Here's the area light demo.</p>
+<p>Here's the metallic spheres demo.</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[67]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-APL"><pre><span></span><span class="nf">⎕PATH</span><span class="kd">←</span><span class="s1">&#39;# #.RayTracer&#39;</span>
+<span class="c1">⍝ the floor</span>
+<span class="nv">floor</span><span class="kd">←</span> <span class="nv">plane</span>
+<span class="nv">m</span><span class="kd">←</span> <span class="nv">material</span>
+<span class="nv">p1</span><span class="kd">←</span> <span class="m">1</span> <span class="m">0.5</span> <span class="m">0.2</span> <span class="nv">checker_pattern</span> <span class="m">0.5</span> <span class="m">0.2</span> <span class="m">1</span>
+<span class="nv">p1</span><span class="kd">←</span> <span class="nv">p1</span> <span class="nv">add_pattern_transform</span> <span class="nv">scaling</span> <span class="m">0.25</span> <span class="m">0.25</span> <span class="m">0.25</span>
+<span class="nv">p2</span><span class="kd">←</span> <span class="m">0.2</span> <span class="m">1</span> <span class="m">0.2</span> <span class="nv">checker_pattern</span> <span class="m">0.5</span> <span class="m">0.2</span> <span class="m">0.5</span>
+<span class="nv">p2</span><span class="kd">←</span> <span class="nv">p2</span> <span class="nv">add_pattern_transform</span> <span class="nv">scaling</span> <span class="m">0.35</span> <span class="m">0.35</span> <span class="m">0.35</span>
+<span class="nv">p</span><span class="kd">←</span> <span class="nv">p1</span> <span class="nv">blend_pattern</span> <span class="nv">p2</span>
+<span class="nv">p</span>
+<span class="c1">⍝p← p add_pattern_transform scaling 0.6 0.6 0.6</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_pattern]← ⊂p</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_ambient #.RayTracer.material_diffuse]← 0.02 0.7</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_specular #.RayTracer.material_reflective]← 0 0.05</span>
+<span class="nv">floor</span><span class="sr">[</span><span class="c1">#.RayTracer.obj_material]← ⊂m</span>
+
+<span class="c1">⍝ the room</span>
+<span class="nv">room</span><span class="kd">←</span> <span class="nv">cube</span> <span class="nv">add_shape_transform</span> <span class="p">(</span><span class="nv">scaling</span> <span class="m">10</span> <span class="m">10</span> <span class="m">10</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="nv">translation</span> <span class="m">0.01</span> <span class="m">0.99</span> <span class="m">0</span>
+<span class="nv">m</span><span class="kd">←</span> <span class="nv">material</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_color #.RayTracer.material_diffuse]← (0.7 0.7 0.7) 0.8</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_ambient #.RayTracer.material_specular]← 0.1 0</span>
+<span class="nv">room</span><span class="sr">[</span><span class="c1">#.RayTracer.obj_material]← ⊂m</span>
+
+<span class="nv">ball1</span><span class="kd">←</span> <span class="nv">sphere</span> <span class="nv">add_shape_transform</span> <span class="nv">translation</span> <span class="m">0</span> <span class="m">1</span> <span class="m">0</span>
+<span class="nv">m</span><span class="kd">←</span> <span class="nv">material</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_color #.RayTracer.material_ambient]← (0.9 0.9 1) 0.1</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_diffuse #.RayTracer.material_specular]← 0.6 0.4</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_shininess #.RayTracer.material_reflective]← 5 0.1</span>
+<span class="nv">ball1</span><span class="sr">[</span><span class="c1">#.RayTracer.obj_material]← ⊂m</span>
+
+<span class="nv">ball2</span><span class="kd">←</span> <span class="nv">sphere</span> <span class="nv">add_shape_transform</span> <span class="p">(</span><span class="nv">translation</span> <span class="m">1.5</span> <span class="m">0.6</span> <span class="m">¯0.3</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="nv">scaling</span> <span class="m">0.6</span> <span class="m">0.6</span> <span class="m">0.6</span>
+<span class="nv">m</span><span class="kd">←</span> <span class="nv">material</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_color #.RayTracer.material_ambient]← (0.9 1 0.9) 0.1</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_diffuse #.RayTracer.material_specular]← 0.6 0.4</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_shininess #.RayTracer.material_reflective]← 5 0.1</span>
+<span class="nv">ball2</span><span class="sr">[</span><span class="c1">#.RayTracer.obj_material]← ⊂m</span>
+
+<span class="nv">ball3</span><span class="kd">←</span> <span class="nv">sphere</span> <span class="nv">add_shape_transform</span> <span class="p">(</span><span class="nv">translation</span> <span class="m">¯1.1</span> <span class="m">0.5</span> <span class="m">0.5</span><span class="p">)</span> <span class="o">+</span><span class="na">.</span><span class="o">×</span> <span class="nv">scaling</span> <span class="m">0.5</span> <span class="m">0.5</span> <span class="m">0.5</span>
+<span class="nv">m</span><span class="kd">←</span> <span class="nv">material</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_color #.RayTracer.material_ambient]← (1 0.9 0.9) 0.1</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_diffuse #.RayTracer.material_specular]← 0.6 0.4</span>
+<span class="nv">m</span><span class="sr">[</span><span class="c1">#.RayTracer.material_shininess #.RayTracer.material_reflective]← 5 0.1</span>
+<span class="nv">ball3</span><span class="sr">[</span><span class="c1">#.RayTracer.obj_material]← ⊂m</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[67]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<span style="white-space:pre; font-family: monospace">┌─┬───────┬───────┬────────────────────────────────────────────────┬──────────────────────────────────────────────────────
+│6│1 0 0 0│1 0 0 0│┌─┬────────────────┬───────┬─────────┬─────────┐│┌─┬────────────────┬──────────────────────────────────
+│ │0 1 0 0│0 1 0 0││4│0.25 0    0    0│4 0 0 0│1 0.5 0.2│0.5 0.2 1│││4│0.35 0    0    0│2.857142857 0           0         
+│ │0 0 1 0│0 0 1 0││ │0    0.25 0    0│0 4 0 0│         │         │││ │0    0.35 0    0│0           2.857142857 0         
+│ │0 0 0 1│0 0 0 1││ │0    0    0.25 0│0 0 4 0│         │         │││ │0    0    0.35 0│0           0           2.85714285
+│ │       │       ││ │0    0    0    1│0 0 0 1│         │         │││ │0    0    0    1│0           0           0         
+│ │       │       │└─┴────────────────┴───────┴─────────┴─────────┘│└─┴────────────────┴──────────────────────────────────
+└─┴───────┴───────┴────────────────────────────────────────────────┴──────────────────────────────────────────────────────
+
+      ──────────────────────────┐
+      ───┬─────────┬───────────┐│
+        0│0.2 1 0.2│0.5 0.2 0.5││
+        0│         │           ││
+      7 0│         │           ││
+        1│         │           ││
+      ───┴─────────┴───────────┘│
+      ──────────────────────────┘
+</span>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[68]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-APL"><pre><span></span><span class="nv">w</span><span class="kd">←</span> <span class="nv">world</span>
+<span class="nv">w</span><span class="sr">[</span><span class="m">1</span><span class="sr">]</span><span class="kd">←</span> <span class="o">⊂⊂</span> <span class="p">(</span><span class="nv">point</span> <span class="m">¯9</span> <span class="m">9</span> <span class="m">¯9</span><span class="p">)</span> <span class="c1">#.RayTracer.point_light 1 1 1</span>
+<span class="nv">w</span><span class="sr">[</span><span class="m">2</span><span class="sr">]</span><span class="kd">←</span> <span class="o">⊂</span>  <span class="nv">floor</span> <span class="nv">room</span> <span class="nv">ball1</span> <span class="nv">ball2</span> <span class="nv">ball3</span>
+
+<span class="nv">c</span><span class="kd">←</span> <span class="nv">camera</span> <span class="m">800</span> <span class="m">600</span> <span class="m">1.047</span>
+<span class="nv">c</span><span class="sr">[</span><span class="c1">#.RayTracer.camera_transform]← ⊂ view_transform (point 1 2 ¯5) (point 0 1 0) (vector 0 1 0)</span>
+<span class="nv">c</span><span class="sr">[</span><span class="c1">#.RayTracer.camera_inverse]← ⊂ ⌹view_transform (point 1 2 ¯5) (point 0 1 0) (vector 0 1 0)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[69]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-APL"><pre><span></span><span class="nv">im</span><span class="kd">←</span> <span class="nv">w</span> <span class="nv">render</span> <span class="c1">#.time c</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[69]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<span style="white-space:pre; font-family: monospace">03:30.14
+</span>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-APL"><pre><span></span><span class="nv">ppm</span><span class="kd">←</span> <span class="nv">canvas_to_ppm</span> <span class="nv">im</span>
+<span class="s1">&#39;Metal.ppm&#39;</span> <span class="nv">savePPM</span> <span class="nv">ppm</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[70]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<span style="white-space:pre; font-family: monospace">6048189
+</span>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And the result looks like:
+<img src="Metal.jpg"></p>
+<p>Don't forget to compare rendering time when done in parallel:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-APL"><pre><span></span><span class="nv">im</span><span class="kd">←</span> <span class="nv">w</span> <span class="nv">llrender</span> <span class="c1">#.time c</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<span style="white-space:pre; font-family: monospace">01:18.15
+</span>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-APL"><pre><span></span><span class="nv">ppm</span><span class="kd">←</span> <span class="nv">canvas_to_ppm</span> <span class="nv">im</span>
+<span class="s1">&#39;Metal.ppm&#39;</span> <span class="nv">savePPM</span> <span class="nv">ppm</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<span style="white-space:pre; font-family: monospace">6048189
+</span>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
     </div>
   </div>

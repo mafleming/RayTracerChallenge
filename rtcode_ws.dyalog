@@ -113,9 +113,13 @@ obj_tag←1
 
 obj_transform←2
 
+pat_blend←6
+
 pat_checker←4
 
 pat_gradient←2
+
+pat_radgradient←5
 
 pat_ring←3
 
@@ -208,6 +212,8 @@ yellow←1 1 0
      s
  }
 
+ blend_pattern←{pat_blend identity4 identity4 ⍺ ⍵}
+
 ∇ Z←camera W;half_view;aspect;halfh;halfv;psize
         ⍝ camera  hsize vsize field_of_view → camera_structure
  (hsize vsize fview)←W
@@ -272,7 +278,7 @@ yellow←1 1 0
      (wray remaining)←⍵
      inter←⍺ intersect_world wray
         ⍝ Return black if no intersections
-        ⍝ 0=≢inter: 0 0 0
+     0=≢inter:0 0 0
         ⍝ Take first positive intersection as the hit
      h←hit inter
         ⍝ Return black if no hit
@@ -335,9 +341,9 @@ yellow←1 1 0
 ∇ Z←C cone_intersect R;a;b;c;disc;t0;t1;y0;y1;t
        ⍝ cone  cone_intersect  ray → ⍬ or intersection intersection
  Z←⍬
- a←-/(⊃R[ray_direction])*2
- b←-/2×(⊃R[ray_origin])×⊃R[ray_direction]
- c←⊃R[ray_origin]
+ a←-/(ray_direction⊃R)*2
+ b←-/2×(ray_origin⊃R)×ray_direction⊃R
+ c←ray_origin⊃R
  c←-/c[1 2 3]*2
  :If (EPSILON>|a)∧EPSILON<|b
      t←-c÷2×b
@@ -351,24 +357,24 @@ yellow←1 1 0
              t0 t1←t1 t0
          :EndIf
          y0←(ray_origin 2⊃R)+t0×ray_direction 2⊃R
-         :If (y0>C[cone_minimum])∧y0<C[cone_maximum]
+         :If (y0>cone_minimum⊃C)∧y0<cone_maximum⊃C
              Z←⊂C intersection t0
          :EndIf
          y1←(ray_origin 2⊃R)+t1×ray_direction 2⊃R
-         :If (y1>C[cone_minimum])∧y1<C[cone_maximum]
+         :If (y1>cone_minimum⊃C)∧y1<cone_maximum⊃C
              Z←Z,⊂C intersection t1
          :EndIf
      :EndIf
  :EndIf
      
        ⍝ Check for intersection with caps of closed cylinder
- :If C[cone_closed]∧(EPSILON<|ray_direction 2⊃R)
-     t←(C[cone_minimum]-ray_origin 2⊃R)÷ray_direction 2⊃R
-     :If R check_cap2 t,C[cone_minimum]
+ :If (cone_closed⊃C)∧(EPSILON<|ray_direction 2⊃R)
+     t←((cone_minimum⊃C)-ray_origin 2⊃R)÷ray_direction 2⊃R
+     :If R check_cap2 t,cone_minimum⊃C
          Z←Z,⊂C intersection t
      :EndIf
-     t←(C[cone_maximum]-ray_origin 2⊃R)÷ray_direction 2⊃R
-     :If R check_cap2 t,C[cone_maximum]
+     t←((cone_maximum⊃C)-ray_origin 2⊃R)÷ray_direction 2⊃R
+     :If R check_cap2 t,cone_maximum⊃C
          Z←Z,⊂C intersection t
      :EndIf
  :EndIf
@@ -376,12 +382,12 @@ yellow←1 1 0
 
  cone_normal_at←{
        ⍝ cone  cone_normal_at  point → vector
-     dist←(⍵[1]*2)+⍵[3]*2
-     (⍺[cone_closed])∧(1>dist)∧⍵[2]≥⍺[cylinder_maximum]-EPSILON:vector 0 1 0
-     (⍺[cone_closed])∧(1>dist)∧⍵[2]≤⍺[cylinder_minimum]+EPSILON:vector 0 ¯1 0
+     dist←((1⊃⍵)*2)+(3⊃⍵)*2
+     (cone_closed⊃⍺)∧(1>dist)∧(2⊃⍵)≥(cylinder_maximum⊃⍺)-EPSILON:vector 0 1 0
+     (cone_closed⊃⍺)∧(1>dist)∧(2⊃⍵)≤(cylinder_minimum⊃⍺)+EPSILON:vector 0 ¯1 0
      y←(+/⍵[1 3]*2)*0.5
-     ⍵[2]>0:vector(⍵[1])(¯1×y)(⍵[3])
-     vector(⍵[1])y(⍵[3])
+     (2⊃⍵)>0:vector(1⊃⍵)(¯1×y)(3⊃⍵)
+     vector(1⊃⍵)y(3⊃⍵)
  }
 
  cross←{
@@ -404,13 +410,13 @@ yellow←1 1 0
 
  cube_intersect←{
        ⍝ cube  cube_intersect  ray → intersection intersection
-     ori←⊃⍵[1]
-     dir←⊃⍵[2]
-     xm←ori[1]check_axis dir[1]
-     ym←ori[2]check_axis dir[2]
-     zm←ori[3]check_axis dir[3]
-     tmin←⌈/xm[1],ym[1],zm[1]
-     tmax←⌊/xm[2],ym[2],zm[2]
+     ori←1⊃⍵
+     dir←2⊃⍵
+     xm←(1⊃ori)check_axis 1⊃dir
+     ym←(2⊃ori)check_axis 2⊃dir
+     zm←(3⊃ori)check_axis 3⊃dir
+     tmin←⌈/(1⊃xm),(1⊃ym),1⊃zm
+     tmax←⌊/(2⊃xm),(2⊃ym),2⊃zm
      tmin>tmax:⍬
      (⍺ tmin)(⍺ tmax)
  }
@@ -418,8 +424,8 @@ yellow←1 1 0
  cube_normal_at←{
        ⍝ cube  cube_normal_at  point → vector
      maxc←⌈/|⍵[1 2 3]
-     maxc=|⍵[1]:(⍵[1])0 0 0 ⍝ vector ⍵[1] 0 0
-     maxc=|⍵[2]:0(⍵[2])0 0 ⍝ vector 0 ⍵[2] 0
+     maxc=|1⊃⍵:(1⊃⍵)0 0 0 ⍝ vector ⍵[1] 0 0
+     maxc=|2⊃⍵:0(2⊃⍵)0 0 ⍝ vector 0 ⍵[2] 0
      0 0(⍵[3])0             ⍝ vector 0 0 ⍵[3]
  }
 
@@ -442,11 +448,11 @@ yellow←1 1 0
              t0 t1←t1 t0
          :EndIf
          y0←(ray_origin 2⊃R)+t0×ray_direction 2⊃R
-         :If (y0>CYL[cylinder_minimum])∧y0<CYL[cylinder_maximum]
+         :If (y0>(cylinder_minimum⊃CYL))∧y0<cylinder_maximum⊃CYL
              Z←⊂CYL intersection t0
          :EndIf
          y1←(ray_origin 2⊃R)+t1×ray_direction 2⊃R
-         :If (y1>CYL[cylinder_minimum])∧y1<CYL[cylinder_maximum]
+         :If (y1>(cylinder_minimum⊃CYL))∧y1<cylinder_maximum⊃CYL
              Z←Z,⊂CYL intersection t1
          :EndIf
      :EndIf
@@ -454,12 +460,12 @@ yellow←1 1 0
      
        ⍝ Check for intersection with caps of closed cylinder
        ⍝ :If CYL[cylinder_closed]^(EPSILON<|2⌷⊃R[ray_direction])
- :If CYL[cylinder_closed]∧EPSILON<|ray_direction 2⊃R
-     t←(CYL[cylinder_minimum]-ray_origin 2⊃R)÷ray_direction 2⊃R
+ :If (cylinder_closed⊃CYL)∧EPSILON<|ray_direction 2⊃R
+     t←((cylinder_minimum⊃CYL)-ray_origin 2⊃R)÷ray_direction 2⊃R
      :If R check_cap t
          Z←Z,⊂CYL intersection t
      :EndIf
-     t←(CYL[cylinder_maximum]-ray_origin 2⊃R)÷ray_direction 2⊃R
+     t←((cylinder_maximum⊃CYL)-ray_origin 2⊃R)÷ray_direction 2⊃R
      :If R check_cap t
          Z←Z,⊂CYL intersection t
      :EndIf
@@ -470,9 +476,9 @@ yellow←1 1 0
        ⍝ cylinder  cylinder_normal_at  point → vector
        ⍝ dist← (⍵[1]*2)+⍵[3]*2
      dist←+/⍵[1 3]*2
-     (⍺[cylinder_closed])∧(1>dist)∧⍵[2]≥⍺[cylinder_maximum]-EPSILON:vector 0 1 0
-     (⍺[cylinder_closed])∧(1>dist)∧⍵[2]≤EPSILON+⍺[cylinder_minimum]:vector 0 ¯1 0
-     vector(⍵[1])0(⍵[3])
+     (cylinder_closed⊃⍺)∧(1>dist)∧(2⊃⍵)≥(cylinder_maximum⊃⍺)-EPSILON:vector 0 1 0
+     (cylinder_closed⊃⍺)∧(1>dist)∧(2⊃⍵)≤EPSILON+cylinder_minimum⊃⍺:vector 0 ¯1 0
+     vector(1⊃⍵)0(3⊃⍵)
  }
 
 ∇ Z←default_world;light;s1;s2;m
@@ -551,11 +557,11 @@ yellow←1 1 0
 
  intersect←{
         ⍝ object  intersect  ray → ⍬ or intersection list
-     t←⍺[obj_tag]
+     t←obj_tag⊃⍺
         ⍝ m←⊃⍺[obj_transform]
         ⍝ local_ray← (⌹m) transform ⍵
         ⍝ local_ray← (⊃⍺[obj_inverse]) transform ⍵
-     tm←⊃⍺[obj_inverse]
+     tm←obj_inverse⊃⍺
      local_ray←{tm+.×⍵}¨⍵
      shape_test=t:local_ray
      shape_sphere=t:⍺ sphere_intersect local_ray
@@ -569,15 +575,15 @@ yellow←1 1 0
 ∇ Z←CYL intersect_caps R;t
  Z←⍬
        ⍝ cylinder  intersect_caps  ray → ⍬ or intersection intersection
- :If (0=CYL[cylinder_closed])∨EPSILON>|ray_direction 2⊃R
+ :If (0=cylinder_closed⊃CYL)∨EPSILON>|ray_direction 2⊃R
      :Return
  :EndIf
        ⍝ Check for intersection with lower end
- t←(CYL[cylinder_minimum]-ray_origin 2⊃R)÷ray_direction 2⊃R
+ t←((cylinder_minimum⊃CYL)-ray_origin 2⊃R)÷ray_direction 2⊃R
  :If R check_cap t
      Z←Z,⊂CYL intersection t
  :EndIf
- t←(CYL[cylinder_maximum]-ray_origin 2⊃R)÷ray_direction 2⊃R
+ t←((cylinder_maximum⊃CYL)-ray_origin 2⊃R)÷ray_direction 2⊃R
  :If R check_cap t
      Z←Z,⊂CYL intersection t
  :EndIf
@@ -586,7 +592,7 @@ yellow←1 1 0
  intersect_world←{
         ⍝ world  intersect_world  ray → intersection list
      Z←⍬
-     objs←⊃⍺[2]
+     objs←⊃⍺[2]  ⍝ Using Pick INCREASES execution time!
      r←⍵
      fun←{~⍬≡⍵:{Z,←⊂⍵}¨⍵ ⋄ ⍵}
      x←fun¨{⍵ intersect r}¨objs
@@ -703,14 +709,14 @@ yellow←1 1 0
         ⍝ shape normal_at point → vector
      fixup←{
           ⍝ wn← (⍉(⌹⊃⍺[obj_transform])) +.× ⍵
-         wn←(⍉⊃⍺[obj_inverse])+.×⍵
+         wn←(⍉obj_inverse⊃⍺)+.×⍵
          wn[4]←0
          normalize wn
      }
         ⍝ lp← ⍵⌹⊃⍺[obj_transform]   Doesn't work!?
         ⍝ lp← (⌹⊃⍺[obj_transform]) +.× ⍵
-     lp←(⊃⍺[obj_inverse])+.×⍵
-     t←⍺[obj_tag]
+     lp←(obj_inverse⊃⍺)+.×⍵
+     t←obj_tag⊃⍺
      shape_test=t:⍺ fixup vector lp[1 2 3]  ⍝ Here, or at end?
      shape_sphere=t:⍺ fixup ⍺ sphere_normal_at lp
         ⍝ Is this correct? plane_normal_at is a constant!
@@ -730,26 +736,37 @@ yellow←1 1 0
      tag←pattern_type⊃⍺
      c1←pattern_color1⊃⍺
      c2←pattern_color2⊃⍺
+     true_color←{3=≢⍵:⍵ ⋄ ⍵ pattern_at(pattern_inverse⊃⍵)+.×⍺}
+     c1←⍵ true_color c1
+     c2←⍵ true_color c2
+     
        ⍝ Pattern used during testing
      tag=pat_test:3↑⍵
        ⍝ Stripe pattern
-     (tag=pat_stripe)∧0=⌊2|⍵[1]:c1
-     (tag=pat_stripe)∧0≠⌊2|⍵[1]:c2
+     (tag=pat_stripe)∧0=⌊2|1⊃⍵:c1  ⍝ Pick faster than Index
+     (tag=pat_stripe)∧0≠⌊2|1⊃⍵:c2
        ⍝ Gradient pattern
-     tag=pat_gradient:c1+(c2-c1)×⍵[1]-⌊⍵[1]
+     tag=pat_gradient:c1+(c2-c1)×(1⊃⍵)-⌊1⊃⍵  ⍝ Pick faster than Index
        ⍝ Ring pattern
      (tag=pat_ring)∧0=⌊2|(+/⍵[1 3]×⍵[1 3])*0.5:c1
      (tag=pat_ring)∧0≠⌊2|(+/⍵[1 3]×⍵[1 3])*0.5:c2
        ⍝ Checker pattern
      (tag=pat_checker)∧0=2|+/⌊3↑⍵:c1
      (tag=pat_checker)∧0≠2|+/⌊3↑⍵:c2
+       ⍝ Radial Gradient pattern
+     m←magnitude ⍵
+     tag=pat_radgradient:c1+(c2-c1)×m-⌊m
+       ⍝ Blend pattern
+     tag=pat_blend:0.5×c1+c2
+       ⍝ Unknown pattern
+     0 0 0
  }
 
  pattern_at_shape←{
        ⍝ pattern  pattern_at_shape  object point → color
      (obj wpoint)←⍵
        ⍝ ⍺ pattern_at (⌹⊃⍺[pattern_transform]) +.× (⌹⊃obj[obj_transform]) +.× wpoint
-     ⍺ pattern_at(⊃⍺[pattern_inverse])+.×(⊃obj[obj_inverse])+.×wpoint
+     ⍺ pattern_at(pattern_inverse⊃⍺)+.×(obj_inverse⊃obj)+.×wpoint
  }
 
 ∇ Z←plane
@@ -758,17 +775,9 @@ yellow←1 1 0
 
  plane_intersect←{
         ⍝ plane plane_intersect ray → ⍬ or intersection_list
-        ⍝ Must return a list of intersections
-        ⍝ o← ⊃⍵[ray_origin]         ⍝ Ray origin
-        ⍝ d← ⊃⍵[ray_direction]      ⍝ Ray direction
-        ⍝ EPSILON>|d[2]: ⍬          ⍝ No intersection
-        ⍝ t← -(o[2])÷d[2]           ⍝ Distance
-     
      (oy dy)←⍵[(ray_origin 2)(ray_direction 2)]
      EPSILON>|dy:⍬              ⍝ No intersection
      t←-oy÷dy                 ⍝ Distance
-        ⍝ Return two instead of one for compatibility with sphere et al
-        ⍝ (⍺ t) (⍺ t)               ⍝ Intersection
      ⊂⍺ t
  }
 
@@ -801,20 +810,22 @@ yellow←1 1 0
      Z
  }
 
+ radgrad_pattern←{pat_radgradient identity4 identity4 ⍺ ⍵}
+
  ray←{⍺⍵}
 
  ray_for_pixel←{
         ⍝ camera ray_for_pixel x y → ray
      (px py)←⍵
-     xoffset←⍺[camera_psize]×px+0.5
-     yoffset←⍺[camera_psize]×py+0.5
-     world_x←⍺[camera_halfw]-xoffset
-     world_y←⍺[camera_halfh]-yoffset
+     xoffset←(camera_psize⊃⍺)×px+0.5
+     yoffset←(camera_psize⊃⍺)×py+0.5
+     world_x←(camera_halfw⊃⍺)-xoffset
+     world_y←(camera_halfh⊃⍺)-yoffset
         ⍝ This is actually slightly slower than the above!
         ⍝ world_x← ⍺[camera_halfw]-⍺[camera_psize]×px+0.5
         ⍝ world_y← ⍺[camera_halfh]-⍺[camera_psize]×py+0.5
         ⍝ it←      ⌹⊃⍺[camera_transform]
-     it←⊃⍺[camera_inverse]
+     it←camera_inverse⊃⍺
      pixel←it+.×point world_x world_y ¯1
      origin←it+.×point 0 0 0
      directn←normalize pixel-origin
@@ -972,9 +983,9 @@ yellow←1 1 0
 
  sphere_intersect←{
        ⍝ sphere  intersect  ray → ⍬ or intersection_list
-     s2r←(⊃⍵[ray_origin])-0 0 0 1
-     a←(⊃⍵[ray_direction])dot⊃⍵[ray_direction]
-     b←2×(⊃⍵[ray_direction])dot s2r
+     s2r←(ray_origin⊃⍵)-0 0 0 1
+     a←(ray_direction⊃⍵)dot ray_direction⊃⍵
+     b←2×(ray_direction⊃⍵)dot s2r
      c←¯1+s2r dot s2r
      d←(b×b)-4×a×c
      d<0:⍬
@@ -987,7 +998,7 @@ yellow←1 1 0
        ⍝ ⍺=sphere  normal_at  ⍵=point → vector
      on←⍵-0 0 0 1         ⍝ Creates vector from origin
        ⍝ wn← (⍉⌹⊃⍺[obj_transform]) +.× on
-     wn←(⍉⊃⍺[obj_inverse])+.×on
+     wn←(⍉obj_inverse⊃⍺)+.×on
      wn[4]←0                ⍝ Make world_normal a vector
      normalize wn
  }
