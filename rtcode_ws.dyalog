@@ -119,6 +119,10 @@ pat_checker←4
 
 pat_gradient←2
 
+pat_perlin←7
+
+pat_perlingrad←8
+
 pat_radgradient←5
 
 pat_ring←3
@@ -136,6 +140,8 @@ pattern_inverse←3
 pattern_transform←2
 
 pattern_type←1
+
+perlin_p←151 160 137 91 90 15 131 13 201 95 96 53 194 233 7 225 140 36 103 30 69 142 8 99 37 240 21 10 23 190 6 148 247 120 234 75 0 26 197 62 94 252 219 203 117 35 11 32 57 177 33 88 237 149 56 87 174 20 125 136 171 168 68 175 74 165 71 134 139 48 27 166 77 146 158 231 83 111 229 122 60 211 133 230 220 105 92 41 55 46 245 40 244 102 143 54 65 25 63 161 1 216 80 73 209 76 132 187 208 89 18 169 200 196 135 130 116 188 159 86 164 100 109 198 173 186 3 64 52 217 226 250 124 123 5 202 38 147 118 126 255 82 85 212 207 206 59 227 47 16 58 17 182 189 28 42 223 183 170 213 119 248 152 2 44 154 163 70 221 153 101 155 167 43 172 9 129 22 39 253 19 98 108 110 79 113 224 232 178 185 112 104 218 246 97 228 251 34 242 193 238 210 144 12 191 179 162 241 81 51 145 235 249 14 239 107 49 192 214 31 181 199 106 157 184 84 204 176 115 121 50 45 127 4 150 254 138 236 205 93 222 114 67 29 24 72 243 141 128 195 78 66 215 61 156 180 151 160 137 91 90 15 131 13 201 95 96 53 194 233 7 225 140 36 103 30 69 142 8 99 37 240 21 10 23 190 6 148 247 120 234 75 0 26 197 62 94 252 219 203 117 35 11 32 57 177 33 88 237 149 56 87 174 20 125 136 171 168 68 175 74 165 71 134 139 48 27 166 77 146 158 231 83 111 229 122 60 211 133 230 220 105 92 41 55 46 245 40 244 102 143 54 65 25 63 161 1 216 80 73 209 76 132 187 208 89 18 169 200 196 135 130 116 188 159 86 164 100 109 198 173 186 3 64 52 217 226 250 124 123 5 202 38 147 118 126 255 82 85 212 207 206 59 227 47 16 58 17 182 189 28 42 223 183 170 213 119 248 152 2 44 154 163 70 221 153 101 155 167 43 172 9 129 22 39 253 19 98 108 110 79 113 224 232 178 185 112 104 218 246 97 228 251 34 242 193 238 210 144 12 191 179 162 241 81 51 145 235 249 14 239 107 49 192 214 31 181 199 106 157 184 84 204 176 115 121 50 45 127 4 150 254 138 236 205 93 222 114 67 29 24 72 243 141 128 195 78 66 215 61 156 180
 
 ray_direction←2
 
@@ -498,6 +504,8 @@ yellow←1 1 0
 
  dot←{⍺+.×⍵}
 
+ fade←{⍵×⍵×⍵×10+⍵×¯15+⍵×6}
+
 ∇ Z←G flatten_group T;gt;objs;objs
        ⍝ group  flatten_group  transform → list_of_shapes
  Z←⍬
@@ -521,6 +529,16 @@ yellow←1 1 0
 ∇ Z←glass_sphere
  Z←shape_sphere identity4 identity4 glass TRUE
 ∇
+
+ grad←{
+       ⍝ grad  hash x y z  →  scalar
+     ⎕IO←0  ⍝ Index Origin is zero rather than 1
+     (hash x y z)←⍵
+     h←16|hash      ⍝ Low four bits
+     u←(y x)[h<8]
+     v←(y,(z x)[(h=12)∨h=14])[h≥4]
+     ((u,-u)[2|h])+(v,-v)[2|⌊0.5×h]
+ }
 
  gradient_pattern←{pat_gradient identity4 identity4 ⍺ ⍵}
 
@@ -647,6 +665,8 @@ yellow←1 1 0
      h[hit_distance]<dist
  }
 
+ lerp←{(t a b)←⍵ ⋄ a+t×b-a}
+
 ∇ Z←lighting Args;matl;light;pnt;eyev;normalv;insh;obj;clr;ec;lv;am;ldn;di;f;sp;rv;rde;i;sum
  (matl light pnt eyev normalv insh obj)←Args
  :If 3=≢⊃matl[material_color]
@@ -744,20 +764,29 @@ yellow←1 1 0
      tag=pat_test:3↑⍵
        ⍝ Stripe pattern
      (tag=pat_stripe)∧0=⌊2|1⊃⍵:c1  ⍝ Pick faster than Index
-     (tag=pat_stripe)∧0≠⌊2|1⊃⍵:c2
+       ⍝(tag=pat_stripe)^0≠⌊2|1⊃⍵: c2
+     (tag=pat_stripe):c2
        ⍝ Gradient pattern
      tag=pat_gradient:c1+(c2-c1)×(1⊃⍵)-⌊1⊃⍵  ⍝ Pick faster than Index
        ⍝ Ring pattern
      (tag=pat_ring)∧0=⌊2|(+/⍵[1 3]×⍵[1 3])*0.5:c1
-     (tag=pat_ring)∧0≠⌊2|(+/⍵[1 3]×⍵[1 3])*0.5:c2
+       ⍝(tag=pat_ring)^0≠⌊2|(+/⍵[1 3]×⍵[1 3])*0.5: c2
+     (tag=pat_ring):c2
        ⍝ Checker pattern
      (tag=pat_checker)∧0=2|+/⌊3↑⍵:c1
-     (tag=pat_checker)∧0≠2|+/⌊3↑⍵:c2
+       ⍝(tag=pat_checker)^0≠2|+/⌊3↑⍵: c2
+     (tag=pat_checker):c2
        ⍝ Radial Gradient pattern
      m←magnitude ⍵
      tag=pat_radgradient:c1+(c2-c1)×m-⌊m
        ⍝ Blend pattern
      tag=pat_blend:0.5×c1+c2
+       ⍝ Perlin noise Alternating pattern
+     (tag=pat_perlin)∧0>perlin_noise ⍵[1 2 3]:c1
+     (tag=pat_perlin):c2
+       ⍝ Perlin noise Gradient pattern
+     g←0.5×1+perlin_noise ⍵[1 2 3]
+     tag=pat_perlingrad:c1+g×c2-c1
        ⍝ Unknown pattern
      0 0 0
  }
@@ -768,6 +797,38 @@ yellow←1 1 0
        ⍝ ⍺ pattern_at (⌹⊃⍺[pattern_transform]) +.× (⌹⊃obj[obj_transform]) +.× wpoint
      ⍺ pattern_at(pattern_inverse⊃⍺)+.×(obj_inverse⊃obj)+.×wpoint
  }
+
+ perlin_noise←{
+       ⍝ perlin_noise  x y z  →  scalar
+     ⎕IO←0  ⍝ Index Origin is zero rather than 1
+     (X Y Z)←256|⌊⍵
+     (x y z)←⍵-⌊⍵
+     (u v w)←fade x y z
+     A←Y+perlin_p[X]
+     (AA AB)←Z Z+perlin_p[A(A+1)]
+     B←Y+perlin_p[X+1]
+     (BA BB)←Z Z+perlin_p[B(B+1)]
+     
+     g1←grad(perlin_p[AA]),x,y,z
+     g2←grad(perlin_p[BA]),(x-1),y,z
+     l1←lerp u g1 g2
+     g1←grad(perlin_p[AB]),x,(y-1),z
+     g2←grad(perlin_p[BB]),(x-1),(y-1),z
+     l2←lerp u g1 g2
+     r1←lerp v l1 l2
+     
+     g1←grad(perlin_p[AA+1]),x,y,(z-1)
+     g2←grad(perlin_p[BA+1]),(x-1),y,(z-1)
+     l1←lerp u g1 g2
+     g1←grad(perlin_p[AB+1]),x,(y-1),(z-1)
+     g2←grad(perlin_p[BB+1]),(x-1),(y-1),(z-1)
+     r2←lerp v,l1 l2
+     lerp w r1 r2
+ }
+
+ perlin_pattern←{pat_perlin identity4 identity4 ⍺ ⍵}
+
+ perlingrad_pattern←{pat_perlingrad identity4 identity4 ⍺ ⍵}
 
 ∇ Z←plane
  Z←shape_plane identity4 identity4 material TRUE

@@ -73,3 +73,6 @@ command llrender. Be sure to "")copy isolate" before running.
 31-May-2019. Added Radial Gradient and Blend patterns. Patterns can
 now be nested, allowing patterns in place of simple color in the
 pattern specification.
+
+4-June-2019. Added Perlin Noise function and used it to create two
+new patterns, Perlin and Perlin Gradient.
