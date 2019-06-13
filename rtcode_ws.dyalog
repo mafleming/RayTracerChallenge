@@ -753,6 +753,7 @@ yellow←1 1 0
 
  pattern_at←{
        ⍝ pattern  pattern_at  point → color
+       ⍝ assert (5=≢⍺)^4=≢⍵
      tag←pattern_type⊃⍺
      c1←pattern_color1⊃⍺
      c2←pattern_color2⊃⍺
@@ -760,21 +761,22 @@ yellow←1 1 0
      c1←⍵ true_color c1
      c2←⍵ true_color c2
      
+       ⍝ assert (3=≢c1)^3=≢c2
        ⍝ Pattern used during testing
      tag=pat_test:3↑⍵
        ⍝ Stripe pattern
      (tag=pat_stripe)∧0=⌊2|1⊃⍵:c1  ⍝ Pick faster than Index
-       ⍝(tag=pat_stripe)^0≠⌊2|1⊃⍵: c2
+       ⍝ (tag=pat_stripe)^0≠⌊2|1⊃⍵: c2
      (tag=pat_stripe):c2
        ⍝ Gradient pattern
      tag=pat_gradient:c1+(c2-c1)×(1⊃⍵)-⌊1⊃⍵  ⍝ Pick faster than Index
        ⍝ Ring pattern
      (tag=pat_ring)∧0=⌊2|(+/⍵[1 3]×⍵[1 3])*0.5:c1
-       ⍝(tag=pat_ring)^0≠⌊2|(+/⍵[1 3]×⍵[1 3])*0.5: c2
+       ⍝ (tag=pat_ring)^0≠⌊2|(+/⍵[1 3]×⍵[1 3])*0.5: c2
      (tag=pat_ring):c2
        ⍝ Checker pattern
      (tag=pat_checker)∧0=2|+/⌊3↑⍵:c1
-       ⍝(tag=pat_checker)^0≠2|+/⌊3↑⍵: c2
+       ⍝ (tag=pat_checker)^0≠2|+/⌊3↑⍵: c2
      (tag=pat_checker):c2
        ⍝ Radial Gradient pattern
      m←magnitude ⍵
@@ -1106,6 +1108,36 @@ yellow←1 1 0
 
 ∇ Z←world
  Z←⍬ ⍬
+∇
+
+∇ W wrender C;Win;y
+        ⍝ world  render  camera → canvas
+     
+ '#'⎕WS'Coord' 'Pixel'
+ y←(C[camera_vsize]+41)(C[camera_hsize]+1)
+ 'Win'⎕WC'Form' 'RayTracer'('Size'y)
+ 'Win'⎕WS('Event' 1001 'wrender_row')
+ 'Win.quit'⎕WC'Button' 'Quit'(10 20)(25 60)
+ 'Win.quit'⎕WS('Event' 'Select' 1)('Cancel' 1)
+ ⎕NQ'Win' 1001(0(¯1+C[camera_vsize]))
+ ⎕DQ'Win'
+∇
+
+∇ wrender_row Msg;x;y;yend;colors;Pnts
+ y←3 1⊃Msg
+ yend←3 2⊃Msg
+ :If y<yend
+     Z←W render_row C y
+     colors←255⌊⌊255×Z
+     y←y+1
+     Pnts←⍬
+     :For x :In ⍳⍴colors
+         Pnts,←⊂(((y+40)(y+40))(x(x+1)))
+     :EndFor
+          ⍝ Pnts←{((y+40)⍵)((y+40)(1+⍵))}¨⍳⍴colors
+     ('Win.L',⍕y)⎕WC'Poly'(Pnts)('FCol'(colors))
+     ⎕NQ'Win' 1001(y yend)
+ :EndIf
 ∇
 
 :EndNamespace 

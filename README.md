@@ -68,7 +68,9 @@ scatter about the light center point.
 
 16-May-2019. Added parallel rendering using isolates. Result is
 roughly a 2.5 times speedup on a 4 CPU machine. See new rendering
-command llrender. Be sure to "")copy isolate" before running.
+command llrender. Be sure to "")copy isolate" before running. Use
+the function "w llrender c" where "w" is a world structure and "c"
+is a camera.
 
 31-May-2019. Added Radial Gradient and Blend patterns. Patterns can
 now be nested, allowing patterns in place of simple color in the
@@ -76,3 +78,7 @@ pattern specification.
 
 4-June-2019. Added Perlin Noise function and used it to create two
 new patterns, Perlin and Perlin Gradient.
+
+13-June-2019. Added a function to render a scene to a graphics window.
+Use the command "w wrender c" where "w" is a world structure and "c"
+is a camera. Use the "Quit" button to terminate or exit.

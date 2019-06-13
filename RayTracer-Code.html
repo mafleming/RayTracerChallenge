@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>RayTracer-Code</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+
+<title>RayTracer-Code</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
 
 <style type="text/css">
     /*!
@@ -199,7 +204,6 @@ th {
   *:before,
   *:after {
     background: transparent !important;
-    color: #000 !important;
     box-shadow: none !important;
     text-shadow: none !important;
   }
@@ -6744,15 +6748,15 @@ button.close {
 *
 */
 /*!
- *  Font Awesome 4.2.0 by @davegandy - http://fontawesome.io - @fontawesome
+ *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
  */
 /* FONT PATH
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../components/font-awesome/fonts/fontawesome-webfont.eot?v=4.2.0');
-  src: url('../components/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.2.0') format('embedded-opentype'), url('../components/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0') format('woff'), url('../components/font-awesome/fonts/fontawesome-webfont.ttf?v=4.2.0') format('truetype'), url('../components/font-awesome/fonts/fontawesome-webfont.svg?v=4.2.0#fontawesomeregular') format('svg');
+  src: url('../components/font-awesome/fonts/fontawesome-webfont.eot?v=4.7.0');
+  src: url('../components/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'), url('../components/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'), url('../components/font-awesome/fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'), url('../components/font-awesome/fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'), url('../components/font-awesome/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -6809,6 +6813,19 @@ button.close {
   border: solid 0.08em #eee;
   border-radius: .1em;
 }
+.fa-pull-left {
+  float: left;
+}
+.fa-pull-right {
+  float: right;
+}
+.fa.fa-pull-left {
+  margin-right: .3em;
+}
+.fa.fa-pull-right {
+  margin-left: .3em;
+}
+/* Deprecated as of 4.4.0 */
 .pull-right {
   float: right;
 }
@@ -6824,6 +6841,10 @@ button.close {
 .fa-spin {
   -webkit-animation: fa-spin 2s infinite linear;
   animation: fa-spin 2s infinite linear;
+}
+.fa-pulse {
+  -webkit-animation: fa-spin 1s infinite steps(8);
+  animation: fa-spin 1s infinite steps(8);
 }
 @-webkit-keyframes fa-spin {
   0% {
@@ -6846,31 +6867,31 @@ button.close {
   }
 }
 .fa-rotate-90 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 .fa-rotate-180 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 .fa-rotate-270 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";
   -webkit-transform: rotate(270deg);
   -ms-transform: rotate(270deg);
   transform: rotate(270deg);
 }
 .fa-flip-horizontal {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)";
   -webkit-transform: scale(-1, 1);
   -ms-transform: scale(-1, 1);
   transform: scale(-1, 1);
 }
 .fa-flip-vertical {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)";
   -webkit-transform: scale(1, -1);
   -ms-transform: scale(1, -1);
   transform: scale(1, -1);
@@ -7355,6 +7376,7 @@ button.close {
 .fa-twitter:before {
   content: "\f099";
 }
+.fa-facebook-f:before,
 .fa-facebook:before {
   content: "\f09a";
 }
@@ -7367,6 +7389,7 @@ button.close {
 .fa-credit-card:before {
   content: "\f09d";
 }
+.fa-feed:before,
 .fa-rss:before {
   content: "\f09e";
 }
@@ -8004,7 +8027,8 @@ button.close {
 .fa-male:before {
   content: "\f183";
 }
-.fa-gittip:before {
+.fa-gittip:before,
+.fa-gratipay:before {
   content: "\f184";
 }
 .fa-sun-o:before {
@@ -8108,7 +8132,7 @@ button.close {
 .fa-digg:before {
   content: "\f1a6";
 }
-.fa-pied-piper:before {
+.fa-pied-piper-pp:before {
   content: "\f1a7";
 }
 .fa-pied-piper-alt:before {
@@ -8234,6 +8258,7 @@ button.close {
   content: "\f1ce";
 }
 .fa-ra:before,
+.fa-resistance:before,
 .fa-rebel:before {
   content: "\f1d0";
 }
@@ -8247,6 +8272,8 @@ button.close {
 .fa-git:before {
   content: "\f1d3";
 }
+.fa-y-combinator-square:before,
+.fa-yc-square:before,
 .fa-hacker-news:before {
   content: "\f1d4";
 }
@@ -8414,6 +8441,657 @@ button.close {
 }
 .fa-meanpath:before {
   content: "\f20c";
+}
+.fa-buysellads:before {
+  content: "\f20d";
+}
+.fa-connectdevelop:before {
+  content: "\f20e";
+}
+.fa-dashcube:before {
+  content: "\f210";
+}
+.fa-forumbee:before {
+  content: "\f211";
+}
+.fa-leanpub:before {
+  content: "\f212";
+}
+.fa-sellsy:before {
+  content: "\f213";
+}
+.fa-shirtsinbulk:before {
+  content: "\f214";
+}
+.fa-simplybuilt:before {
+  content: "\f215";
+}
+.fa-skyatlas:before {
+  content: "\f216";
+}
+.fa-cart-plus:before {
+  content: "\f217";
+}
+.fa-cart-arrow-down:before {
+  content: "\f218";
+}
+.fa-diamond:before {
+  content: "\f219";
+}
+.fa-ship:before {
+  content: "\f21a";
+}
+.fa-user-secret:before {
+  content: "\f21b";
+}
+.fa-motorcycle:before {
+  content: "\f21c";
+}
+.fa-street-view:before {
+  content: "\f21d";
+}
+.fa-heartbeat:before {
+  content: "\f21e";
+}
+.fa-venus:before {
+  content: "\f221";
+}
+.fa-mars:before {
+  content: "\f222";
+}
+.fa-mercury:before {
+  content: "\f223";
+}
+.fa-intersex:before,
+.fa-transgender:before {
+  content: "\f224";
+}
+.fa-transgender-alt:before {
+  content: "\f225";
+}
+.fa-venus-double:before {
+  content: "\f226";
+}
+.fa-mars-double:before {
+  content: "\f227";
+}
+.fa-venus-mars:before {
+  content: "\f228";
+}
+.fa-mars-stroke:before {
+  content: "\f229";
+}
+.fa-mars-stroke-v:before {
+  content: "\f22a";
+}
+.fa-mars-stroke-h:before {
+  content: "\f22b";
+}
+.fa-neuter:before {
+  content: "\f22c";
+}
+.fa-genderless:before {
+  content: "\f22d";
+}
+.fa-facebook-official:before {
+  content: "\f230";
+}
+.fa-pinterest-p:before {
+  content: "\f231";
+}
+.fa-whatsapp:before {
+  content: "\f232";
+}
+.fa-server:before {
+  content: "\f233";
+}
+.fa-user-plus:before {
+  content: "\f234";
+}
+.fa-user-times:before {
+  content: "\f235";
+}
+.fa-hotel:before,
+.fa-bed:before {
+  content: "\f236";
+}
+.fa-viacoin:before {
+  content: "\f237";
+}
+.fa-train:before {
+  content: "\f238";
+}
+.fa-subway:before {
+  content: "\f239";
+}
+.fa-medium:before {
+  content: "\f23a";
+}
+.fa-yc:before,
+.fa-y-combinator:before {
+  content: "\f23b";
+}
+.fa-optin-monster:before {
+  content: "\f23c";
+}
+.fa-opencart:before {
+  content: "\f23d";
+}
+.fa-expeditedssl:before {
+  content: "\f23e";
+}
+.fa-battery-4:before,
+.fa-battery:before,
+.fa-battery-full:before {
+  content: "\f240";
+}
+.fa-battery-3:before,
+.fa-battery-three-quarters:before {
+  content: "\f241";
+}
+.fa-battery-2:before,
+.fa-battery-half:before {
+  content: "\f242";
+}
+.fa-battery-1:before,
+.fa-battery-quarter:before {
+  content: "\f243";
+}
+.fa-battery-0:before,
+.fa-battery-empty:before {
+  content: "\f244";
+}
+.fa-mouse-pointer:before {
+  content: "\f245";
+}
+.fa-i-cursor:before {
+  content: "\f246";
+}
+.fa-object-group:before {
+  content: "\f247";
+}
+.fa-object-ungroup:before {
+  content: "\f248";
+}
+.fa-sticky-note:before {
+  content: "\f249";
+}
+.fa-sticky-note-o:before {
+  content: "\f24a";
+}
+.fa-cc-jcb:before {
+  content: "\f24b";
+}
+.fa-cc-diners-club:before {
+  content: "\f24c";
+}
+.fa-clone:before {
+  content: "\f24d";
+}
+.fa-balance-scale:before {
+  content: "\f24e";
+}
+.fa-hourglass-o:before {
+  content: "\f250";
+}
+.fa-hourglass-1:before,
+.fa-hourglass-start:before {
+  content: "\f251";
+}
+.fa-hourglass-2:before,
+.fa-hourglass-half:before {
+  content: "\f252";
+}
+.fa-hourglass-3:before,
+.fa-hourglass-end:before {
+  content: "\f253";
+}
+.fa-hourglass:before {
+  content: "\f254";
+}
+.fa-hand-grab-o:before,
+.fa-hand-rock-o:before {
+  content: "\f255";
+}
+.fa-hand-stop-o:before,
+.fa-hand-paper-o:before {
+  content: "\f256";
+}
+.fa-hand-scissors-o:before {
+  content: "\f257";
+}
+.fa-hand-lizard-o:before {
+  content: "\f258";
+}
+.fa-hand-spock-o:before {
+  content: "\f259";
+}
+.fa-hand-pointer-o:before {
+  content: "\f25a";
+}
+.fa-hand-peace-o:before {
+  content: "\f25b";
+}
+.fa-trademark:before {
+  content: "\f25c";
+}
+.fa-registered:before {
+  content: "\f25d";
+}
+.fa-creative-commons:before {
+  content: "\f25e";
+}
+.fa-gg:before {
+  content: "\f260";
+}
+.fa-gg-circle:before {
+  content: "\f261";
+}
+.fa-tripadvisor:before {
+  content: "\f262";
+}
+.fa-odnoklassniki:before {
+  content: "\f263";
+}
+.fa-odnoklassniki-square:before {
+  content: "\f264";
+}
+.fa-get-pocket:before {
+  content: "\f265";
+}
+.fa-wikipedia-w:before {
+  content: "\f266";
+}
+.fa-safari:before {
+  content: "\f267";
+}
+.fa-chrome:before {
+  content: "\f268";
+}
+.fa-firefox:before {
+  content: "\f269";
+}
+.fa-opera:before {
+  content: "\f26a";
+}
+.fa-internet-explorer:before {
+  content: "\f26b";
+}
+.fa-tv:before,
+.fa-television:before {
+  content: "\f26c";
+}
+.fa-contao:before {
+  content: "\f26d";
+}
+.fa-500px:before {
+  content: "\f26e";
+}
+.fa-amazon:before {
+  content: "\f270";
+}
+.fa-calendar-plus-o:before {
+  content: "\f271";
+}
+.fa-calendar-minus-o:before {
+  content: "\f272";
+}
+.fa-calendar-times-o:before {
+  content: "\f273";
+}
+.fa-calendar-check-o:before {
+  content: "\f274";
+}
+.fa-industry:before {
+  content: "\f275";
+}
+.fa-map-pin:before {
+  content: "\f276";
+}
+.fa-map-signs:before {
+  content: "\f277";
+}
+.fa-map-o:before {
+  content: "\f278";
+}
+.fa-map:before {
+  content: "\f279";
+}
+.fa-commenting:before {
+  content: "\f27a";
+}
+.fa-commenting-o:before {
+  content: "\f27b";
+}
+.fa-houzz:before {
+  content: "\f27c";
+}
+.fa-vimeo:before {
+  content: "\f27d";
+}
+.fa-black-tie:before {
+  content: "\f27e";
+}
+.fa-fonticons:before {
+  content: "\f280";
+}
+.fa-reddit-alien:before {
+  content: "\f281";
+}
+.fa-edge:before {
+  content: "\f282";
+}
+.fa-credit-card-alt:before {
+  content: "\f283";
+}
+.fa-codiepie:before {
+  content: "\f284";
+}
+.fa-modx:before {
+  content: "\f285";
+}
+.fa-fort-awesome:before {
+  content: "\f286";
+}
+.fa-usb:before {
+  content: "\f287";
+}
+.fa-product-hunt:before {
+  content: "\f288";
+}
+.fa-mixcloud:before {
+  content: "\f289";
+}
+.fa-scribd:before {
+  content: "\f28a";
+}
+.fa-pause-circle:before {
+  content: "\f28b";
+}
+.fa-pause-circle-o:before {
+  content: "\f28c";
+}
+.fa-stop-circle:before {
+  content: "\f28d";
+}
+.fa-stop-circle-o:before {
+  content: "\f28e";
+}
+.fa-shopping-bag:before {
+  content: "\f290";
+}
+.fa-shopping-basket:before {
+  content: "\f291";
+}
+.fa-hashtag:before {
+  content: "\f292";
+}
+.fa-bluetooth:before {
+  content: "\f293";
+}
+.fa-bluetooth-b:before {
+  content: "\f294";
+}
+.fa-percent:before {
+  content: "\f295";
+}
+.fa-gitlab:before {
+  content: "\f296";
+}
+.fa-wpbeginner:before {
+  content: "\f297";
+}
+.fa-wpforms:before {
+  content: "\f298";
+}
+.fa-envira:before {
+  content: "\f299";
+}
+.fa-universal-access:before {
+  content: "\f29a";
+}
+.fa-wheelchair-alt:before {
+  content: "\f29b";
+}
+.fa-question-circle-o:before {
+  content: "\f29c";
+}
+.fa-blind:before {
+  content: "\f29d";
+}
+.fa-audio-description:before {
+  content: "\f29e";
+}
+.fa-volume-control-phone:before {
+  content: "\f2a0";
+}
+.fa-braille:before {
+  content: "\f2a1";
+}
+.fa-assistive-listening-systems:before {
+  content: "\f2a2";
+}
+.fa-asl-interpreting:before,
+.fa-american-sign-language-interpreting:before {
+  content: "\f2a3";
+}
+.fa-deafness:before,
+.fa-hard-of-hearing:before,
+.fa-deaf:before {
+  content: "\f2a4";
+}
+.fa-glide:before {
+  content: "\f2a5";
+}
+.fa-glide-g:before {
+  content: "\f2a6";
+}
+.fa-signing:before,
+.fa-sign-language:before {
+  content: "\f2a7";
+}
+.fa-low-vision:before {
+  content: "\f2a8";
+}
+.fa-viadeo:before {
+  content: "\f2a9";
+}
+.fa-viadeo-square:before {
+  content: "\f2aa";
+}
+.fa-snapchat:before {
+  content: "\f2ab";
+}
+.fa-snapchat-ghost:before {
+  content: "\f2ac";
+}
+.fa-snapchat-square:before {
+  content: "\f2ad";
+}
+.fa-pied-piper:before {
+  content: "\f2ae";
+}
+.fa-first-order:before {
+  content: "\f2b0";
+}
+.fa-yoast:before {
+  content: "\f2b1";
+}
+.fa-themeisle:before {
+  content: "\f2b2";
+}
+.fa-google-plus-circle:before,
+.fa-google-plus-official:before {
+  content: "\f2b3";
+}
+.fa-fa:before,
+.fa-font-awesome:before {
+  content: "\f2b4";
+}
+.fa-handshake-o:before {
+  content: "\f2b5";
+}
+.fa-envelope-open:before {
+  content: "\f2b6";
+}
+.fa-envelope-open-o:before {
+  content: "\f2b7";
+}
+.fa-linode:before {
+  content: "\f2b8";
+}
+.fa-address-book:before {
+  content: "\f2b9";
+}
+.fa-address-book-o:before {
+  content: "\f2ba";
+}
+.fa-vcard:before,
+.fa-address-card:before {
+  content: "\f2bb";
+}
+.fa-vcard-o:before,
+.fa-address-card-o:before {
+  content: "\f2bc";
+}
+.fa-user-circle:before {
+  content: "\f2bd";
+}
+.fa-user-circle-o:before {
+  content: "\f2be";
+}
+.fa-user-o:before {
+  content: "\f2c0";
+}
+.fa-id-badge:before {
+  content: "\f2c1";
+}
+.fa-drivers-license:before,
+.fa-id-card:before {
+  content: "\f2c2";
+}
+.fa-drivers-license-o:before,
+.fa-id-card-o:before {
+  content: "\f2c3";
+}
+.fa-quora:before {
+  content: "\f2c4";
+}
+.fa-free-code-camp:before {
+  content: "\f2c5";
+}
+.fa-telegram:before {
+  content: "\f2c6";
+}
+.fa-thermometer-4:before,
+.fa-thermometer:before,
+.fa-thermometer-full:before {
+  content: "\f2c7";
+}
+.fa-thermometer-3:before,
+.fa-thermometer-three-quarters:before {
+  content: "\f2c8";
+}
+.fa-thermometer-2:before,
+.fa-thermometer-half:before {
+  content: "\f2c9";
+}
+.fa-thermometer-1:before,
+.fa-thermometer-quarter:before {
+  content: "\f2ca";
+}
+.fa-thermometer-0:before,
+.fa-thermometer-empty:before {
+  content: "\f2cb";
+}
+.fa-shower:before {
+  content: "\f2cc";
+}
+.fa-bathtub:before,
+.fa-s15:before,
+.fa-bath:before {
+  content: "\f2cd";
+}
+.fa-podcast:before {
+  content: "\f2ce";
+}
+.fa-window-maximize:before {
+  content: "\f2d0";
+}
+.fa-window-minimize:before {
+  content: "\f2d1";
+}
+.fa-window-restore:before {
+  content: "\f2d2";
+}
+.fa-times-rectangle:before,
+.fa-window-close:before {
+  content: "\f2d3";
+}
+.fa-times-rectangle-o:before,
+.fa-window-close-o:before {
+  content: "\f2d4";
+}
+.fa-bandcamp:before {
+  content: "\f2d5";
+}
+.fa-grav:before {
+  content: "\f2d6";
+}
+.fa-etsy:before {
+  content: "\f2d7";
+}
+.fa-imdb:before {
+  content: "\f2d8";
+}
+.fa-ravelry:before {
+  content: "\f2d9";
+}
+.fa-eercast:before {
+  content: "\f2da";
+}
+.fa-microchip:before {
+  content: "\f2db";
+}
+.fa-snowflake-o:before {
+  content: "\f2dc";
+}
+.fa-superpowers:before {
+  content: "\f2dd";
+}
+.fa-wpexplorer:before {
+  content: "\f2de";
+}
+.fa-meetup:before {
+  content: "\f2e0";
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.sr-only-focusable:active,
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+}
+.sr-only-focusable:active,
+.sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
 }
 /*!
 *
@@ -8694,6 +9372,10 @@ div.traceback-wrapper {
   max-width: 800px;
   margin: auto;
 }
+div.traceback-wrapper pre.traceback {
+  max-height: 600px;
+  overflow: auto;
+}
 /**
  * Primary styles
  *
@@ -8719,6 +9401,10 @@ body > #header {
   z-index: 100;
 }
 body > #header #header-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px;
   padding-bottom: 5px;
   padding-top: 5px;
   box-sizing: border-box;
@@ -8750,13 +9436,16 @@ body > #header .header-bar {
   padding-top: 1px;
   padding-bottom: 1px;
 }
-@media (max-width: 991px) {
-  #ipython_notebook {
-    margin-left: 10px;
-  }
-}
 [dir="rtl"] #ipython_notebook {
+  margin-right: 10px;
+  margin-left: 0;
+}
+[dir="rtl"] #ipython_notebook.pull-left {
   float: right !important;
+  float: right;
+}
+.flex-spacer {
+  flex: 1;
 }
 #noscript {
   width: auto;
@@ -8791,8 +9480,14 @@ body > #header .header-bar {
 input.ui-button {
   padding: 0.3em 0.9em;
 }
+span#kernel_logo_widget {
+  margin: 0 10px;
+}
 span#login_widget {
   float: right;
+}
+[dir="rtl"] span#login_widget {
+  float: left;
 }
 span#login_widget > .button,
 #logout {
@@ -8908,6 +9603,9 @@ span#login_widget > .button .badge,
   overflow: auto;
   flex: 1;
 }
+.modal-header {
+  cursor: move;
+}
 @media (min-width: 768px) {
   .modal .modal-dialog {
     width: 700px;
@@ -8928,6 +9626,19 @@ span#login_widget > .button .badge,
   display: inline-block;
   margin-bottom: -4px;
 }
+[dir="rtl"] .center-nav form.pull-left {
+  float: right !important;
+  float: right;
+}
+[dir="rtl"] .center-nav .navbar-text {
+  float: right;
+}
+[dir="rtl"] .navbar-inner {
+  text-align: right;
+}
+[dir="rtl"] div.text-left {
+  text-align: right;
+}
 /*!
 *
 * IPython tree view
@@ -8944,34 +9655,42 @@ span#login_widget > .button .badge,
   margin: 0;
 }
 .alternate_upload input.fileinput {
-  text-align: center;
-  vertical-align: middle;
-  display: inline;
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: pointer;
   opacity: 0;
   z-index: 2;
-  width: 12ex;
-  margin-right: -12ex;
+}
+.alternate_upload .btn-xs > input.fileinput {
+  margin: -1px -5px;
 }
 .alternate_upload .btn-upload {
+  position: relative;
   height: 22px;
+}
+::-webkit-file-upload-button {
+  cursor: pointer;
 }
 /**
  * Primary styles
  *
  * Author: Jupyter Development Team
  */
-[dir="rtl"] #tabs li {
-  float: right;
-}
 ul#tabs {
   margin-bottom: 4px;
-}
-[dir="rtl"] ul#tabs {
-  margin-right: 0px;
 }
 ul#tabs a {
   padding-top: 6px;
   padding-bottom: 4px;
+}
+[dir="rtl"] ul#tabs.nav-tabs > li {
+  float: right;
+}
+[dir="rtl"] ul#tabs.nav.nav-tabs {
+  padding-right: 0;
 }
 ul.breadcrumb a:focus,
 ul.breadcrumb a:hover {
@@ -8991,15 +9710,13 @@ ul.breadcrumb span {
 .list_toolbar .tree-buttons {
   padding-top: 1px;
 }
-[dir="rtl"] .list_toolbar .tree-buttons {
+[dir="rtl"] .list_toolbar .tree-buttons .pull-right {
   float: left !important;
+  float: left;
 }
-[dir="rtl"] .list_toolbar .pull-right {
-  padding-top: 1px;
-  float: left !important;
-}
-[dir="rtl"] .list_toolbar .pull-left {
-  float: right !important;
+[dir="rtl"] .list_toolbar .col-sm-4,
+[dir="rtl"] .list_toolbar .col-sm-8 {
+  float: right;
 }
 .dynamic-buttons {
   padding-top: 3px;
@@ -9055,7 +9772,7 @@ ul.breadcrumb span {
 .list_item > div input {
   margin-right: 7px;
   margin-left: 14px;
-  vertical-align: baseline;
+  vertical-align: text-bottom;
   line-height: 22px;
   position: relative;
   top: -1px;
@@ -9065,6 +9782,9 @@ ul.breadcrumb span {
   margin-left: -1px;
   vertical-align: baseline;
   line-height: 22px;
+}
+[dir="rtl"] .list_item > div input {
+  margin-right: 0;
 }
 .new-file input[type=checkbox] {
   visibility: hidden;
@@ -9080,6 +9800,14 @@ ul.breadcrumb span {
   margin-left: 7px;
   line-height: 22px;
   vertical-align: baseline;
+}
+.item_modified {
+  margin-right: 7px;
+  margin-left: 7px;
+}
+[dir="rtl"] .item_modified.pull-right {
+  float: left !important;
+  float: left;
 }
 .item_buttons {
   line-height: 1em;
@@ -9108,6 +9836,14 @@ ul.breadcrumb span {
   margin-right: 7px;
   float: left;
 }
+[dir="rtl"] .item_buttons.pull-right {
+  float: left !important;
+  float: left;
+}
+[dir="rtl"] .item_buttons .kernel-name {
+  margin-left: 7px;
+  float: right;
+}
 .toolbar_info {
   height: 24px;
   line-height: 24px;
@@ -9133,18 +9869,32 @@ ul.breadcrumb span {
   background-color: transparent;
   font-weight: bold;
 }
+.sort_button {
+  display: inline-block;
+  padding-left: 7px;
+}
+[dir="rtl"] .sort_button.pull-right {
+  float: left !important;
+  float: left;
+}
 #tree-selector {
   padding-right: 0px;
-}
-[dir="rtl"] #tree-selector a {
-  float: right;
 }
 #button-select-all {
   min-width: 50px;
 }
+[dir="rtl"] #button-select-all.btn {
+  float: right ;
+}
 #select-all {
   margin-left: 7px;
   margin-right: 2px;
+  margin-top: 2px;
+  height: 16px;
+}
+[dir="rtl"] #select-all.pull-left {
+  float: right !important;
+  float: right;
 }
 .menu_icon {
   margin-right: 2px;
@@ -9162,6 +9912,12 @@ ul.breadcrumb span {
   -moz-osx-font-smoothing: grayscale;
   content: "\f114";
 }
+.folder_icon:before.fa-pull-left {
+  margin-right: .3em;
+}
+.folder_icon:before.fa-pull-right {
+  margin-left: .3em;
+}
 .folder_icon:before.pull-left {
   margin-right: .3em;
 }
@@ -9178,6 +9934,12 @@ ul.breadcrumb span {
   content: "\f02d";
   position: relative;
   top: -1px;
+}
+.notebook_icon:before.fa-pull-left {
+  margin-right: .3em;
+}
+.notebook_icon:before.fa-pull-right {
+  margin-left: .3em;
 }
 .notebook_icon:before.pull-left {
   margin-right: .3em;
@@ -9197,6 +9959,12 @@ ul.breadcrumb span {
   top: -1px;
   color: #5cb85c;
 }
+.running_notebook_icon:before.fa-pull-left {
+  margin-right: .3em;
+}
+.running_notebook_icon:before.fa-pull-right {
+  margin-left: .3em;
+}
 .running_notebook_icon:before.pull-left {
   margin-right: .3em;
 }
@@ -9214,6 +9982,12 @@ ul.breadcrumb span {
   position: relative;
   top: -2px;
 }
+.file_icon:before.fa-pull-left {
+  margin-right: .3em;
+}
+.file_icon:before.fa-pull-right {
+  margin-left: .3em;
+}
 .file_icon:before.pull-left {
   margin-right: .3em;
 }
@@ -9228,8 +10002,11 @@ ul#new-menu {
   left: auto;
   right: 0;
 }
-[dir="rtl"] #new-menu {
-  text-align: right;
+#new-menu .dropdown-header {
+  font-size: 10px;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 0 0 3px;
+  margin: -3px 20px 0;
 }
 .kernel-menu-icon {
   padding-right: 12px;
@@ -9276,9 +10053,6 @@ ul#new-menu {
 #running .panel-group .panel .panel-body .list_container .list_item:last-child {
   border-bottom: 0px;
 }
-[dir="rtl"] #running .col-sm-8 {
-  float: right !important;
-}
 .delete-button {
   display: none;
 }
@@ -9286,6 +10060,12 @@ ul#new-menu {
   display: none;
 }
 .rename-button {
+  display: none;
+}
+.move-button {
+  display: none;
+}
+.download-button {
   display: none;
 }
 .shutdown-button {
@@ -9328,6 +10108,12 @@ ul#new-menu {
   -moz-osx-font-smoothing: grayscale;
   width: 20px;
 }
+.dirty-indicator.fa-pull-left {
+  margin-right: .3em;
+}
+.dirty-indicator.fa-pull-right {
+  margin-left: .3em;
+}
 .dirty-indicator.pull-left {
   margin-right: .3em;
 }
@@ -9342,6 +10128,12 @@ ul#new-menu {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 20px;
+}
+.dirty-indicator-dirty.fa-pull-left {
+  margin-right: .3em;
+}
+.dirty-indicator-dirty.fa-pull-right {
+  margin-left: .3em;
 }
 .dirty-indicator-dirty.pull-left {
   margin-right: .3em;
@@ -9358,6 +10150,12 @@ ul#new-menu {
   -moz-osx-font-smoothing: grayscale;
   width: 20px;
 }
+.dirty-indicator-clean.fa-pull-left {
+  margin-right: .3em;
+}
+.dirty-indicator-clean.fa-pull-right {
+  margin-left: .3em;
+}
 .dirty-indicator-clean.pull-left {
   margin-right: .3em;
 }
@@ -9372,6 +10170,12 @@ ul#new-menu {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: "\f00c";
+}
+.dirty-indicator-clean:before.fa-pull-left {
+  margin-right: .3em;
+}
+.dirty-indicator-clean:before.fa-pull-right {
+  margin-left: .3em;
 }
 .dirty-indicator-clean:before.pull-left {
   margin-right: .3em;
@@ -9417,14 +10221,132 @@ ul#new-menu {
     box-shadow: 0px 0px 12px 1px rgba(87, 87, 87, 0.2);
   }
 }
+.CodeMirror-dialog {
+  background-color: #fff;
+}
 /*!
 *
 * IPython notebook
 *
 */
-/* CSS font colors for translated ANSI colors. */
+/* CSS font colors for translated ANSI escape sequences */
+/* The color values are a mix of
+   http://www.xcolors.net/dl/baskerville-ivorylight and
+   http://www.xcolors.net/dl/euphrasia */
+.ansi-black-fg {
+  color: #3E424D;
+}
+.ansi-black-bg {
+  background-color: #3E424D;
+}
+.ansi-black-intense-fg {
+  color: #282C36;
+}
+.ansi-black-intense-bg {
+  background-color: #282C36;
+}
+.ansi-red-fg {
+  color: #E75C58;
+}
+.ansi-red-bg {
+  background-color: #E75C58;
+}
+.ansi-red-intense-fg {
+  color: #B22B31;
+}
+.ansi-red-intense-bg {
+  background-color: #B22B31;
+}
+.ansi-green-fg {
+  color: #00A250;
+}
+.ansi-green-bg {
+  background-color: #00A250;
+}
+.ansi-green-intense-fg {
+  color: #007427;
+}
+.ansi-green-intense-bg {
+  background-color: #007427;
+}
+.ansi-yellow-fg {
+  color: #DDB62B;
+}
+.ansi-yellow-bg {
+  background-color: #DDB62B;
+}
+.ansi-yellow-intense-fg {
+  color: #B27D12;
+}
+.ansi-yellow-intense-bg {
+  background-color: #B27D12;
+}
+.ansi-blue-fg {
+  color: #208FFB;
+}
+.ansi-blue-bg {
+  background-color: #208FFB;
+}
+.ansi-blue-intense-fg {
+  color: #0065CA;
+}
+.ansi-blue-intense-bg {
+  background-color: #0065CA;
+}
+.ansi-magenta-fg {
+  color: #D160C4;
+}
+.ansi-magenta-bg {
+  background-color: #D160C4;
+}
+.ansi-magenta-intense-fg {
+  color: #A03196;
+}
+.ansi-magenta-intense-bg {
+  background-color: #A03196;
+}
+.ansi-cyan-fg {
+  color: #60C6C8;
+}
+.ansi-cyan-bg {
+  background-color: #60C6C8;
+}
+.ansi-cyan-intense-fg {
+  color: #258F8F;
+}
+.ansi-cyan-intense-bg {
+  background-color: #258F8F;
+}
+.ansi-white-fg {
+  color: #C5C1B4;
+}
+.ansi-white-bg {
+  background-color: #C5C1B4;
+}
+.ansi-white-intense-fg {
+  color: #A1A6B2;
+}
+.ansi-white-intense-bg {
+  background-color: #A1A6B2;
+}
+.ansi-default-inverse-fg {
+  color: #FFFFFF;
+}
+.ansi-default-inverse-bg {
+  background-color: #000000;
+}
+.ansi-bold {
+  font-weight: bold;
+}
+.ansi-underline {
+  text-decoration: underline;
+}
+/* The following styles are deprecated an will be removed in a future version */
 .ansibold {
   font-weight: bold;
+}
+.ansi-inverse {
+  outline: 0.5px dotted;
 }
 /* use dark versions for foreground, to improve visibility */
 .ansiblack {
@@ -9503,12 +10425,20 @@ div.cell {
   /* This acts as a spacer between cells, that is outside the border */
   margin: 0px;
   outline: none;
-  border-left-width: 1px;
-  padding-left: 5px;
-  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+  position: relative;
+  overflow: visible;
+}
+div.cell:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: transparent;
 }
 div.cell.jupyter-soft-selected {
-  border-left-color: #90CAF9;
   border-left-color: #E3F2FD;
   border-left-width: 1px;
   padding-left: 5px;
@@ -9521,27 +10451,39 @@ div.cell.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected {
+div.cell.selected,
+div.cell.selected.jupyter-soft-selected {
   border-color: #ababab;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+div.cell.selected:before,
+div.cell.selected.jupyter-soft-selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #42A5F5;
 }
 @media print {
-  div.cell.selected {
+  div.cell.selected,
+  div.cell.selected.jupyter-soft-selected {
     border-color: transparent;
   }
 }
-div.cell.selected.jupyter-soft-selected {
-  border-left-width: 0;
-  padding-left: 6px;
-  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
-}
 .edit_mode div.cell.selected {
   border-color: #66BB6A;
-  border-left-width: 0px;
-  padding-left: 6px;
-  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+.edit_mode div.cell.selected:before {
+  position: absolute;
+  display: block;
+  top: -1px;
+  left: -1px;
+  width: 5px;
+  height: calc(100% +  2px);
+  content: '';
+  background: #66BB6A;
 }
 @media print {
   .edit_mode div.cell.selected {
@@ -9737,7 +10679,9 @@ div.input_area > div.highlight > pre {
 .CodeMirror-lines {
   /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
   /* we have set a different line-height and want this to scale with that. */
-  padding: 0.4em;
+  /* Note that this should set vertical padding only, since CodeMirror assumes
+       that horizontal padding will be set on CodeMirror pre */
+  padding: 0.4em 0;
 }
 .CodeMirror-linenumber {
   padding: 0 8px 0 4px;
@@ -9747,11 +10691,24 @@ div.input_area > div.highlight > pre {
   border-top-left-radius: 2px;
 }
 .CodeMirror pre {
-  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
-  /* .CodeMirror-lines */
-  padding: 0;
+  /* In CM3 this went to 4px from 0 in CM2. This sets horizontal padding only,
+    use .CodeMirror-lines for vertical */
+  padding: 0 0.4em;
   border: 0;
   border-radius: 0;
+}
+.CodeMirror-cursor {
+  border-left: 1.4px solid black;
+}
+@media screen and (min-width: 2138px) and (max-width: 4319px) {
+  .CodeMirror-cursor {
+    border-left: 2px solid black;
+  }
+}
+@media screen and (min-width: 4320px) {
+  .CodeMirror-cursor {
+    border-left: 4px solid black;
+  }
 }
 /*
 
@@ -10005,6 +10962,9 @@ div.output_area img.unconfined,
 div.output_area svg.unconfined {
   max-width: none;
 }
+div.output_area .mglyph > img {
+  max-width: none;
+}
 /* This is needed to protect the pre formating from global settings such
    as that of bootstrap */
 .output {
@@ -10043,7 +11003,7 @@ div.output_area svg.unconfined {
 }
 div.output_area pre {
   margin: 0;
-  padding: 0;
+  padding: 1px 0 1px 0;
   border: 0;
   vertical-align: baseline;
   color: black;
@@ -10203,39 +11163,35 @@ div.output_unrecognized a:hover {
 .rendered_html h6:first-child {
   margin-top: 1em;
 }
+.rendered_html ul:not(.list-inline),
+.rendered_html ol:not(.list-inline) {
+  padding-left: 2em;
+}
 .rendered_html ul {
   list-style: disc;
-  margin: 0em 2em;
-  padding-left: 0px;
 }
 .rendered_html ul ul {
   list-style: square;
-  margin: 0em 2em;
+  margin-top: 0;
 }
 .rendered_html ul ul ul {
   list-style: circle;
-  margin: 0em 2em;
 }
 .rendered_html ol {
   list-style: decimal;
-  margin: 0em 2em;
-  padding-left: 0px;
 }
 .rendered_html ol ol {
   list-style: upper-alpha;
-  margin: 0em 2em;
+  margin-top: 0;
 }
 .rendered_html ol ol ol {
   list-style: lower-alpha;
-  margin: 0em 2em;
 }
 .rendered_html ol ol ol ol {
   list-style: lower-roman;
-  margin: 0em 2em;
 }
 .rendered_html ol ol ol ol ol {
   list-style: decimal;
-  margin: 0em 2em;
 }
 .rendered_html * + ul {
   margin-top: 1em;
@@ -10249,14 +11205,23 @@ div.output_unrecognized a:hover {
 }
 .rendered_html pre {
   margin: 1em 2em;
+  padding: 0px;
+  background-color: #fff;
+}
+.rendered_html code {
+  background-color: #eff0f1;
+}
+.rendered_html p code {
+  padding: 1px 5px;
+}
+.rendered_html pre code {
+  background-color: #fff;
 }
 .rendered_html pre,
 .rendered_html code {
   border: 0;
-  background-color: #fff;
   color: #000;
   font-size: 100%;
-  padding: 0px;
 }
 .rendered_html blockquote {
   margin: 1em 2em;
@@ -10264,24 +11229,36 @@ div.output_unrecognized a:hover {
 .rendered_html table {
   margin-left: auto;
   margin-right: auto;
-  border: 1px solid black;
+  border: none;
   border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
 }
 .rendered_html tr,
 .rendered_html th,
 .rendered_html td {
-  border: 1px solid black;
-  border-collapse: collapse;
-  margin: 1em 2em;
-}
-.rendered_html td,
-.rendered_html th {
-  text-align: left;
+  text-align: right;
   vertical-align: middle;
-  padding: 4px;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
 }
 .rendered_html th {
   font-weight: bold;
+}
+.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
 }
 .rendered_html * + table {
   margin-top: 1em;
@@ -10308,6 +11285,15 @@ div.output_unrecognized a:hover {
 .rendered_html img.unconfined,
 .rendered_html svg.unconfined {
   max-width: none;
+}
+.rendered_html .alert {
+  margin-bottom: initial;
+}
+.rendered_html * + .alert {
+  margin-top: 1em;
+}
+[dir="rtl"] .rendered_html p {
+  text-align: right;
 }
 div.text_cell {
   /* Old browsers */
@@ -10362,8 +11348,17 @@ h6:hover .anchor-link {
   overflow-x: auto;
   overflow-y: hidden;
 }
+.text_cell.rendered .rendered_html tr,
+.text_cell.rendered .rendered_html th,
+.text_cell.rendered .rendered_html td {
+  max-width: none;
+}
 .text_cell.unrendered .text_cell_render {
   display: none;
+}
+.text_cell .dropzone .input_area {
+  border: 2px dashed #bababa;
+  margin: -1px;
 }
 .cm-header-1,
 .cm-header-2,
@@ -10500,6 +11495,28 @@ kbd {
   padding-top: 1px;
   padding-bottom: 1px;
 }
+.jupyter-keybindings {
+  padding: 1px;
+  line-height: 24px;
+  border-bottom: 1px solid gray;
+}
+.jupyter-keybindings input {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.jupyter-keybindings i {
+  padding: 6px;
+}
+.well code {
+  background-color: #ffffff;
+  border-color: #ababab;
+  border-width: 1px;
+  border-style: solid;
+  padding: 2px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
 /* CSS for the cell toolbar */
 .celltoolbar {
   border: thin solid #CFCFCF;
@@ -10632,6 +11649,152 @@ select[multiple].celltoolbar select {
   margin-left: 5px;
   margin-right: 5px;
 }
+.tags_button_container {
+  width: 100%;
+  display: flex;
+}
+.tag-container {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  overflow: hidden;
+  position: relative;
+}
+.tag-container > * {
+  margin: 0 4px;
+}
+.remove-tag-btn {
+  margin-left: 4px;
+}
+.tags-input {
+  display: flex;
+}
+.cell-tag:last-child:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 40px;
+  height: 100%;
+  /* Fade to background color of cell toolbar */
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), #EEE);
+}
+.tags-input > * {
+  margin-left: 4px;
+}
+.cell-tag,
+.tags-input input,
+.tags-input button {
+  display: block;
+  width: 100%;
+  height: 32px;
+  padding: 6px 12px;
+  font-size: 13px;
+  line-height: 1.42857143;
+  color: #555555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  height: 30px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 1px;
+  box-shadow: none;
+  width: inherit;
+  font-size: inherit;
+  height: 22px;
+  line-height: 22px;
+  padding: 0px 4px;
+  display: inline-block;
+}
+.cell-tag:focus,
+.tags-input input:focus,
+.tags-input button:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.cell-tag::-moz-placeholder,
+.tags-input input::-moz-placeholder,
+.tags-input button::-moz-placeholder {
+  color: #999;
+  opacity: 1;
+}
+.cell-tag:-ms-input-placeholder,
+.tags-input input:-ms-input-placeholder,
+.tags-input button:-ms-input-placeholder {
+  color: #999;
+}
+.cell-tag::-webkit-input-placeholder,
+.tags-input input::-webkit-input-placeholder,
+.tags-input button::-webkit-input-placeholder {
+  color: #999;
+}
+.cell-tag::-ms-expand,
+.tags-input input::-ms-expand,
+.tags-input button::-ms-expand {
+  border: 0;
+  background-color: transparent;
+}
+.cell-tag[disabled],
+.tags-input input[disabled],
+.tags-input button[disabled],
+.cell-tag[readonly],
+.tags-input input[readonly],
+.tags-input button[readonly],
+fieldset[disabled] .cell-tag,
+fieldset[disabled] .tags-input input,
+fieldset[disabled] .tags-input button {
+  background-color: #eeeeee;
+  opacity: 1;
+}
+.cell-tag[disabled],
+.tags-input input[disabled],
+.tags-input button[disabled],
+fieldset[disabled] .cell-tag,
+fieldset[disabled] .tags-input input,
+fieldset[disabled] .tags-input button {
+  cursor: not-allowed;
+}
+textarea.cell-tag,
+textarea.tags-input input,
+textarea.tags-input button {
+  height: auto;
+}
+select.cell-tag,
+select.tags-input input,
+select.tags-input button {
+  height: 30px;
+  line-height: 30px;
+}
+textarea.cell-tag,
+textarea.tags-input input,
+textarea.tags-input button,
+select[multiple].cell-tag,
+select[multiple].tags-input input,
+select[multiple].tags-input button {
+  height: auto;
+}
+.cell-tag,
+.tags-input button {
+  padding: 0px 4px;
+}
+.cell-tag {
+  background-color: #fff;
+  white-space: nowrap;
+}
+.tags-input input[type=text]:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #ccc;
+}
 .completions {
   position: absolute;
   z-index: 110;
@@ -10657,16 +11820,28 @@ select[multiple].celltoolbar select {
 .completions select option.context {
   color: #286090;
 }
-#kernel_logo_widget {
-  float: right !important;
-  float: right;
-}
 #kernel_logo_widget .current_kernel_logo {
   display: none;
   margin-top: -1px;
   margin-bottom: -1px;
   width: 32px;
   height: 32px;
+}
+[dir="rtl"] #kernel_logo_widget {
+  float: left !important;
+  float: left;
+}
+.modal .modal-body .move-path {
+  display: flex;
+  flex-direction: row;
+  justify-content: space;
+  align-items: center;
+}
+.modal .modal-body .move-path .server-root {
+  padding-right: 20px;
+}
+.modal .modal-body .move-path .path-input {
+  flex: 1;
 }
 #menubar {
   box-sizing: border-box;
@@ -10688,11 +11863,41 @@ select[multiple].celltoolbar select {
 #menubar .navbar-collapse {
   clear: left;
 }
+[dir="rtl"] #menubar .navbar-toggle {
+  float: right;
+}
+[dir="rtl"] #menubar .navbar-collapse {
+  clear: right;
+}
+[dir="rtl"] #menubar .navbar-nav {
+  float: right;
+}
+[dir="rtl"] #menubar .nav {
+  padding-right: 0px;
+}
+[dir="rtl"] #menubar .navbar-nav > li {
+  float: right;
+}
+[dir="rtl"] #menubar .navbar-right {
+  float: left !important;
+}
+[dir="rtl"] ul.dropdown-menu {
+  text-align: right;
+  left: auto;
+}
+[dir="rtl"] ul#new-menu.dropdown-menu {
+  right: auto;
+  left: 0;
+}
 .nav-wrapper {
   border-bottom: 1px solid #e7e7e7;
 }
 i.menu-icon {
   padding-top: 4px;
+}
+[dir="rtl"] i.menu-icon.pull-right {
+  float: left !important;
+  float: left;
 }
 ul#help_menu li a {
   overflow: hidden;
@@ -10700,6 +11905,17 @@ ul#help_menu li a {
 }
 ul#help_menu li a i {
   margin-right: -1.2em;
+}
+[dir="rtl"] ul#help_menu li a {
+  padding-left: 2.2em;
+}
+[dir="rtl"] ul#help_menu li a i {
+  margin-right: 0;
+  margin-left: -1.2em;
+}
+[dir="rtl"] ul#help_menu li a i.pull-right {
+  float: left !important;
+  float: left;
 }
 .dropdown-submenu {
   position: relative;
@@ -10709,6 +11925,10 @@ ul#help_menu li a i {
   left: 100%;
   margin-top: -6px;
   margin-left: -1px;
+}
+[dir="rtl"] .dropdown-submenu > .dropdown-menu {
+  right: 100%;
+  margin-right: -1px;
 }
 .dropdown-submenu:hover > .dropdown-menu {
   display: block;
@@ -10727,11 +11947,23 @@ ul#help_menu li a i {
   margin-top: 2px;
   margin-right: -10px;
 }
+.dropdown-submenu > a:after.fa-pull-left {
+  margin-right: .3em;
+}
+.dropdown-submenu > a:after.fa-pull-right {
+  margin-left: .3em;
+}
 .dropdown-submenu > a:after.pull-left {
   margin-right: .3em;
 }
 .dropdown-submenu > a:after.pull-right {
   margin-left: .3em;
+}
+[dir="rtl"] .dropdown-submenu > a:after {
+  float: left;
+  content: "\f0d9";
+  margin-right: 0;
+  margin-left: -10px;
 }
 .dropdown-submenu:hover > a:after {
   color: #262626;
@@ -10748,6 +11980,10 @@ ul#help_menu li a i {
   float: right;
   z-index: 10;
 }
+[dir="rtl"] #notification_area {
+  float: left !important;
+  float: left;
+}
 .indicator_area {
   float: right !important;
   float: right;
@@ -10758,6 +11994,10 @@ ul#help_menu li a i {
   z-index: 10;
   text-align: center;
   width: auto;
+}
+[dir="rtl"] .indicator_area {
+  float: left !important;
+  float: left;
 }
 #kernel_indicator {
   float: right !important;
@@ -10775,6 +12015,12 @@ ul#help_menu li a i {
   padding-left: 5px;
   padding-right: 5px;
 }
+[dir="rtl"] #kernel_indicator {
+  float: left !important;
+  float: left;
+  border-left: 0;
+  border-right: 1px solid;
+}
 #modal_indicator {
   float: right !important;
   float: right;
@@ -10785,6 +12031,10 @@ ul#help_menu li a i {
   z-index: 10;
   text-align: center;
   width: auto;
+}
+[dir="rtl"] #modal_indicator {
+  float: left !important;
+  float: left;
 }
 #readonly-indicator {
   float: right !important;
@@ -10815,6 +12065,12 @@ ul#help_menu li a i {
   -moz-osx-font-smoothing: grayscale;
   content: "\f040";
 }
+.edit_mode .modal_indicator:before.fa-pull-left {
+  margin-right: .3em;
+}
+.edit_mode .modal_indicator:before.fa-pull-right {
+  margin-left: .3em;
+}
 .edit_mode .modal_indicator:before.pull-left {
   margin-right: .3em;
 }
@@ -10829,6 +12085,12 @@ ul#help_menu li a i {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: ' ';
+}
+.command_mode .modal_indicator:before.fa-pull-left {
+  margin-right: .3em;
+}
+.command_mode .modal_indicator:before.fa-pull-right {
+  margin-left: .3em;
 }
 .command_mode .modal_indicator:before.pull-left {
   margin-right: .3em;
@@ -10845,6 +12107,12 @@ ul#help_menu li a i {
   -moz-osx-font-smoothing: grayscale;
   content: "\f10c";
 }
+.kernel_idle_icon:before.fa-pull-left {
+  margin-right: .3em;
+}
+.kernel_idle_icon:before.fa-pull-right {
+  margin-left: .3em;
+}
 .kernel_idle_icon:before.pull-left {
   margin-right: .3em;
 }
@@ -10859,6 +12127,12 @@ ul#help_menu li a i {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: "\f111";
+}
+.kernel_busy_icon:before.fa-pull-left {
+  margin-right: .3em;
+}
+.kernel_busy_icon:before.fa-pull-right {
+  margin-left: .3em;
 }
 .kernel_busy_icon:before.pull-left {
   margin-right: .3em;
@@ -10875,6 +12149,12 @@ ul#help_menu li a i {
   -moz-osx-font-smoothing: grayscale;
   content: "\f1e2";
 }
+.kernel_dead_icon:before.fa-pull-left {
+  margin-right: .3em;
+}
+.kernel_dead_icon:before.fa-pull-right {
+  margin-left: .3em;
+}
 .kernel_dead_icon:before.pull-left {
   margin-right: .3em;
 }
@@ -10889,6 +12169,12 @@ ul#help_menu li a i {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: "\f127";
+}
+.kernel_disconnected_icon:before.fa-pull-left {
+  margin-right: .3em;
+}
+.kernel_disconnected_icon:before.fa-pull-right {
+  margin-left: .3em;
 }
 .kernel_disconnected_icon:before.pull-left {
   margin-right: .3em;
@@ -11279,27 +12565,46 @@ div#pager .ui-resizable-handle::after {
   flex: 1;
 }
 span.save_widget {
-  margin-top: 6px;
+  height: 30px;
+  margin-top: 4px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  width: 50%;
+  flex: 1;
 }
 span.save_widget span.filename {
-  height: 1em;
+  height: 100%;
   line-height: 1em;
-  padding: 3px;
   margin-left: 16px;
   border: none;
   font-size: 146.5%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
   border-radius: 2px;
 }
 span.save_widget span.filename:hover {
   background-color: #e6e6e6;
 }
+[dir="rtl"] span.save_widget.pull-left {
+  float: right !important;
+  float: right;
+}
+[dir="rtl"] span.save_widget span.filename {
+  margin-left: 0;
+  margin-right: 16px;
+}
 span.checkpoint_status,
 span.autosave_status {
   font-size: small;
+  white-space: nowrap;
+  padding: 0 5px;
 }
 @media (max-width: 767px) {
   span.save_widget {
     font-size: small;
+    padding: 0 0 0 5px;
   }
   span.checkpoint_status,
   span.autosave_status {
@@ -11343,6 +12648,9 @@ span.autosave_status {
   margin-top: 0px;
   margin-left: 5px;
 }
+.toolbar-btn-label {
+  margin-left: 6px;
+}
 #maintoolbar {
   margin-bottom: -3px;
   margin-top: -8px;
@@ -11362,6 +12670,10 @@ span.autosave_status {
 }
 .select-xs {
   height: 24px;
+}
+[dir="rtl"] .btn-group > .btn,
+.btn-group-vertical > .btn {
+  float: right;
 }
 .pulse,
 .dropdown-menu > li > a.pulse,
@@ -11512,6 +12824,10 @@ ul.typeahead-list i {
   margin-left: -10px;
   width: 18px;
 }
+[dir="rtl"] ul.typeahead-list i {
+  margin-left: 0;
+  margin-right: -10px;
+}
 ul.typeahead-list {
   max-height: 80vh;
   overflow: auto;
@@ -11520,6 +12836,13 @@ ul.typeahead-list > li > a {
   /** Firefox bug **/
   /* see https://github.com/jupyter/notebook/issues/559 */
   white-space: normal;
+}
+ul.typeahead-list  > li > a.pull-right {
+  float: left !important;
+  float: left;
+}
+[dir="rtl"] .typeahead-list {
+  text-align: right;
 }
 .cmd-palette .modal-body {
   padding: 7px;
@@ -11531,10 +12854,19 @@ ul.typeahead-list > li > a {
   outline: none;
 }
 .no-shortcut {
-  display: none;
+  min-width: 20px;
+  color: transparent;
+}
+[dir="rtl"] .no-shortcut.pull-right {
+  float: left !important;
+  float: left;
+}
+[dir="rtl"] .command-shortcut.pull-right {
+  float: left !important;
+  float: left;
 }
 .command-shortcut:before {
-  content: "(command)";
+  content: "(command mode)";
   padding-right: 3px;
   color: #777777;
 }
@@ -11543,6 +12875,10 @@ ul.typeahead-list > li > a {
   padding-right: 3px;
   color: #777777;
 }
+[dir="rtl"] .edit-shortcut.pull-right {
+  float: left !important;
+  float: left;
+}
 #find-and-replace #replace-preview .match,
 #find-and-replace #replace-preview .insert {
   background-color: #BBDEFB;
@@ -11550,6 +12886,12 @@ ul.typeahead-list > li > a {
   border-style: solid;
   border-width: 1px;
   border-radius: 0px;
+}
+[dir="ltr"] #find-and-replace .input-group-btn + .form-control {
+  border-left: none;
+}
+[dir="rtl"] #find-and-replace .input-group-btn + .form-control {
+  border-right: none;
 }
 #find-and-replace #replace-preview .replace .match {
   background-color: #FFCDD2;
@@ -11747,7 +13089,7 @@ div#notebook {
 
 <!-- Loading mathjax macro -->
 <!-- Load mathjax -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
     <!-- MathJax configuration -->
     <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -11772,22 +13114,20 @@ div#notebook {
     <div class="container" id="notebook-container">
 
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="The-Ray-Tracer-Challenge">The Ray Tracer Challenge<a class="anchor-link" href="#The-Ray-Tracer-Challenge">&#182;</a></h1><h2 id="A-Test-Driven-Guide-to-Your-First-3D-Renderer">A Test-Driven Guide to Your First 3D Renderer<a class="anchor-link" href="#A-Test-Driven-Guide-to-Your-First-3D-Renderer">&#182;</a></h2><h3 id="by-James-Buck">by James Buck<a class="anchor-link" href="#by-James-Buck">&#182;</a></h3><blockquote><p>Brace yourself for a fun challenge: build a photorealistic 3D renderer from scratch! It’s easier than you think. In just a couple of weeks, build a ray tracer that renders beautiful scenes with shadows, reflections, brilliant refraction effects, and subjects composed of various graphics primitives: spheres, cubes, cylinders, triangles, and more. With each chapter, implement another piece of the puzzle and move the renderer that much further forward. Do all of this in whichever language and environment you prefer, and do it entirely test-first, so you know it’s correct. Recharge yourself with this project’s immense potential for personal exploration, experimentation, and discovery.</p>
 </blockquote>
 <p>Opening quote from the beta ebook copy, September 2018. Publication due November 2018 (now February 2019). For details, see</p>
 <p><a href="https://pragprog.com/book/jbtracer/the-ray-tracer-challenge">https://pragprog.com/book/jbtracer/the-ray-tracer-challenge</a></p>
 <p>This Jupyter notebook will serve as a software definition of the ray tracer described in the above book. Code developed in earlier notebooks will be organized, documented and optimized. The workspace exported from this notebook can be used in the test cases defined in the book or used with a set of demonstration scenes associated with each chapter of the book.</p>
-<p><img src="attachment:image.png" alt="image.png"></p>
+<p><img src="data:image/png;base64,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" alt="image.png"></p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Conventions">Conventions<a class="anchor-link" href="#Conventions">&#182;</a></h2><p>Some of the functions called for in this book are quite simple, and needn't actually be coded as separate functions. The code within them could easily be inserted directly into where the functions are used. To denote this, simple substitutable functions will be referred to as Macros in the function description list. The APL function names will for the most part be the same as those given in the book.</p>
 <p>The data structures defined in the book will be represented by nested vectors. For each element of the vector data structure a constant will be defined whose value is the index of the element. These constants will be defined in the form</p>
@@ -11798,8 +13138,7 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Development-Approach">Development Approach<a class="anchor-link" href="#Development-Approach">&#182;</a></h2><p>This is my third time through the book to produce a ray tracer in Dyalog APL. In this notebook I'll take the code developed in the previous test driven development approach and try to organize and standardize the code. I've managed to work my way up to Chapter 15 of the book, but not all of the functionality in that chapter was completed. I took a quite different approach to Groups defined in Chapter 14. Although Triangles were implemented in Chapter 15, a complete parsing of OBJ 3D files was not completed. Chapter 16, Constructive Solid Geometry was the last remaining chapter, and has not yet been attempted.</p>
 <p>I've noted the main problem with the book <em>The Ray Tracer Challenge</em> in earlier notebooks. The author develops code and data structures in an iterative fashion which can result in changes to data structures and functions. This in turn can force earlier tests to be rewritten to accomodate changes in function signature. I've decided now to consolidate what has been written into something that is well documented and more understandable on its own. I'll place all of the Chapter tests in a separate notebook for code validation, just as the Demo programs were put in a separate notebook in the last iteration through the book.</p>
@@ -11816,8 +13155,7 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Lessons">Lessons<a class="anchor-link" href="#Lessons">&#182;</a></h2><p>Here's a good place to keep track of things I learn about APL along the way.</p>
 <p>1) I was delighted to discover that you can do arithmetic with enclosed arrays (seems I've forgotten the definition of a scalar function!).</p>
@@ -11851,8 +13189,7 @@ avg3←{sum←+⌿ ⋄ num←≢  ⋄ avg←sum÷num ⋄ avg ⍵}</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Open-Questions/Learning-Opportunities">Open Questions/Learning Opportunities<a class="anchor-link" href="#Open-Questions/Learning-Opportunities">&#182;</a></h2><p>1) I have <strong><em>got</em></strong> to get a grasp of nested arrays, enclose and disclose! There must be a way of boiling things down to a few simple rules because I spend 90% of my debugging time on this issue! Much of it is a result of trying to build a list, so I think if I look at a list support package I'll get a better idea of how things work. Perhaps even use the package itself.</p>
 <p><strong>Answer:</strong> Indexing returns an enclosed value, Pick returns the unenclosed value.</p>
@@ -11861,8 +13198,7 @@ avg3←{sum←+⌿ ⋄ num←≢  ⋄ avg←sum÷num ⋄ avg ⍵}</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>2) What is the means by which I can replace elements in a nested array? I know I can use dyadic Pick (⊃) to extract a single element. There is I believe a means of doing selective assignment. I'm not sure there is a way to do so via a series of indices though. The <strong>Pick</strong> function is one function for which selective assignment is appropriate, so play with that a bit.<br></p>
 <p><strong>Answer:</strong> Use a Pick expression in parentheses and assign value(s) to it. Note that the assignment is different from an indexed assignment, which must enclose a non-scalar value. If assigning to an element that is a vector, the vector value doesn't need to be enclosed.</p>
@@ -11871,8 +13207,7 @@ avg3←{sum←+⌿ ⋄ num←≢  ⋄ avg←sum÷num ⋄ avg ⍵}</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>3) How can I place a generalized function reference in a nested vector? I would like to let a user define their own pattern function, but I don't know how to treat a function as a first class object in APL. I'd want the <strong>pattern_at</strong> and <strong>pattern_at_shape</strong> functions to invoke the function a user has defined for their own custom pattern.</p>
 
@@ -11880,8 +13215,7 @@ avg3←{sum←+⌿ ⋄ num←≢  ⋄ avg←sum÷num ⋄ avg ⍵}</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Optimization">Optimization<a class="anchor-link" href="#Optimization">&#182;</a></h2><p>When testing is complete, the code can be optimized by</p>
 <ul>
@@ -11899,8 +13233,7 @@ avg3←{sum←+⌿ ⋄ num←≢  ⋄ avg←sum÷num ⋄ avg ⍵}</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Other-Ideas">Other Ideas<a class="anchor-link" href="#Other-Ideas">&#182;</a></h3><p>Another idea for optimization comes from the authors web site: cache the inverse of the transform matrix for an object! Simple, given how often it is used. Just need to add an extra field to an object nested vector for the inverse and initialize it to null. In use, check to see if it exists and if so use it; if not create it.</p>
 
@@ -11908,8 +13241,7 @@ avg3←{sum←+⌿ ⋄ num←≢  ⋄ avg←sum÷num ⋄ avg ⍵}</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Compute Canvas:</strong> A Dyalog blog post from August 2014 brings up a very interesting idea; compute a canvas as one long vector, then reshape as necessary. That could also simplify computing the image in parallel.</p>
 
@@ -11917,8 +13249,7 @@ avg3←{sum←+⌿ ⋄ num←≢  ⋄ avg←sum÷num ⋄ avg ⍵}</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Managing-Tasks">Managing Tasks<a class="anchor-link" href="#Managing-Tasks">&#182;</a></h2><p>I'll start with a list of tasks to improve the ray tracer code and add notes as the tasks are addressed.</p>
 <p>1) <strong><em>Swap row and column usage in the canvas data structure.</em></strong> - Done<br>
@@ -11929,8 +13260,7 @@ This will impact the <strong>render</strong> function as well as the <strong>can
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>2) <strong><em>Eliminate argument counting residue from function redefinitions.</em></strong> - Done<br>
 The author redefined the arguments for several functions like <strong>prepare_computations</strong> and <strong>lighting</strong> which would have forced a rewrite of earlier tests. Rather than do that I checked how many arguments were passed and set defaults for some that were not there. Time to fix these two!</p>
@@ -11940,8 +13270,7 @@ The author redefined the arguments for several functions like <strong>prepare_co
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>3) <strong><em>Convert procedural functions to defined functions (d'funs).</em></strong> - Mostly done<br>
 Candidate conversions include; pattern_at, pattern_at_shape, flatten_group, intersect_world, prepare_computations, lighting and schlick. The <strong>cylinder_intersect</strong> and <strong>cone_intersect</strong> have fairly deep conditional nesting. I'd need to define functions within the main function to properly decompose these into simple d'fns.</p>
@@ -11953,8 +13282,7 @@ Candidate conversions include; pattern_at, pattern_at_shape, flatten_group, inte
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>4) <strong><em>Combine multiple expressions into fewer expressions and temporary variables.</em></strong> - Skip<br>
 While first writing code I pretty much followed the pseudocode written in the book with all of their short expressions and assignments. I should reduce the number of intermediate expressions and variables and hopefully speed things up.</p>
@@ -11964,8 +13292,7 @@ While first writing code I pretty much followed the pseudocode written in the bo
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>5) <strong><em>Round color values to zero that are less than EPSILON.</em></strong> - Done<br>
 After getting refraction working I found the <strong>canvas_to_ppm</strong> function was throwing a DOMAIN ERROR when trying to format (⍕) the color values in the canvas array. There must be some sort of non-numeric value in the canvas. A complex number will cause format to throw a DOMAIN ERROR, so I need to find where that is happening. While examining the data I noticed a lot of very small integer values, so I should probably set any value less than EPSILON to zero. That would also eliminate possible negative values (which shouldn't happen).</p>
@@ -11974,8 +13301,7 @@ After getting refraction working I found the <strong>canvas_to_ppm</strong> func
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>6) <strong><em>Change the canvas array to an Inverted Table.</em></strong> - Done<br>
 There was a good presentation on Inverted Tables that demonstrated significant space savings and better processing times. Since I'm processing a canvas a row at a time, I could represent a canvas as a vector of rows and then perform an Each style process on the row. This data representation would make it a little easier to implement anti-aliasing.</p>
@@ -11986,8 +13312,7 @@ There was a good presentation on Inverted Tables that demonstrated significant s
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>7) <strong><em>Update shade_hit to process multiple light sources.</em></strong> - Done<br>
 Multiple <strong>point_light</strong> sources can create interesting shadow patterns. Grouped together, they are a way to implement area light sources so that shadows are diffuse rather than sharp.</p>
@@ -11996,8 +13321,7 @@ Multiple <strong>point_light</strong> sources can create interesting shadow patt
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>8) <strong><em>Return a single intersection for shapes that generate only one.</em></strong> - Done<br>
 Early on in developing the code some shapes like Plane only produced one ray intersection but I was returning two intersections with identical values. I did this to be compatible with the first Sphere shape but also because I was having problems with producing a list with only one element. Go back and generate a single hit list.</p>
@@ -12007,8 +13331,7 @@ Early on in developing the code some shapes like Plane only produced one ray int
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>9) <strong><em>Implement the true recursive call with recurse limits for color_at.</em></strong> - Done!<br>
 The author had an unfortunate solution to a recursive loop involving <strong>color_at</strong>, <strong>shade_hit</strong> and the two <strong>reflected_color</strong>/<strong>refracted_color</strong> functions. I've implemented something slightly different that seems to work. I'm thus not too sure this task adds anything to functionality, but it does get rid of a global variable. Might also make a useful exercise in processing multiple arguments, because function forms would change from</p>
@@ -12032,8 +13355,7 @@ The author had an unfortunate solution to a recursive loop involving <strong>col
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>10) <strong><em>Convert code to put everything in a namespace.</em></strong> - Done<br>
 Quite a number of things, like default shapes, are represented as variables rather than as functions. The problem is that if I put all code into a namespace then I can't access these variables implicitly by setting the search path variable ⎕PATH. So creating a sphere would have to be something like <code>s← #.RayTracer.sphere</code> which is explicitly tied to the namespace containing the code.</p>
@@ -12043,8 +13365,7 @@ Quite a number of things, like default shapes, are represented as variables rath
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>11) <strong><em>Add a precomputed inverse transform field to shapes and materials.</em></strong> - Done<br>
 The most significant way to speed up rendering time is to precompute the inverse of transformation matrix at object definition time rather than repeatedly computing it during rendering. Thie has the added advantage of throwing a DOMAIN ERROR during scene definition should the matrix have no inverse rather than in the middle of rendering.</p>
@@ -12070,8 +13391,7 @@ The most significant way to speed up rendering time is to precompute the inverse
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>12) <strong><em>Profile code to find areas for optimization.</em></strong><br>
 Learning to use the Dyalog APL profiling tools would be very useful, and here's a chance to start.</p>
@@ -12080,8 +13400,7 @@ Learning to use the Dyalog APL profiling tools would be very useful, and here's 
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Program-Profiling">Program Profiling<a class="anchor-link" href="#Program-Profiling">&#182;</a></h2><p>Program profiling is fairly simple to do. The following command sequence can be used to profile a typical rendering task.</p>
 
@@ -12099,8 +13418,7 @@ im← w render c
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Two functions rose to the top duing profile, <strong>dot</strong> and <strong>transform</strong>. Since the <strong>dot</strong> function is simply the <code>+.×</code> expression, the function can be directly replaced with the expression in the seven places it occurs. The <strong>transform</strong> function is a bit more complex but is only used by the <strong>intersect</strong> function. Inlining the two functions seems to have an effect when benchmarking in isolation using <code>]runtime</code> but has only a small, less than 1% impact on overall rendering time.</p>
 <p>One thing that helps is to rewrite the <strong>transform</strong> function to a more efficient form AND substitute it into the <strong>intersect</strong> function. That should result in about a 4% improvement in rendering time. The <strong>transform</strong> function is rewritten from</p>
@@ -12113,8 +13431,7 @@ im← w render c
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another interesting takeaway from profiling. I had written the <strong>check_axis</strong> function for cube rendering as taking two arguments on the righthand side. Profiling showed extracting the two arguments as <code>(o d)← ⍵</code> was taking a significant amount of time, so I rewrote  <strong>check_axis</strong> to do the usual lefthand and righthand argument approach. The result was a nearly 9% improvement in rendering time for the simple Chapter12 demo! See if there are any other simple wins like that.</p>
 
@@ -12122,8 +13439,7 @@ im← w render c
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here's an interesting profiling result. Looks like Pick indexing is faster than the usual bracket representation for a vector.</p>
 
@@ -12151,8 +13467,7 @@ im← w render c
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Work-Environment">Work Environment<a class="anchor-link" href="#Work-Environment">&#182;</a></h1><p>Let's put everything into a separate workspace called (naturally) RayTracer. Create the namespace then change into it so that all subsequent variables and functions are created within it. Might as well also name our workspace while we're at it!</p>
 
@@ -12170,14 +13485,13 @@ im← w render c
 <span class="p">)</span><span class="nv">CS</span> <span class="nv">RayTracer</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Data-Structures">Data Structures<a class="anchor-link" href="#Data-Structures">&#182;</a></h1><p>In this section any data structure that will be used in the definition of a scene will be defined as an APL procedural function or direct function depending on circumstances. I've had many problems with direct functions that do not process arguments, so data structures like <em>material</em> or the various Shapes will be implemented as procedural functions.</p>
 
@@ -12185,8 +13499,7 @@ im← w render c
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>These are constants or global variables used in the ray tracer code. Some of the so-called data structures in this section are actually APL functions that accept arguments, but are treated as though they are just data structures because they could be implemented as Abstract Data Types in other languages.</p>
 
@@ -12205,14 +13518,13 @@ im← w render c
 <span class="nv">MAX_RECURSION</span><span class="kd">←</span> <span class="m">5</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here are a few global flags to control code execution. Setting flags for evaluating reflection and refraction to FALSE can save rendering time if one or both of these attributes are not present in a scene being rendered.</p>
 
@@ -12228,14 +13540,13 @@ im← w render c
 <span class="nv">EVAL_REFRACTION</span><span class="kd">←</span> <span class="nv">TRUE</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Defining-the-Ray-Tracer-Space">Defining the Ray Tracer Space<a class="anchor-link" href="#Defining-the-Ray-Tracer-Space">&#182;</a></h2><p>A ray tracer operates in a three dimensional space referred to as a scene. Defining that space begins with data structures representing position (<em>point</em>) and direction (<em>vector</em>). Next, a <em>ray</em> is represented by its point of origin (a light source) and its direction. When a ray strikes a scene object, it is characterized as an <em>intersection</em> which consists of the object that was struck by a ray and the distance from the ray's origin. For scene processing, this intersection is augmented with additional computed values and referred to as a <em>hit</em> which extend the size of the intersection nested vector.</p>
 
@@ -12243,8 +13554,7 @@ im← w render c
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li><strong>point</strong> <em>x y z</em>  → x y z 1</li>
@@ -12258,8 +13568,7 @@ im← w render c
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>These are sets of vector index values or identifying constants whose name makes the code context easier to understand. It would be nice if APL had a means of defining true immutable constants. When optimizing inner loops I'll likely leave the original statement as a comment and replace these names with their actual value.</p>
 
@@ -12290,7 +13599,7 @@ im← w render c
 <span class="nv">hit_n2</span><span class="kd">←</span>      <span class="m">11</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12309,14 +13618,13 @@ im← w render c
 <span class="nv">intersections</span><span class="kd">←</span> <span class="kt">{</span><span class="bp">⍵</span><span class="sr">[</span><span class="o">⍋</span><span class="nv">hit_distance</span><span class="o">⊃</span><span class="na">¨</span><span class="bp">⍵</span><span class="sr">]</span><span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Ray-Tracer-Object-Attributes">Ray Tracer Object Attributes<a class="anchor-link" href="#Ray-Tracer-Object-Attributes">&#182;</a></h2><p>The main attributes of objects in a ray tracer scene are color, material, and pattern. Color is represented as a trio of values, Red, Green and Blue (RGB) with a range from 0.0 to 1.0 inclusive. APL will represent a color as a three element numeric array. Given its simplicity no constructor is needed, though it is useful to define a few constants.</p>
 
@@ -12338,14 +13646,13 @@ im← w render c
 <span class="nv">white</span><span class="kd">←</span>   <span class="m">1</span> <span class="m">1</span> <span class="m">1</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The identity matrix will appear later in the definition of patterns and scene objects.</p>
 <ul>
@@ -12364,7 +13671,7 @@ im← w render c
 <div class=" highlight hl-APL"><pre><span></span><span class="nv">identity</span><span class="kd">←</span> <span class="kt">{</span><span class="bp">⍵</span> <span class="bp">⍵</span><span class="o">⍴</span><span class="m">1</span><span class="o">,</span><span class="bp">⍵</span><span class="o">⍴</span><span class="m">0</span><span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12379,7 +13686,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12392,14 +13699,13 @@ im← w render c
 <div class=" highlight hl-APL"><pre><span></span><span class="nv">identity4</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li><strong>material</strong> → <em>color</em> <em>ambient diffuse specular shininess</em> <em>reflective refractive transparency</em></li>
@@ -12431,7 +13737,7 @@ im← w render c
 <span class="c1">⍝ glass←    (1 1 1) 0.1 0.9 0.9 200 0 1.5 1</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12446,7 +13752,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12461,7 +13767,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12475,14 +13781,13 @@ im← w render c
 <span class="nv">glass</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Patterns are nested arrays with an ID in the first position to identify what type of pattern it is. Chapter 10 suggests creating your own additional patterns, and also allowing patterns to nest so that the color1 and color2 fields could be patterns. Another idea is a pattern with two patterns that are blended together at a given point, i.e. two stripe patterns at 90 degree angles. That could get pretty interesting!</p>
 <p>POV-Ray allows you to define your own pattern function. Just add that definition and patterns could be externalized.</p>
@@ -12542,7 +13847,7 @@ im← w render c
 <span class="m">1</span> <span class="m">1</span> <span class="m">1</span> <span class="nv">stripe_pattern</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12557,7 +13862,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12570,14 +13875,13 @@ im← w render c
 <div class=" highlight hl-APL"><pre><span></span><span class="nv">test_pattern</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that the code uses precomputed inverse transform matrices, this helper function is added so that both the transform matrix and its inverse can be added at the same time.</p>
 
@@ -12599,22 +13903,20 @@ im← w render c
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Ray-Tracer-Scene-Objects">Ray Tracer Scene Objects<a class="anchor-link" href="#Ray-Tracer-Scene-Objects">&#182;</a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The various objects in a ray tracer scene and the constants associated with them. All of these objects are defined as being situated at the origin of a scene with default dimensions. A transform matrix is used to translate, scale or rotate the object to its actual position in a scene, or so you might think as a scene designer. When rendering a scene though, the ray from a point light source is transformed instead, and a check is made to see if the ray intersects the object.</p>
 <ul>
@@ -12670,7 +13972,7 @@ im← w render c
 <span class="nv">group_members</span><span class="kd">←</span> <span class="m">6</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12685,7 +13987,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12700,7 +14002,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12715,7 +14017,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12730,7 +14032,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12745,7 +14047,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12760,7 +14062,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12775,7 +14077,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12790,7 +14092,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12810,14 +14112,13 @@ im← w render c
 <span class="nv">group</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li><strong>triangle</strong> <em>point1</em> <em>point2</em> <em>point3</em> → shape_triangle identity4 material points edges normalv</li>
@@ -12841,14 +14142,13 @@ im← w render c
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that the code uses precomputed inverse transform matrices, this helper function is added so that both the transform matrix and its inverse can be added at the same time.</p>
 
@@ -12870,14 +14170,13 @@ im← w render c
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Ray-Tracer-Visualization-Objects">Ray Tracer Visualization Objects<a class="anchor-link" href="#Ray-Tracer-Visualization-Objects">&#182;</a></h2><p>When one describes a scene for a ray tracer there are objects that are needed for rendering, like a light source, camera, and a canvas. These have no physical representation within a scene but are necessary for rendering the scene. A collection of scene objects is referred to as a <em>world</em> for the ray tracer.</p>
 
@@ -12885,8 +14184,7 @@ im← w render c
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li><strong>world</strong> → ⍬ ⍬</li>
@@ -12907,7 +14205,7 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12920,7 +14218,7 @@ im← w render c
 <div class=" highlight hl-APL"><pre><span></span><span class="nv">world</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -12946,14 +14244,13 @@ im← w render c
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A <em>canvas</em> is not an object in a ray tracer scene per se, but it is a part of how one represents a scene.</p>
 <ul>
@@ -12965,8 +14262,7 @@ im← w render c
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>canvas←{(⌽⍵)⍴⊂0 0 0}</p>
 <p>Let's take the old version of canvas and change it to create an inverted matrix.</p>
@@ -12983,14 +14279,13 @@ im← w render c
 <span class="nv">canvas</span> <span class="m">3</span> <span class="m">2</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Both <em>point_light</em> and <em>camera</em> should be considered scene objects, but they are used to render a scene rather than appear in one. Both are treated as data structures because they are usually not modified after creation.</p>
 <ul>
@@ -13025,7 +14320,7 @@ im← w render c
 <span class="nv">camera_halfh</span><span class="kd">←</span>      <span class="m">8</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13039,7 +14334,7 @@ im← w render c
 <span class="nv">point_light</span><span class="kd">←</span><span class="kt">{</span><span class="bp">⍺</span> <span class="bp">⍵</span> <span class="m">0</span> <span class="m">1</span><span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13067,14 +14362,13 @@ im← w render c
    <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Library-Functions">Library Functions<a class="anchor-link" href="#Library-Functions">&#182;</a></h1><p>These are the functions the author defines in the ray tracer book. I've reorganized the functions so they no longer follow the order in which they were defined in the book. Instead I start with general library functions and place those specifically associated with scene objects at the end of this section. Functions that are directly involved in rendering a scene rather than simply defining it are placed in their own section.</p>
 
@@ -13082,8 +14376,7 @@ im← w render c
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here's a function from Dyalog, a random number generator with a normal distribution. The function takes a single argument, the number of random values to generate. The average is zero and the standard deviation is 1. You can find the code at</p>
 <p><a href="https://dfns.dyalog.com/c_NormRand.htm">https://dfns.dyalog.com/c_NormRand.htm</a></p>
@@ -13104,14 +14397,13 @@ im← w render c
 <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>First up are some vector manipulation functions. These are used fairly extensively during rendering.</p>
 <ul>
@@ -13134,7 +14426,7 @@ im← w render c
 <span class="nv">dot</span><span class="kd">←</span><span class="kt">{</span><span class="bp">⍺</span><span class="o">+</span><span class="na">.</span><span class="o">×</span><span class="bp">⍵</span><span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13160,14 +14452,13 @@ im← w render c
 <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>These functions are used once in setting up a scene and so would not provide much benefit by being optimized. They are used to build a transform matrix associated with each scene object. It should be noted that a series of matrix multiplications in the book are right associative, that is, A <em> B </em> C is evaluated as A <em> (B </em> C) which fits APL like a glove. In APL, the above would be written as</p>
 <p>A +.× B +.× C</p>
@@ -13197,7 +14488,7 @@ im← w render c
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13216,7 +14507,7 @@ im← w render c
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13235,7 +14526,7 @@ im← w render c
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13254,7 +14545,7 @@ im← w render c
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13273,7 +14564,7 @@ im← w render c
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13292,14 +14583,13 @@ im← w render c
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>These functions are used extensively during rendering and so should be examined for improvement. The <strong>position</strong> function takes a ray and returns the point that is a given distance from the ray origin. The <strong>reflect</strong> function computes the new direction of a ray as it bounces off the surface of an object given the vector perpendicular (normal) to the object surface. The <strong>transform</strong> function applies a given transform matrix to both the origin and direction of a ray and returns the new altered ray. Finally, the <strong>hit</strong> function scans a sorted list of intersections and returns the first intersection with a positive distance, or null (⍬) if there aren't any.</p>
 <ul>
@@ -13323,7 +14613,7 @@ im← w render c
 <span class="nv">transform</span><span class="kd">←</span> <span class="kt">{</span><span class="nv">tm</span><span class="kd">←</span><span class="bp">⍺</span><span class="p">⋄</span><span class="kt">{</span><span class="nv">tm</span><span class="o">+</span><span class="na">.</span><span class="o">×</span><span class="bp">⍵</span><span class="kt">}</span><span class="na">¨</span><span class="bp">⍵</span><span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13343,14 +14633,13 @@ im← w render c
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li><strong>view_transform</strong> from to up → <em>transform matrix</em></li>
@@ -13379,14 +14668,13 @@ im← w render c
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Patterns are an area where additions can be made to the ray tracer defined by the author. Several suggestions are made, and the POV-RAY ray tracer might be a good place to find more patterns.</p>
 <ul>
@@ -13408,6 +14696,7 @@ im← w render c
 <div class=" highlight hl-APL"><pre><span></span><span class="sr">]</span><span class="nv">dinput</span>
 <span class="nv">pattern_at</span><span class="kd">←</span><span class="kt">{</span>
   <span class="c1">⍝ pattern  pattern_at  point → color</span>
+  <span class="c1">⍝ assert (5=≢⍺)^4=≢⍵</span>
   <span class="nv">tag</span><span class="kd">←</span> <span class="nv">pattern_type</span><span class="o">⊃</span><span class="bp">⍺</span>
   <span class="nv">c1</span><span class="kd">←</span> <span class="nv">pattern_color1</span><span class="o">⊃</span><span class="bp">⍺</span>
   <span class="nv">c2</span><span class="kd">←</span> <span class="nv">pattern_color2</span><span class="o">⊃</span><span class="bp">⍺</span>
@@ -13415,6 +14704,7 @@ im← w render c
   <span class="nv">c1</span><span class="kd">←</span> <span class="bp">⍵</span> <span class="nv">true_color</span> <span class="nv">c1</span>
   <span class="nv">c2</span><span class="kd">←</span> <span class="bp">⍵</span> <span class="nv">true_color</span> <span class="nv">c2</span>
   
+  <span class="c1">⍝ assert (3=≢c1)^3=≢c2</span>
   <span class="c1">⍝ Pattern used during testing</span>
   <span class="nv">tag</span><span class="o">=</span><span class="nv">pat_test</span><span class="bp">:</span> <span class="m">3</span><span class="o">↑</span><span class="bp">⍵</span>
   <span class="c1">⍝ Stripe pattern</span>
@@ -13447,7 +14737,7 @@ im← w render c
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13466,14 +14756,13 @@ im← w render c
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another pattern suggested at the end of the chapter on patterns was Perlin noise. The <strong>perlin_pattern</strong> blends two colors or patterns using a random jitter value. It uses a random permutation of the numbers from 0 to 255 which is static. I'd implement it with the shuffle function and place it into a global variable. It would be interesting to reshuffle every time the function is invoked. The function <strong>perlin_noise</strong> generates the desired color value. The code below can be found at
 <a href="https://mrl.nyu.edu/~perlin/noise/">https://mrl.nyu.edu/~perlin/noise/</a>
@@ -13557,7 +14846,7 @@ public final class ImprovedNoise {
 <span class="nv">perlin_p</span><span class="o">,</span><span class="kd">←</span> <span class="nv">perlin_p</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13572,7 +14861,7 @@ public final class ImprovedNoise {
 <span class="nv">lerp</span><span class="kd">←</span> <span class="kt">{</span><span class="p">(</span><span class="nv">t</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span><span class="kd">←</span><span class="bp">⍵</span> <span class="p">⋄</span> <span class="nv">a</span><span class="o">+</span><span class="nv">t</span><span class="o">×</span><span class="nv">b</span><span class="o">-</span><span class="nv">a</span><span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13594,7 +14883,7 @@ public final class ImprovedNoise {
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13634,14 +14923,13 @@ public final class ImprovedNoise {
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Scene-Object-Functions">Scene Object Functions<a class="anchor-link" href="#Scene-Object-Functions">&#182;</a></h3><p>These functions are directly associated with scene objects and thus would be implemented as object methods if an OO approach is used.</p>
 
@@ -13649,8 +14937,7 @@ public final class ImprovedNoise {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Functions for computing the intersection of a ray with a sphere and the surface normal of a sphere. Each shape requires its own pair of such functions. This might be where the APL class capability could be used to good effect.</p>
 <ul>
@@ -13681,7 +14968,7 @@ public final class ImprovedNoise {
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13702,14 +14989,13 @@ public final class ImprovedNoise {
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>A plane always has a fixed normal, so its' <strong>plane_normal_at</strong> function just returns a constant and ignores any arguments. Watch out for using it as a niladic function though!</p>
 <ul>
@@ -13735,14 +15021,13 @@ public final class ImprovedNoise {
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The Plane normal_at function accepts a Plane object and a ray, but always returns a constant.</p>
 
@@ -13760,14 +15045,13 @@ public final class ImprovedNoise {
   <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The cube object has corner cases (har har!) when a ray strikes the edge or corner of the cube. The <strong>check_axis</strong> function is used to check for the condition.</p>
 <ul>
@@ -13798,7 +15082,7 @@ public final class ImprovedNoise {
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13823,7 +15107,7 @@ public final class ImprovedNoise {
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13843,14 +15127,13 @@ public final class ImprovedNoise {
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Cylinders are somewhat more complex objects. They are oriented so that they are parallel to the y axis (up) and normally extend to infinity in either direction from their origin. When created, the cylinder extents can be defined, and they can be given a cap on the ends rather than being hollow and open. This makes the task of computing an intersection or normal a bit more difficult, with the <strong>check_cap</strong> function being used for end caps.</p>
 <ul>
@@ -13876,7 +15159,7 @@ public final class ImprovedNoise {
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13904,14 +15187,13 @@ public final class ImprovedNoise {
   <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The number of nested conditionals in the <strong>cylinder_intersect</strong> function would make it a challenge to convert it to a defined function.</p>
 
@@ -13963,7 +15245,7 @@ public final class ImprovedNoise {
   <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -13984,14 +15266,13 @@ public final class ImprovedNoise {
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li><em>ray</em> <strong>check_cap2</strong> distance radius → Boolean</li>
@@ -14017,7 +15298,7 @@ public final class ImprovedNoise {
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -14070,7 +15351,7 @@ public final class ImprovedNoise {
   <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -14092,14 +15373,13 @@ public final class ImprovedNoise {
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>These two functions might be considered a general object superclass method that invokes the specific object method defined earlier.</p>
 <ul>
@@ -14134,7 +15414,7 @@ public final class ImprovedNoise {
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -14170,14 +15450,13 @@ public final class ImprovedNoise {
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Groups are an object, and Groups can contain other Groups. I really wasn't willing to implement groups the way the author defines them.</p>
 <ul>
@@ -14212,14 +15491,13 @@ public final class ImprovedNoise {
   <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The <strong>group_intersect</strong> is included here even though I don't plan to use it anywhere. Might be useful though if I implement the author's group scheme (unlikely!).</p>
 
@@ -14245,14 +15523,13 @@ public final class ImprovedNoise {
   <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Ray-Tracer-Program">Ray Tracer Program<a class="anchor-link" href="#Ray-Tracer-Program">&#182;</a></h1><p>The functions in this section, starting with the <strong>render</strong> function, are directly involved in rendering a scene and saving the result to a PPM graphic file.</p>
 
@@ -14260,8 +15537,7 @@ public final class ImprovedNoise {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>One of the first things the author chose to do was implement functions to create a PPM graphics file. The way a canvas is defined should probably be altered to eliminate the use of the transpose function in the <strong>canvas_to_ppm</strong> function.</p>
 <ul>
@@ -14273,8 +15549,7 @@ public final class ImprovedNoise {
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The old version of the canvas_to_ppm function where a canvas was an NxM matrix.</p>
 
@@ -14312,7 +15587,7 @@ canvas_to_ppm←{
 <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -14337,7 +15612,7 @@ canvas_to_ppm←{
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -14354,14 +15629,13 @@ canvas_to_ppm←{
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>These functions are used extensively during rendering and so should be examined for improvement. In particular, the <strong>render</strong> function is a double-nested loop that wouldn't be out of place in a BASIC program.</p>
 <ul>
@@ -14378,8 +15652,7 @@ canvas_to_ppm←{
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 
 <pre><code>∇Z← W render C;x;y;r;c
@@ -14404,8 +15677,7 @@ canvas_to_ppm←{
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><code>∇Z← W render C;x;y;r;c;row
    ⍝ world  render  camera → canvas
@@ -14431,8 +15703,7 @@ canvas_to_ppm←{
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>The code that renders a single canvas line is broken out so that it can serve as the basic unit of rendering when executing multiple threads to speed up overall rendering. Each thread will be given a row to render until all rows are complete. If a thread is rendering a complex row it won't hold up other threads that have finished as they will be assigned a new row on completion.</p>
 <p>Using the Each operator in place of the explicit loop makes things worse if the <strong>render_row</strong> function doesn't use Each as well. Otherwise, combinations of loop or Each take roughly the same amount of time so I'll use the explicit loop in both functions. Right now there is a slight improvement in rendering time with the code split, a welcome side effect.</p>
@@ -14458,14 +15729,13 @@ canvas_to_ppm←{
    <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In the <strong>render_row</strong> code the use of the Each operator is roughly the same as the explicit loop. Not quite sure why, but I'll use the loop for now.</p>
 
@@ -14493,7 +15763,7 @@ canvas_to_ppm←{
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -14523,14 +15793,13 @@ canvas_to_ppm←{
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>From testing in Chapter 9 I found that <strong>intersect_world</strong> could return all negative distances, so <strong>hit</strong> would return a null. I wasn't checking for that in <strong>color_at</strong>, which caused prepare_computations to blow up when it called normal_at.</p>
 
@@ -14559,14 +15828,13 @@ canvas_to_ppm←{
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 
 <pre><code>∇ Z← W intersect_world R;objs;obj;inter;d;idx
@@ -14596,8 +15864,7 @@ canvas_to_ppm←{
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I've spent hours with this trying to make a d'fun! The dyadic Each took some time to understand and use. Then unpacking the list returned by intersect Each took quite some time to figure out. Now I'm stuck getting rid of nulls and then determining if I have nothing to return. Finally got it working, but only by trial and error! <strong><em>Study This!!!</em></strong></p>
 <p>Used Unique to eliminate duplicate hits from intersect functions that should return one hit but return two instead.</p>
@@ -14606,8 +15873,7 @@ canvas_to_ppm←{
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 
 <pre><code>]dinput
@@ -14624,8 +15890,7 @@ intersect_world←{
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 
 <pre><code>⍝ Code to test above function
@@ -14637,8 +15902,7 @@ w intersect_world r</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another attempt to turn intersect_world into a d'fn! This is about the same speed as the procedural function depending on context. Sometimes faster, sometimes slower but doesn't seem to vary more than 1%. I'll keep the function written as a d'fn because it's shorter (and a d'fn!) Constructing the intersection list as a side effect is a bit weird though!</p>
 
@@ -14663,14 +15927,13 @@ w intersect_world r</code></pre>
 <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Now that I've added objects that don't cast shadows, it would be worthwhile to create a version of <strong>intersect_world</strong> that discards such objects when computing intersections. The <strong>color_at</strong> function needs to know all intersections, but the <strong>is_shadow</strong> function discards any intersections with such objects. So, why compute them in the first case? This version of <strong>intersect_world</strong> will obviate the need to discard intersections with objects that don't cast shadows by not computing the intersections in the first place. That should improve rendering time to some degree.</p>
 <p>Unfortunately, it made very little difference, perhaps 1%. Leave the function but don't use it.</p>
@@ -14698,14 +15961,13 @@ w intersect_world r</code></pre>
 <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li><em>intersection</em> <strong>prepare_computations</strong> <em>ray</em> intersection_list → augmented intersection</li>
@@ -14717,8 +15979,7 @@ w intersect_world r</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong><em>Finally found a nasty problem computing the hit_reflectv component.</em></strong> I forgot to disclose the two arrays before passing them to the <strong>reflect</strong> function. As a result the reflect vector was incorrect. No idea why this didn't cause a fault down the line.</p>
 
@@ -14750,7 +16011,7 @@ w intersect_world r</code></pre>
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -14807,14 +16068,13 @@ w intersect_world r</code></pre>
   <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 
 <pre><code>∇Z← lighting Args;matl;light;point;eyev;normalv;insh;obj;clr;ec;lv;am;ldn;di;f;sp;rv;rde
@@ -14890,14 +16150,13 @@ w intersect_world r</code></pre>
   <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li><em>world</em> <strong>is_shadowed</strong> <em>point</em> → <em>Boolean</em></li>
@@ -14938,14 +16197,13 @@ w intersect_world r</code></pre>
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>With the new point light source is_shadowed will now return a value between zero and one rather than a Boolean value. We can just use the old <strong>is_shadowed</strong> function and iterate with jittered rays.</p>
 
@@ -14968,14 +16226,13 @@ w intersect_world r</code></pre>
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li><em>world</em> <strong>shade_hit</strong> augmented intersection → <em>color</em></li>
@@ -14988,8 +16245,7 @@ w intersect_world r</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Note:</strong> One extension to the ray tracer would be support for multiple lighting sources. For that reason, I made the first element of a World data structure a list of <em>point_light</em> structures rather than just a single light source. The <strong>shade_hit</strong> function should iterate through the list of lights, presumably averaging the <em>surface</em> value returned by <strong>lighting</strong>.</p>
 <p>Time now to add support for multiple light sources! The changes are fairly straightforward, starting with <strong>in_shadow</strong> now being passed the light source to consider. Iterate through the light sources calling <strong>in_shadow</strong> and <strong>lighting</strong> to calculate the surface color for each source and add together all the results.</p>
@@ -15024,7 +16280,7 @@ w intersect_world r</code></pre>
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -15051,7 +16307,7 @@ w intersect_world r</code></pre>
    <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -15086,7 +16342,7 @@ w intersect_world r</code></pre>
   <span class="kt">}</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -15113,14 +16369,13 @@ w intersect_world r</code></pre>
   <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Parallel-Rendering">Parallel Rendering<a class="anchor-link" href="#Parallel-Rendering">&#182;</a></h1><p>Rendering large, complex scenes can take a good deal of time. Fortunately, Dyalog APL provides a means of distributing processing across multiple CPUs by spawning additional APL interpreters and communicating with the via RPC (Remote Procedure Calls). There is a certain amount of overhead involved in sending the function and its arguments over to a process and then receiving the results back. Luckily ray tracing involves a great deal of computation, and that reduces the contribution of intercommunication time to total time executed.</p>
 <p>For a scene involving a good deal of reflection and refraction, like the spheres scene from Chapter 11, the savings can be impressive. On a four CPU machine, the rendering time is reduced from 18:57.60 minutes to just 7:32.49, a speedup of 2.5 times. The SoftShadows demo that performs 100 casts per pixel for smooth shading reduces runtime from 29:55.95 to 12:15.81 minutes, a speedup factor of 2.44 times. The Table demo of cubes reduced runtime from 32:45.25 to 11:54.31, a speedup of 2.75 times.</p>
@@ -15129,8 +16384,7 @@ w intersect_world r</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This version of parallel render uses the parallel Each function to distribute tasks among isolates. It has the advantage of starting an isolate per CPU and of evening out the process load as tasks are assigned. A drawback currently is that each task loads a copy of the RayTracer namespace each time a task is run.</p>
 <p>After using <code>]load</code> to load the <code>rtcode_ws.dyalog</code> SALT file, be sure to use <code>)copy isolate</code> in the root namespace.</p>
@@ -15149,14 +16403,13 @@ w intersect_world r</code></pre>
  <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This function is the one submitted to each isolate. The function needs to load the RayTracer namespace from a hardcoded workspace (bad!) each time it runs. Perhaps it can check for the presence of the namespace first?</p>
 <p>The function does not need change into the RayTracer namespace in order to resolve the index variable names. I need to explicitly reference the variables though.</p>
@@ -15182,14 +16435,13 @@ w intersect_world r</code></pre>
 <span class="bp">∇</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>There's a way of doing separate isolates, but passing variable values to the isolate with a function is a problem. I'd basically need to make the variable global in the root namespace or pass the namespace path along with the variable name. Here's the example.</p>
 
@@ -15213,8 +16465,7 @@ iss.(queens nn)</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Another possibility lies with the method used by the Mandelbrot program, which seems to allow the function passed to an isolate to accept local arguments. That approach looks something like</p>
 
@@ -15232,8 +16483,7 @@ iss.(#.⎕CS '#.RayTracer/)</code></pre>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here's an attempt at doing the above.</p>
 
@@ -15267,8 +16517,89 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Graphical-Rendering">Graphical Rendering<a class="anchor-link" href="#Graphical-Rendering">&#182;</a></h2><p>Having to repetitively render a scene, convert the result to a PPM file and then view the file in GIMP can consum more time than is necessary when adjusting a scene description until the results are right. Reducing the size of the scene will speed up the rendering time, but you still need to generate the file and view the result. How much better it would be to write the scene to a graphic window as the scene is rendered. These two functions will do exactly that by utilizing the <strong>render_row</strong> function to compute the scene row by row and display each row as it is computed.</p>
+<ul>
+<li><em>World</em> <strong>wrender</strong> <em>Camera</em> - Creates a Form and writes each ro to the form</li>
+<li><em>World</em> <strong>wrender_row</strong> <em>Msg</em> - Callback function, renders one row using <strong>render_row</strong> and writes to the Form</li>
+</ul>
+<p>The Form has a Quit button to dismiss the Form when you've finished viewing it or to terminate rendering if the results are not acceptable.</p>
+
 </div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The <strong>wrender</strong> (Window Render) function creates a form using the canvas dimension specified in the <em>camera</em> structure and then starts the rendering process by enqueuing a User Defined event. The event invokes a callback function that performs the rendering of a row, and after the result is displayed, the callback function enqueues another event to render the next row. The callback function needs to surrender control after each row is displayed so that the Quit button event can be enqueued and processed.</p>
+<p>One fun task might be to alter the order in which rows are processed. The scene renders top-down, but could be change to render bottom-up or even render rows randomly using the Deal function.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-APL"><pre><span></span><span class="bp">∇</span><span class="nv">W</span> <span class="nv">wrender</span> <span class="nv">C</span><span class="sr">;</span><span class="nv">Win</span><span class="sr">;</span><span class="nv">y</span>
+   <span class="c1">⍝ world  render  camera → canvas</span>
+
+   <span class="s1">&#39;#&#39;</span><span class="nf">⎕WS</span><span class="s1">&#39;Coord&#39;</span> <span class="s1">&#39;Pixel&#39;</span>
+   <span class="nv">y</span><span class="kd">←</span><span class="p">(</span><span class="nv">C</span><span class="sr">[</span><span class="nv">camera_vsize</span><span class="sr">]</span><span class="o">+</span><span class="m">41</span><span class="p">)(</span><span class="nv">C</span><span class="sr">[</span><span class="nv">camera_hsize</span><span class="sr">]</span><span class="o">+</span><span class="m">1</span><span class="p">)</span>
+   <span class="s1">&#39;Win&#39;</span><span class="nf">⎕WC</span><span class="s1">&#39;Form&#39;</span> <span class="s1">&#39;RayTracer&#39;</span><span class="p">(</span><span class="s1">&#39;Size&#39;</span><span class="nv">y</span><span class="p">)</span>
+   <span class="s1">&#39;Win&#39;</span><span class="nf">⎕WS</span><span class="p">(</span><span class="s1">&#39;Event&#39;</span> <span class="m">1001</span> <span class="s1">&#39;wrender_row&#39;</span><span class="p">)</span>
+   <span class="s1">&#39;Win.quit&#39;</span><span class="nf">⎕WC</span><span class="s1">&#39;Button&#39;</span> <span class="s1">&#39;Quit&#39;</span><span class="p">(</span><span class="m">10</span> <span class="m">20</span><span class="p">)(</span><span class="m">25</span> <span class="m">60</span><span class="p">)</span>
+   <span class="s1">&#39;Win.quit&#39;</span><span class="nf">⎕WS</span><span class="p">(</span><span class="s1">&#39;Event&#39;</span> <span class="s1">&#39;Select&#39;</span> <span class="m">1</span><span class="p">)(</span><span class="s1">&#39;Cancel&#39;</span> <span class="m">1</span><span class="p">)</span>
+   <span class="nf">⎕NQ</span><span class="s1">&#39;Win&#39;</span> <span class="m">1001</span><span class="p">(</span><span class="m">0</span><span class="p">(</span><span class="m">¯1</span><span class="o">+</span><span class="nv">C</span><span class="sr">[</span><span class="nv">camera_vsize</span><span class="sr">]</span><span class="p">))</span>
+   <span class="nf">⎕DQ</span><span class="s1">&#39;Win&#39;</span>
+<span class="bp">∇</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The <strong>wrender_row</strong> (Window Render Row) is the callback function that does the graphical work. The World and Camera values are taken from global space, which is the <strong>wrender</strong> function.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-APL"><pre><span></span><span class="bp">∇</span><span class="nv">wrender_row</span> <span class="nv">Msg</span><span class="sr">;</span><span class="nv">x</span><span class="sr">;</span><span class="nv">y</span><span class="sr">;</span><span class="nv">yend</span><span class="sr">;</span><span class="nv">colors</span><span class="sr">;</span><span class="nv">Pnts</span>
+ <span class="nv">y</span><span class="kd">←</span><span class="m">3</span> <span class="m">1</span><span class="o">⊃</span><span class="nv">Msg</span>
+ <span class="nv">yend</span><span class="kd">←</span><span class="m">3</span> <span class="m">2</span><span class="o">⊃</span><span class="nv">Msg</span>
+ <span class="bp">:</span><span class="nv">If</span> <span class="nv">y</span><span class="o">&lt;</span><span class="nv">yend</span>
+     <span class="nv">Z</span><span class="kd">←</span><span class="nv">W</span> <span class="nv">render_row</span> <span class="nv">C</span> <span class="nv">y</span>
+     <span class="nv">colors</span><span class="kd">←</span><span class="m">255</span><span class="o">⌊⌊</span><span class="m">255</span><span class="o">×</span><span class="nv">Z</span>
+     <span class="nv">y</span><span class="kd">←</span><span class="nv">y</span><span class="o">+</span><span class="m">1</span>
+     <span class="nv">Pnts</span><span class="kd">←</span><span class="no">⍬</span>
+     <span class="bp">:</span><span class="nv">For</span> <span class="nv">x</span> <span class="bp">:</span><span class="nv">In</span> <span class="o">⍳⍴</span><span class="nv">colors</span>
+         <span class="nv">Pnts</span><span class="o">,</span><span class="kd">←</span><span class="o">⊂</span><span class="p">(((</span><span class="nv">y</span><span class="o">+</span><span class="m">40</span><span class="p">)(</span><span class="nv">y</span><span class="o">+</span><span class="m">40</span><span class="p">))(</span><span class="nv">x</span><span class="p">(</span><span class="nv">x</span><span class="o">+</span><span class="m">1</span><span class="p">)))</span>
+     <span class="bp">:</span><span class="nv">EndFor</span>
+     <span class="c1">⍝ Pnts←{((y+40)⍵)((y+40)(1+⍵))}¨⍳⍴colors</span>
+     <span class="p">(</span><span class="s1">&#39;Win.L&#39;</span><span class="o">,⍕</span><span class="nv">y</span><span class="p">)</span><span class="nf">⎕WC</span><span class="s1">&#39;Poly&#39;</span><span class="p">(</span><span class="nv">Pnts</span><span class="p">)(</span><span class="s1">&#39;FCol&#39;</span><span class="p">(</span><span class="nv">colors</span><span class="p">))</span>
+     <span class="nf">⎕NQ</span><span class="s1">&#39;Win&#39;</span> <span class="m">1001</span><span class="p">(</span><span class="nv">y</span> <span class="nv">yend</span><span class="p">)</span>
+ <span class="bp">:</span><span class="nv">EndIf</span>
+ <span class="bp">∇</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Workspace-Management">Workspace Management<a class="anchor-link" href="#Workspace-Management">&#182;</a></h1><p>I can load and save a workspace, which may be the means by which I can separate notebooks containing test cases from a code development notebook. One thing seems notable; reducing the number of cells in a notebook reduces the time it takes to load the notebook. I've been combining multiple related test cases into a single markdown cell and their implementation in another code cell. Well worth continuing to do so.</p>
 <p>This workspace save preserves the Namespace arrangement that I've added for the ray tracer code.</p>
@@ -15277,8 +16608,7 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Compilation">Compilation<a class="anchor-link" href="#Compilation">&#182;</a></h2><p>Functions can be compiled to bytecode to save the parsing overhead associated with interpreting a function. There are some restrictions on what type of functions can be compiled, but it is worth doing this for the functions most used during rendering. Rendering can be sped up by more than 20% with compilation.</p>
 
@@ -15335,14 +16665,13 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <span class="m">2</span><span class="p">(</span><span class="m">400</span><span class="err">⌶</span><span class="p">)</span><span class="s1">&#39;vector&#39;</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Load-and-Save-Workspace">Load and Save Workspace<a class="anchor-link" href="#Load-and-Save-Workspace">&#182;</a></h2>
 </div>
@@ -15365,14 +16694,13 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <span class="nf">⎕PATH</span><span class="kd">←</span><span class="s1">&#39;RayTracer&#39;</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To save time while working on the code in a chapter, I can load up the previously saved workspace instead of executing all of the above cells.</p>
 
@@ -15392,14 +16720,13 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <span class="p">)</span><span class="nv">vars</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If I use SALT to load a previously saved script file, I can recover the Namespace structure of the ray tracer code.</p>
 
@@ -15421,14 +16748,13 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <span class="nf">⎕PATH</span><span class="kd">←</span><span class="s1">&#39;RayTracer&#39;</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>It's also worthwhile loading some Dyalog utilities.</p>
 
@@ -15446,14 +16772,34 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <span class="p">)</span><span class="nv">copy</span> <span class="nv">isolate</span>  <span class="c1">⍝ For parallel rendering</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's also add an <strong>assert</strong> function (from the Dyalog language forum <a href="https://forums.dyalog.com/viewtopic.php?f=13&amp;t=1503">https://forums.dyalog.com/viewtopic.php?f=13&amp;t=1503</a>) when debugging problems. This really belongs in the Tests notebook but can be useful when adding new features in this notebook.</p>
+
 </div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-APL"><pre><span></span><span class="nv">assert</span><span class="kd">←</span><span class="kt">{</span><span class="bp">⍺</span><span class="kd">←</span><span class="s1">&#39;assertion failure&#39;</span><span class="p">⋄</span><span class="m">0</span><span class="o">∊</span><span class="bp">⍵:⍺</span> <span class="nf">⎕SIGNAL</span> <span class="m">500</span><span class="p">⋄</span><span class="nv">shy</span><span class="kd">←</span><span class="m">0</span><span class="kt">}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>If I load a workspace and support utilities using the above commands and want to continue working on the code, I need to change into the RayTracer namespace in order to resolve references to variables and save code changes to the right place. This means of course that any test code will also be created in the RayTracer namespace, so don't save the workspace unless you first <code>)erase</code> the variables you created.</p>
 
@@ -15469,22 +16815,20 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <span class="nf">⎕PATH</span><span class="kd">←</span><span class="s1">&#39;# #.RayTracer&#39;</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Test-Code">Test Code<a class="anchor-link" href="#Test-Code">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here's the metallic spheres demo.</p>
 
@@ -15546,7 +16890,7 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <span class="nv">ball3</span><span class="sr">[</span><span class="c1">#.RayTracer.obj_material]← ⊂m</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -15565,7 +16909,7 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <span class="nv">c</span><span class="sr">[</span><span class="c1">#.RayTracer.camera_inverse]← ⊂ ⌹view_transform (point 1 2 ¯5) (point 0 1 0) (vector 0 1 0)</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -15579,7 +16923,7 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <span class="nv">im</span><span class="kd">←</span> <span class="nv">w</span> <span class="nv">render</span> <span class="c1">#.time c</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -15593,14 +16937,13 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <span class="s1">&#39;MetalPerlin.ppm&#39;</span> <span class="nv">savePPM</span> <span class="nv">ppm</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
+</div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>And the result looks like:
 <img src="MetalPerlin.png"></p>
@@ -15618,7 +16961,7 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <span class="nv">im</span><span class="kd">←</span> <span class="nv">w</span> <span class="nv">llrender</span> <span class="nv">c</span>
 </pre></div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -15632,7 +16975,20 @@ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
 <span class="s1">&#39;Metal.ppm&#39;</span> <span class="nv">savePPM</span> <span class="nv">ppm</span>
 </pre></div>
 
+    </div>
 </div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-APL"><pre><span></span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
