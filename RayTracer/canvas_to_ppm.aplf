@@ -1,0 +1,10 @@
+ canvas_to_ppm←{
+   ⍝ Truncate negative numbers to zero, limit maximum to 255
+     nums←⊃,/⊃,/255⌊⌈255×0⌈⍵
+     shape←(⌊(⍴nums)÷15),15
+     head←4 0⍕shape⍴nums
+     tail←4 0⍕(-(⍴nums)-×/shape)↑nums
+   ⍝ Must transpose ⍴⍵ to get width/height from columns/rows
+     0=⍴tail:4 1⍴'P3'(⍕(⍴⊃⍵[1]),⍴⍵)'255'head
+     5 1⍴'P3'(⍕(⍴⊃⍵[1]),⍴⍵)'255'head tail
+ }

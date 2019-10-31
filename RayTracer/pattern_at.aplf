@@ -1,0 +1,41 @@
+ pattern_at←{
+  ⍝ pattern  pattern_at  point → color
+  ⍝ assert (5=≢⍺)^4=≢⍵
+     tag←pattern_type⊃⍺
+     c1←pattern_color1⊃⍺
+     c2←pattern_color2⊃⍺
+     true_color←{3=≢⍵:⍵ ⋄ ⍵ pattern_at(pattern_inverse⊃⍵)+.×⍺}
+     c1←⍵ true_color c1
+     c2←⍵ true_color c2
+
+  ⍝ assert (3=≢c1)^3=≢c2
+  ⍝ Pattern used during testing
+     tag=pat_test:3↑⍵
+  ⍝ Stripe pattern
+     (tag=pat_stripe)∧0=⌊2|1⊃⍵:c1  ⍝ Pick faster than Index
+  ⍝ (tag=pat_stripe)^0≠⌊2|1⊃⍵: c2
+     (tag=pat_stripe):c2
+  ⍝ Gradient pattern
+     tag=pat_gradient:c1+(c2-c1)×(1⊃⍵)-⌊1⊃⍵  ⍝ Pick faster than Index
+  ⍝ Ring pattern
+     (tag=pat_ring)∧0=⌊2|(+/⍵[1 3]×⍵[1 3])*0.5:c1
+  ⍝ (tag=pat_ring)^0≠⌊2|(+/⍵[1 3]×⍵[1 3])*0.5: c2
+     (tag=pat_ring):c2
+  ⍝ Checker pattern
+     (tag=pat_checker)∧0=2|+/⌊3↑⍵:c1
+  ⍝ (tag=pat_checker)^0≠2|+/⌊3↑⍵: c2
+     (tag=pat_checker):c2
+  ⍝ Radial Gradient pattern
+     m←magnitude ⍵
+     tag=pat_radgradient:c1+(c2-c1)×m-⌊m
+  ⍝ Blend pattern
+     tag=pat_blend:0.5×c1+c2
+  ⍝ Perlin noise Alternating pattern
+     (tag=pat_perlin)∧0>perlin_noise ⍵[1 2 3]:c1
+     (tag=pat_perlin):c2
+  ⍝ Perlin noise Gradient pattern
+     g←0.5×1+perlin_noise ⍵[1 2 3]
+     tag=pat_perlingrad:c1+g×c2-c1
+  ⍝ Unknown pattern
+     0 0 0
+ }

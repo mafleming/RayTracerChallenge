@@ -1,0 +1,15 @@
+ Z←CYL intersect_caps R;t
+ Z←⍬
+  ⍝ cylinder  intersect_caps  ray → ⍬ or intersection intersection
+ :If (0=cylinder_closed⊃CYL)∨EPSILON>|ray_direction 2⊃R
+     :Return
+ :EndIf
+  ⍝ Check for intersection with lower end
+ t←((cylinder_minimum⊃CYL)-ray_origin 2⊃R)÷ray_direction 2⊃R
+ :If R check_cap t
+     Z←Z,⊂CYL intersection t
+ :EndIf
+ t←((cylinder_maximum⊃CYL)-ray_origin 2⊃R)÷ray_direction 2⊃R
+ :If R check_cap t
+     Z←Z,⊂CYL intersection t
+ :EndIf

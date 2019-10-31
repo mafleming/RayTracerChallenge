@@ -1,0 +1,13 @@
+ Z←default_world;light;s1;s2;m
+ light←(point ¯10 10 ¯10)point_light 1 1 1
+ s1←sphere
+ m←material
+ m[material_color material_diffuse material_specular]←(0.8 1 0.6)0.7 0.2
+ s1[obj_material]←⊂m
+ s2←sphere
+ s2[obj_transform]←⊂scaling 0.5 0.5 0.5
+ s2[obj_inverse]←⊂⌹scaling 0.5 0.5 0.5
+ Z←world
+ Z[1],←⊂⊂light
+ Z[2]←⊂⊂s1  ⍝ Have to enclose twice!
+ Z[2],←⊂⊂s2

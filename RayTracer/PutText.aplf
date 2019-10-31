@@ -1,0 +1,12 @@
+ r←text PutText name;tn
+     ⍝ Write text to file (must be single byte text)
+
+ :Trap 0
+     tn←name ⎕NCREATE 0
+ :Else
+     tn←name ⎕NTIE 0
+     0 ⎕NRESIZE tn
+ :EndTrap
+
+ r←text ⎕NAPPEND tn(⎕DR' ')
+ ⎕NUNTIE tn

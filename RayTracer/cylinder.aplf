@@ -1,0 +1,2 @@
+ Z←cylinder
+ Z←shape_cylinder identity4 identity4 material TRUE(¯1×INFINITY)INFINITY FALSE

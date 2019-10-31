@@ -1,0 +1,8 @@
+ is_shaded←{
+  ⍝ world  is_shaded  point light  → numeric
+     (p l)←⍵
+     (0=l[light_radius])∧1≥l[light_iteration]:~⍺ is_shadowed ⍵
+     w←⍺
+     sample←{lpt←l ⋄ lpt[light_point]+←⊂⍵×point NormRand 3 ⋄ w is_shadowed p lpt}
+     1-(+/sample¨l[light_iteration]⍴l[light_radius])÷l[light_iteration]
+ }

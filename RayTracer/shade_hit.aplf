@@ -1,0 +1,19 @@
+ shade_hit←{
+⍝ world  shade_hit  comps remaining → color
+     (comps remaining)←⍵
+     w←⍺
+     obj←⊃comps[hit_object]
+     mtrl←⊃obj[obj_material]
+     dolight←{
+     ⍝ insh← w is_shadowed (⊃comps[hit_overpt]) ⍵
+         insh←w is_shaded(⊃comps[hit_overpt])⍵
+         lighting mtrl ⍵(⊃comps[hit_overpt])(⊃comps[hit_eyev])(⊃comps[hit_normalv])insh obj
+     }
+     surface←⊃+/dolight¨⊃⍺[1]  ⍝ sum enclosed colors, unenclose result
+     reflected←⍺ reflected_color ⍵
+     refracted←⍺ refracted_color ⍵
+     flag←∧/0<mtrl[material_reflective material_transparency]
+     reflectance←schlick comps
+     1=flag:surface+(refracted×1-reflectance)+reflected×reflectance
+     surface+reflected+refracted
+ }

@@ -1,0 +1,7 @@
+ hit←{
+  ⍝ hit  intersection_list → ⍬ or intersection
+     ⍬≡⍵:⍬                ⍝ No list, no hit
+     l←0≤hit_distance⌷¨⍵  ⍝ Positive distances
+     0=∨/l:⍬              ⍝ Return null if none
+     ⊃l/⍵                 ⍝ Return first from positives
+ }

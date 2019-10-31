@@ -1,0 +1,13 @@
+ ROW←W render_row ARGS;C;Y;dpnt;i;r;c
+  ⍝ Render and return a single image row
+  ⍝ world  render_row  camera x\y
+  ⍝ x is row number
+ (C Y)←ARGS
+ dpnt←{r←C ray_for_pixel ⍵ Y ⋄ {⍵<EPSILON:0 ⋄ ⍵}¨W color_at r MAX_RECURSION}
+
+  ⍝ ROW←dpnt¨¯1+⍳C[camera_hsize]
+
+ ROW←C[camera_hsize]⍴⊂0 0 0
+ :For i :In ¯1+⍳C[camera_hsize]
+     ROW[i+1]←⊂dpnt i
+ :EndFor

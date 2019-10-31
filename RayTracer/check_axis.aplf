@@ -1,0 +1,11 @@
+ check_axis←{
+  ⍝ numeric  check_axis  numeric → numeric numeric
+     emin←INFINITY×¯1-⍺
+     emax←INFINITY×1-⍺
+     (EPSILON>|⍵)∧emin>emax:emin emax
+     EPSILON>|⍵:emax emin
+     tmin←(¯1-⍺)÷⍵
+     tmax←(1-⍺)÷⍵
+     tmin>tmax:tmax tmin
+     tmin tmax
+ }

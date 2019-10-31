@@ -1,0 +1,7 @@
+ add_pattern_transform←{
+  ⍝ pattern  pattern_transform  pattern → pattern
+     p←⍺
+     p[pattern_transform]←⊂⍵
+     p[pattern_inverse]←⊂⌹⍵
+     p
+ }

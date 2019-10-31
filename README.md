@@ -41,6 +41,7 @@ Jupyter Lab application facilitated the management of these notebooks.
 + Add additional Patterns
 + Full Wavefront OBJ file support
 + Scene description language support (YAML?)
++ Object-oriented APL implementation (stretch goal)
 
 ## Changelog
 19-March-2019. Put ray tracer code in its own namespace (RayTracer).
@@ -82,3 +83,10 @@ new patterns, Perlin and Perlin Gradient.
 13-June-2019. Added a function to render a scene to a graphics window.
 Use the command "w wrender c" where "w" is a world structure and "c"
 is a camera. Use the "Quit" button to terminate or exit.
+
+15-June-2019. First release of a more complete how-to manual called
+"Creating a Scene"
+
+31-October-2019. Inclusion of .aplf text files containing individual
+APL functions using the ]LINK command included as part of the new
+Dyalog APL 17.1 release. The files can be found in the RayTracer directory.

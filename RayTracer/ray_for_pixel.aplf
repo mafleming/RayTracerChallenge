@@ -1,0 +1,17 @@
+ ray_for_pixel←{
+   ⍝ camera ray_for_pixel x y → ray
+     (px py)←⍵
+     xoffset←(camera_psize⊃⍺)×px+0.5
+     yoffset←(camera_psize⊃⍺)×py+0.5
+     world_x←(camera_halfw⊃⍺)-xoffset
+     world_y←(camera_halfh⊃⍺)-yoffset
+   ⍝ This is actually slightly slower than the above!
+   ⍝ world_x← ⍺[camera_halfw]-⍺[camera_psize]×px+0.5
+   ⍝ world_y← ⍺[camera_halfh]-⍺[camera_psize]×py+0.5
+   ⍝ it←      ⌹⊃⍺[camera_transform]
+     it←camera_inverse⊃⍺
+     pixel←it+.×point world_x world_y ¯1
+     origin←it+.×point 0 0 0
+     directn←normalize pixel-origin
+     origin ray directn
+ }

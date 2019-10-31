@@ -1,0 +1,5 @@
+ NormRand←{                          ⍝ Random numbers with a normal distribution
+     depth←10*9                           ⍝ randomness depth - can be larger from v14.0
+     (x y)←⊂[1+⍳⍴,⍵](?(2,⍵)⍴depth)÷depth  ⍝ two random variables within ]0;1]
+     ((¯2×⍟x)*0.5)×1○○2×y                 ⍝ Box-Muller distribution
+ }

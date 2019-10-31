@@ -1,0 +1,2 @@
+ Z←cube
+ Z←shape_cube identity4 identity4 material TRUE

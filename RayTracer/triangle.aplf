@@ -1,0 +1,6 @@
+ triangle←{
+  ⍝ triangle  p1 p2 p3 → shape_triangle identity4 material points edges normalv
+     edges←(⍵[2]-⍵[1]),(⍵[3]-⍵[1])
+     normv←normalize(⊃edges[2])cross⊃edges[1]
+     shape_triangle identity4 identity4 material TRUE(⍵)edges normv
+ }

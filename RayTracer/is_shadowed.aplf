@@ -1,0 +1,20 @@
+ is_shadowed←{
+   ⍝ world  is_shadowed  point light → Boolean
+     (p l)←⍵   ⍝ point and light
+
+   ⍝ lp←⊃l[light_point]
+   ⍝ lp+←0.5×point ¯1+2×?0 0 0  ⍝ random scatter
+   ⍝ lp+←0.15×point NormRand 3  ⍝ normal random scatter
+   ⍝ v←lp-p
+
+     v←(⊃l[light_point])-p
+     dist←magnitude v
+     dir←normalize v
+     r←p ray dir
+     inter←⍺ intersect_world r
+     0=≢inter:0
+   ⍝ Strip intersections that cast no shadow
+     h←hit({hit_object obj_shadow⊃⍵}¨inter)/inter
+     0=≢h:0
+     h[hit_distance]<dist
+ }

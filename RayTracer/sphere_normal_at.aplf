@@ -1,0 +1,8 @@
+ sphere_normal_at←{
+  ⍝ ⍺=sphere  normal_at  ⍵=point → vector
+     on←⍵-0 0 0 1         ⍝ Creates vector from origin
+  ⍝ wn← (⍉⌹⊃⍺[obj_transform]) +.× on
+     wn←(⍉obj_inverse⊃⍺)+.×on
+     wn[4]←0                ⍝ Make world_normal a vector
+     normalize wn
+ }

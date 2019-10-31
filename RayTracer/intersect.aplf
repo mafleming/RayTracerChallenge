@@ -1,0 +1,16 @@
+ intersect←{
+   ⍝ object  intersect  ray → ⍬ or intersection list
+     t←obj_tag⊃⍺
+   ⍝ m←⊃⍺[obj_transform]
+   ⍝ local_ray← (⌹m) transform ⍵
+   ⍝ local_ray← (⊃⍺[obj_inverse]) transform ⍵
+     tm←obj_inverse⊃⍺
+     local_ray←{tm+.×⍵}¨⍵
+     shape_test=t:local_ray
+     shape_sphere=t:⍺ sphere_intersect local_ray
+     shape_plane=t:⍺ plane_intersect local_ray
+     shape_cube=t:⍺ cube_intersect local_ray
+     shape_cylinder=t:⍺ cylinder_intersect local_ray
+     shape_cone=t:⍺ cone_intersect local_ray
+     ⍬
+ }

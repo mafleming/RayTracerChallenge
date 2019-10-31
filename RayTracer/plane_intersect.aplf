@@ -1,0 +1,7 @@
+ plane_intersect←{
+   ⍝ plane plane_intersect ray → ⍬ or intersection_list
+     (oy dy)←⍵[(ray_origin 2)(ray_direction 2)]
+     EPSILON>|dy:⍬              ⍝ No intersection
+     t←-oy÷dy                 ⍝ Distance
+     ⊂⍺ t
+ }

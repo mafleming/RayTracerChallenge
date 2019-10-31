@@ -1,0 +1,17 @@
+ prepare_computations←{
+⍝ intersection  prepare_computations  ray → hit
+     Z←⍺,0,0,0,0,0,0,0,0,0
+     Z[hit_point]←⊂⍵ position Z[hit_distance]
+     Z[hit_eyev]←-⍵[ray_direction]
+     Z[hit_normalv]←⊂(⊃Z[hit_object])normal_at⊃Z[hit_point]
+
+     Z[hit_inside]←0>(⊃Z[hit_normalv])dot⊃Z[hit_eyev]
+   ⍝ Z[hit_normalv]← Z[hit_normalv]×(1 ¯1)[1+hit_inside⊃Z]
+     Z[hit_normalv]×←(1 ¯1)[1+hit_inside⊃Z]
+   ⍝ Note the arithmetic with enclosed vectors!
+     Z[hit_overpt]←Z[hit_point]+Z[hit_normalv]×EPSILON ⍝ Added for acne
+     Z[hit_underpt]←Z[hit_point]-Z[hit_normalv]×EPSILON ⍝ Added for acne
+   ⍝ I forgot to disclose, causing failure in reflection!
+     Z[hit_reflectv]←⊂(⊃⍵[ray_direction])reflect⊃Z[hit_normalv]
+     Z
+ }

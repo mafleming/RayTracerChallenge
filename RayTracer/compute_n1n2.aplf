@@ -1,0 +1,44 @@
+ Z←COMPS compute_n1n2 ARGS;XS;H;i;con;p;obj;last
+  ⍝ COMPS  compute_n1n2  XS HIT → COMPS
+  ⍝ Compute the n1 and n2 attributes
+  ⍝ for a result returned by prepare_computations
+  ⍝ Use immediately after prepare_computations
+ (XS H)←ARGS
+ Z←COMPS
+ :If ~EVAL_REFRACTION
+     :Return
+ :EndIf
+ con←⍬
+ :For i :In XS
+     obj←⊃i
+    ⍝ Compute n1
+     :If H≡i
+         :If 0=≢con
+             Z[hit_n1]←1
+         :Else
+             last←⊃¯1↑con
+             Z[hit_n1]←⊂obj_material material_refractive⊃last
+         :EndIf
+     :EndIf
+    ⍝ container and hit
+     :If ⍬≡con
+         con←⊂obj  ⍝ containers empty
+     :Else
+         p←con∊⊂obj  ⍝ see if object already in container
+         :If 0=∨/p
+             con,←⊂obj
+         :Else
+             con←(~p)/con
+         :EndIf
+     :EndIf
+    ⍝ Compute n2
+     :If H≡i
+         :If 0=≢con
+             Z[hit_n2]←1
+         :Else
+             last←⊃¯1↑con
+             Z[hit_n2]←⊂obj_material material_refractive⊃last
+         :EndIf
+         :Leave
+     :EndIf
+ :EndFor

@@ -1,0 +1,40 @@
+ Z←C cone_intersect R;a;b;c;disc;t0;t1;y0;y1;t
+  ⍝ cone  cone_intersect  ray → ⍬ or intersection intersection
+ Z←⍬
+ a←-/(ray_direction⊃R)*2
+ b←-/2×(ray_origin⊃R)×ray_direction⊃R
+ c←ray_origin⊃R
+ c←-/c[1 2 3]*2
+ :If (EPSILON>|a)∧EPSILON<|b
+     t←-c÷2×b
+     Z←⊂C intersection t
+ :ElseIf EPSILON<|a
+     disc←(b*2)-4×a×c
+     :If 0≤disc
+         t0←((-b)-disc*0.5)÷2×a
+         t1←((-b)+disc*0.5)÷2×a
+         :If t0>t1
+             t0 t1←t1 t0
+         :EndIf
+         y0←(ray_origin 2⊃R)+t0×ray_direction 2⊃R
+         :If (y0>cone_minimum⊃C)∧y0<cone_maximum⊃C
+             Z←⊂C intersection t0
+         :EndIf
+         y1←(ray_origin 2⊃R)+t1×ray_direction 2⊃R
+         :If (y1>cone_minimum⊃C)∧y1<cone_maximum⊃C
+             Z←Z,⊂C intersection t1
+         :EndIf
+     :EndIf
+ :EndIf
+
+  ⍝ Check for intersection with caps of closed cylinder
+ :If (cone_closed⊃C)∧(EPSILON<|ray_direction 2⊃R)
+     t←((cone_minimum⊃C)-ray_origin 2⊃R)÷ray_direction 2⊃R
+     :If R check_cap2 t,cone_minimum⊃C
+         Z←Z,⊂C intersection t
+     :EndIf
+     t←((cone_maximum⊃C)-ray_origin 2⊃R)÷ray_direction 2⊃R
+     :If R check_cap2 t,cone_maximum⊃C
+         Z←Z,⊂C intersection t
+     :EndIf
+ :EndIf

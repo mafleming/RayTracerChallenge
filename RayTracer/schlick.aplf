@@ -1,0 +1,14 @@
+ Z←schlick COMPS;cos;n;sin2_t;cos_t;r0
+  ⍝ schlick  comps (updated by compute_n1n2)
+ cos←(⊃COMPS[hit_eyev])dot⊃COMPS[hit_normalv]
+ :If COMPS[hit_n1]>COMPS[hit_n2]
+     n←COMPS[hit_n1]÷COMPS[hit_n2]
+     sin2_t←(1-cos*2)×n*2
+     :If sin2_t>1
+         Z←1
+         :Return
+     :EndIf
+     cos←(1-sin2_t)*0.5
+ :EndIf
+ r0←((COMPS[hit_n1]-COMPS[hit_n2])÷(COMPS[hit_n1]+COMPS[hit_n2]))*2
+ Z←r0+(1-r0)×(1-cos)*5

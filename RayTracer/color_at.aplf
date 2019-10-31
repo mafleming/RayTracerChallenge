@@ -1,0 +1,14 @@
+ color_at←{
+   ⍝ world  color_at  ray remaining → color
+     (wray remaining)←⍵
+     inter←⍺ intersect_world wray
+   ⍝ Return black if no intersections
+     0=≢inter:0 0 0
+   ⍝ Take first positive intersection as the hit
+     h←hit inter
+   ⍝ Return black if no hit
+     0=≢h:0 0 0
+     comps←h prepare_computations wray
+     comps←comps compute_n1n2 inter h
+     ⍺ shade_hit comps remaining
+ }

@@ -1,0 +1,1 @@
+ perlingrad_pattern←{pat_perlingrad identity4 identity4 ⍺ ⍵}

@@ -1,0 +1,12 @@
+ sphere_intersect←{
+  ⍝ sphere  intersect  ray → ⍬ or intersection_list
+     s2r←(ray_origin⊃⍵)-0 0 0 1
+     a←(ray_direction⊃⍵)dot ray_direction⊃⍵
+     b←2×(ray_direction⊃⍵)dot s2r
+     c←¯1+s2r dot s2r
+     d←(b×b)-4×a×c
+     d<0:⍬
+     t1←((-b)-d*0.5)÷2×a  ⍝ Clean this up!!!
+     t2←((-b)+d*0.5)÷2×a
+     (⍺ t1)(⍺ t2)
+ }

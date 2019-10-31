@@ -1,0 +1,2 @@
+ Z←glass_sphere
+ Z←shape_sphere identity4 identity4 glass TRUE

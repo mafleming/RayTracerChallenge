@@ -1,0 +1,2 @@
+ Z←sphere
+ Z←shape_sphere identity4 identity4 material TRUE

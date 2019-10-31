@@ -1,0 +1,6 @@
+ pattern_at_shape←{
+  ⍝ pattern  pattern_at_shape  object point → color
+     (obj wpoint)←⍵
+  ⍝ ⍺ pattern_at (⌹⊃⍺[pattern_transform]) +.× (⌹⊃obj[obj_transform]) +.× wpoint
+     ⍺ pattern_at(pattern_inverse⊃⍺)+.×(obj_inverse⊃obj)+.×wpoint
+ }

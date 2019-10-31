@@ -1,0 +1,7 @@
+ check_cap2←{
+  ⍝ ray  check_cap2  distance radius → Boolean
+     (d r)←⍵
+     x←(ray_origin 1⊃⍺)+d×ray_direction 1⊃⍺
+     z←(ray_origin 3⊃⍺)+d×ray_direction 3⊃⍺
+     (r×r)≥(x×x)+z×z
+ }

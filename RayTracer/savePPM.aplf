@@ -1,0 +1,4 @@
+ savePPM←{
+   ⍝ filename  savePPM  output_data
+     (s,((1↑⍴s←⍕⍵),1)⍴⎕UCS 10)PutText ⍺
+ }

@@ -1,0 +1,14 @@
+ Z←G flatten_group T;gt;objs;objs
+  ⍝ group  flatten_group  transform → list_of_shapes
+ Z←⍬
+ objs←⊃G[group_members]
+ gt←⊃G[obj_transform]
+ :For obj :In objs
+     :If shape_group=obj[obj_tag]
+         Z,←obj flatten_group gt
+     :Else
+         obj[obj_transform]←⊂T+.×gt+.×⊃obj[obj_transform]
+         obj[obj_inverse]←⊂⌹⊃obj[obj_transform]
+         Z,←⊂obj
+     :EndIf
+ :EndFor

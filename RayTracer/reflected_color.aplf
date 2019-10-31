@@ -1,0 +1,14 @@
+ reflected_color←{
+   ⍝ world  reflected_color  comps remaining → color
+     ~EVAL_REFLECTION:0 0 0
+   ⍝ Limit recursion. Set RECURSE before calling
+     (comps remaining)←⍵
+     0≥remaining:0 0 0   ⍝ black if too deep
+   ⍝
+     o←⊃comps[hit_object]
+     m←⊃o[obj_material]
+     0=m[material_reflective]:0 0 0
+     rray←(⊃comps[hit_overpt])ray⊃comps[hit_reflectv]
+     c←⍺ color_at rray(remaining-1)
+     c×m[material_reflective]
+ }

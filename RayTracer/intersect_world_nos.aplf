@@ -1,0 +1,12 @@
+ intersect_world_nos←{
+   ⍝ world  intersect_world_nos  ray → intersection list
+     Z←⍬
+     objs←⊃⍺[3]
+     r←⍵
+     objs←({obj_shadow⊃⍵}¨objs)/objs
+     0=≢objs:⍬
+     fun←{~⍬≡⍵:{Z,←⊂⍵}¨⍵ ⋄ ⍵}
+     x←fun¨{⍵ intersect r}¨objs
+     ~⍬≡Z:Z[⍋2⊃¨Z]
+     ⍬
+ }

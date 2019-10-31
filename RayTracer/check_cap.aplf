@@ -1,0 +1,6 @@
+ check_cap←{
+  ⍝ ray  check_cap  distance → Boolean
+     x←(ray_origin 1⊃⍺)+⍵×ray_direction 1⊃⍺
+     z←(ray_origin 3⊃⍺)+⍵×ray_direction 3⊃⍺
+     1≥(x×x)+z×z
+ }

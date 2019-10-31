@@ -1,0 +1,1 @@
+ gradient_pattern←{pat_gradient identity4 identity4 ⍺ ⍵}

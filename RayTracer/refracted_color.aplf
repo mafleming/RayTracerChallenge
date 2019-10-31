@@ -1,0 +1,22 @@
+ refracted_color←{
+  ⍝ world  refracted_color  comps → color
+     ~EVAL_REFRACTION:0 0 0
+  ⍝ Fixes #5 but breaks #8
+  ⍝ Infinite loop: refracted_color, color_at, shade_hit
+     (comps remaining)←⍵
+     0≥remaining:0 0 0  ⍝ Added for Test#5
+  ⍝ Black if object is opaque
+     0=hit_object obj_material material_transparency⊃comps:0 0 0
+
+     n_ratio←(hit_n1⊃comps)÷hit_n2⊃comps
+     cos_i←(hit_eyev⊃comps)dot hit_normalv⊃comps
+     sin2_t←(1-cos_i*2)×n_ratio*2
+  ⍝
+     1<sin2_t:0 0 0
+  ⍝
+     cos_t←(1-sin2_t)*0.5
+     dir←((hit_normalv⊃comps)×((n_ratio×cos_i)-cos_t))-(hit_eyev⊃comps)×n_ratio
+     rray←(hit_underpt⊃comps)ray dir
+     color←⍺ color_at rray(remaining-1)
+     (hit_object obj_material material_transparency⊃comps)×color
+ }

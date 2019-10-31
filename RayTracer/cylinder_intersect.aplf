@@ -1,0 +1,37 @@
+ Z←CYL cylinder_intersect R;a;b;c;disc;t0;t1;y0;y1;t
+  ⍝ cylinder  cylinder_intersect  ray → ⍬ or intersection intersection
+ Z←⍬
+ a←((ray_direction 1⊃R)*2)+(ray_direction 3⊃R)*2
+ :If EPSILON<|a
+     b←(2×(ray_origin 1⊃R)×ray_direction 1⊃R)+2×(ray_origin 3⊃R)×ray_direction 3⊃R
+     c←¯1+((ray_origin 1⊃R)*2)+(ray_origin 3⊃R)*2
+     disc←(b*2)-4×a×c
+     :If 0<disc
+         t0←((-b)-disc*0.5)÷2×a
+         t1←((-b)+disc*0.5)÷2×a
+         :If t0>t1
+             t0 t1←t1 t0
+         :EndIf
+         y0←(ray_origin 2⊃R)+t0×ray_direction 2⊃R
+         :If (y0>(cylinder_minimum⊃CYL))∧y0<cylinder_maximum⊃CYL
+             Z←⊂CYL intersection t0
+         :EndIf
+         y1←(ray_origin 2⊃R)+t1×ray_direction 2⊃R
+         :If (y1>(cylinder_minimum⊃CYL))∧y1<cylinder_maximum⊃CYL
+             Z←Z,⊂CYL intersection t1
+         :EndIf
+     :EndIf
+ :EndIf
+
+  ⍝ Check for intersection with caps of closed cylinder
+  ⍝ :If CYL[cylinder_closed]^(EPSILON<|2⌷⊃R[ray_direction])
+ :If (cylinder_closed⊃CYL)∧EPSILON<|ray_direction 2⊃R
+     t←((cylinder_minimum⊃CYL)-ray_origin 2⊃R)÷ray_direction 2⊃R
+     :If R check_cap t
+         Z←Z,⊂CYL intersection t
+     :EndIf
+     t←((cylinder_maximum⊃CYL)-ray_origin 2⊃R)÷ray_direction 2⊃R
+     :If R check_cap t
+         Z←Z,⊂CYL intersection t
+     :EndIf
+ :EndIf

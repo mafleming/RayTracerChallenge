@@ -1,0 +1,15 @@
+ Z←camera W;half_view;aspect;halfh;halfv;psize
+   ⍝ camera  hsize vsize field_of_view → camera_structure
+ (hsize vsize fview)←W
+ Z←hsize vsize fview(identity 4)(identity 4)
+ half_view←3○0.5×fview
+ aspect←hsize÷vsize
+ :If aspect≥1
+     halfw←half_view
+     halfh←half_view÷aspect
+ :Else
+     halfw←half_view×aspect
+     halfh←half_view
+ :EndIf
+ psize←2×halfw÷hsize
+ Z←Z,psize,halfw,halfh

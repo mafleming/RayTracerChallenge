@@ -1,0 +1,1 @@
+ point_light←{⍺ ⍵ 0 1}

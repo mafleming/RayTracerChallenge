@@ -1,0 +1,11 @@
+ view_transform←{
+   ⍝ view_transform from to up → transform_matrix
+     (from to up)←⍵
+     forward←normalize to-from
+     left←forward cross normalize up
+     true_up←left cross forward
+     orientation←left[1],left[2],left[3],0,true_up[1],true_up[2],true_up[3],0
+     orientation,←(-forward[1 2 3]),0,0,0,0,1
+     orientation←4 4⍴orientation
+     orientation+.×translation-from[1 2 3]
+ }

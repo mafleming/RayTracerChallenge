@@ -1,0 +1,12 @@
+ cube_intersect←{
+  ⍝ cube  cube_intersect  ray → intersection intersection
+     ori←1⊃⍵
+     dir←2⊃⍵
+     xm←(1⊃ori)check_axis 1⊃dir
+     ym←(2⊃ori)check_axis 2⊃dir
+     zm←(3⊃ori)check_axis 3⊃dir
+     tmin←⌈/(1⊃xm),(1⊃ym),1⊃zm
+     tmax←⌊/(2⊃xm),(2⊃ym),2⊃zm
+     tmin>tmax:⍬
+     (⍺ tmin)(⍺ tmax)
+ }

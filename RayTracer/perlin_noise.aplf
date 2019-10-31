@@ -1,0 +1,27 @@
+ perlin_noise←{
+  ⍝ perlin_noise  x y z  →  scalar
+     ⎕IO←0  ⍝ Index Origin is zero rather than 1
+     (X Y Z)←256|⌊⍵
+     (x y z)←⍵-⌊⍵
+     (u v w)←fade x y z
+     A←Y+perlin_p[X]
+     (AA AB)←Z Z+perlin_p[A(A+1)]
+     B←Y+perlin_p[X+1]
+     (BA BB)←Z Z+perlin_p[B(B+1)]
+
+     g1←grad(perlin_p[AA]),x,y,z
+     g2←grad(perlin_p[BA]),(x-1),y,z
+     l1←lerp u g1 g2
+     g1←grad(perlin_p[AB]),x,(y-1),z
+     g2←grad(perlin_p[BB]),(x-1),(y-1),z
+     l2←lerp u g1 g2
+     r1←lerp v l1 l2
+
+     g1←grad(perlin_p[AA+1]),x,y,(z-1)
+     g2←grad(perlin_p[BA+1]),(x-1),y,(z-1)
+     l1←lerp u g1 g2
+     g1←grad(perlin_p[AB+1]),x,(y-1),(z-1)
+     g2←grad(perlin_p[BB+1]),(x-1),(y-1),(z-1)
+     r2←lerp v,l1 l2
+     lerp w r1 r2
+ }

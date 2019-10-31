@@ -1,0 +1,10 @@
+ intersect_world←{
+   ⍝ world  intersect_world  ray → intersection list
+     Z←⍬
+     objs←⊃⍺[2]  ⍝ Using Pick INCREASES execution time!
+     r←⍵
+     fun←{~⍬≡⍵:{Z,←⊂⍵}¨⍵ ⋄ ⍵}
+     x←fun¨{⍵ intersect r}¨objs
+     ~⍬≡Z:Z[⍋2⊃¨Z]
+     ⍬
+ }

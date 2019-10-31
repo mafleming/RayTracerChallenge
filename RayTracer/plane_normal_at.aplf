@@ -1,0 +1,3 @@
+ Z←OBJ plane_normal_at R
+  ⍝ plane  plane_normal_at  ray → vector
+ Z←0 1 0 0

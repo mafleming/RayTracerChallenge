@@ -1,0 +1,9 @@
+ grad←{
+  ⍝ grad  hash x y z  →  scalar
+     ⎕IO←0  ⍝ Index Origin is zero rather than 1
+     (hash x y z)←⍵
+     h←16|hash      ⍝ Low four bits
+     u←(y x)[h<8]
+     v←(y,(z x)[(h=12)∨h=14])[h≥4]
+     ((u,-u)[2|h])+(v,-v)[2|⌊0.5×h]
+ }

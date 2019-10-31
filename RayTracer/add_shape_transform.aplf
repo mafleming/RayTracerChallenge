@@ -1,0 +1,7 @@
+ add_shape_transform←{
+  ⍝ pattern  pattern_transform  pattern → pattern
+     s←⍺
+     s[obj_transform]←⊂⍵
+     s[obj_inverse]←⊂⌹⍵
+     s
+ }

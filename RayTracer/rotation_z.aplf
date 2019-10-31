@@ -1,0 +1,6 @@
+ rotation_z←{
+   ⍝ rotation_x  angle_in_radians → transform_matrix
+     idn←identity4
+     idn[(1 1)(1 2)(2 1)(2 2)]←(2○⍵)(-(1○⍵))(1○⍵)(2○⍵)
+     idn
+ }

@@ -1,0 +1,1 @@
+ radgrad_pattern←{pat_radgradient identity4 identity4 ⍺ ⍵}

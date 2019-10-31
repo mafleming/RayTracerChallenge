@@ -1,0 +1,1 @@
+ checker_pattern←{pat_checker identity4 identity4 ⍺ ⍵}

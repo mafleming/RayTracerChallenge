@@ -1,0 +1,23 @@
+ normal_at←{
+   ⍝ shape normal_at point → vector
+     fixup←{
+     ⍝ wn← (⍉(⌹⊃⍺[obj_transform])) +.× ⍵
+         wn←(⍉obj_inverse⊃⍺)+.×⍵
+         wn[4]←0
+         normalize wn
+     }
+   ⍝ lp← ⍵⌹⊃⍺[obj_transform]   Doesn't work!?
+   ⍝ lp← (⌹⊃⍺[obj_transform]) +.× ⍵
+     lp←(obj_inverse⊃⍺)+.×⍵
+     t←obj_tag⊃⍺
+     shape_test=t:⍺ fixup vector lp[1 2 3]  ⍝ Here, or at end?
+     shape_sphere=t:⍺ fixup ⍺ sphere_normal_at lp
+   ⍝ Is this correct? plane_normal_at is a constant!
+     shape_plane=t:⍺ fixup ⍺ plane_normal_at lp
+     shape_cube=t:⍺ fixup ⍺ cube_normal_at lp
+     shape_cylinder=t:⍺ fixup ⍺ cylinder_normal_at lp
+     shape_cone=t:⍺ fixup ⍺ cone_normal_at lp
+   ⍝ shape_triangle=t:   ⍺ triangle_normal_at         lp
+   ⍝ shape_smtriangle=t: ⍺ smtriangle_normal_at       lp
+     0 0 0 0
+ }

@@ -1,0 +1,6 @@
+ shearing←{
+   ⍝ shearing  xy xz yx yz zx zy → transform_matrix
+     idn←identity4
+     idn[(1 2)(1 3)(2 1)(2 3)(3 1)(3 2)]←⍵
+     idn
+ }

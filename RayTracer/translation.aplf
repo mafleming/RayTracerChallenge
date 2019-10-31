@@ -1,0 +1,6 @@
+ translation←{
+   ⍝ translation  x y z → transform_matrix
+     idn←identity4
+     idn[(1 4)(2 4)(3 4)]←⍵
+     idn
+ }

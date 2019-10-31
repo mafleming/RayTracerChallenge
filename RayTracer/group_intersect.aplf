@@ -1,0 +1,11 @@
+ Z←G group_intersect R;obj
+  ⍝ group  group_intersect  ray → ⍬ or intersection_list
+ Z←⍬
+ :If ⍬≢⊃G[group_members]
+     :For obj :In ⊃G[group_members]
+         Z,←obj intersect R
+     :EndFor
+     :If ⍬≢Z
+         Z←Z[⍋2⌷¨Z]
+     :EndIf
+ :EndIf

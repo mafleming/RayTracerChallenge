@@ -1,0 +1,10 @@
+ ROW←llrender_row ARGS;W;C;Y;dpnt;i;r;c
+  ⍝ Render and return a single image row
+ 'RayTracer'#.⎕CY'C:\Users\Mark\Jupyter\rtdemo_ws'
+ #.⎕PATH←'#.RayTracer'
+ ⍝#.⎕CS'#.RayTracer'   ⍝ Not needed
+
+ (W C Y)←ARGS
+ dpnt←{r←C ray_for_pixel ⍵ Y ⋄ {⍵<#.RayTracer.EPSILON:0 ⋄ ⍵}¨W color_at r #.RayTracer.MAX_RECURSION}
+
+ ROW←dpnt¨¯1+⍳C[#.RayTracer.camera_hsize]

@@ -1,0 +1,13 @@
+ cross←{
+   ⍝ vector  cross  vector → vector
+   ⍝ a←(⍺[2]×⍵[3])-⍺[3]×⍵[2]
+   ⍝ b←(⍺[3]×⍵[1])-⍺[1]×⍵[3]
+   ⍝ c←(⍺[1]×⍵[2])-⍺[2]×⍵[1]
+
+   ⍝ Pick runs about 10% faster on ]runtime benchmark
+   ⍝ In real life rendering though, no noticable difference
+     a←((2⊃⍺)×3⊃⍵)-(3⊃⍺)×2⊃⍵
+     b←((3⊃⍺)×1⊃⍵)-(1⊃⍺)×3⊃⍵
+     c←((1⊃⍺)×2⊃⍵)-(2⊃⍺)×1⊃⍵
+     a,b,c,0
+ }

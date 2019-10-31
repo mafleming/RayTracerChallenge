@@ -1,0 +1,10 @@
+ Z←W render C;y
+   ⍝ world  render  camera → canvas
+
+   ⍝ drow← {W render_row C ⍵}
+   ⍝ Z← drow¨¯1+⍳C[camera_vsize]
+
+ Z←C[camera_vsize]⍴0
+ :For y :In ¯1+⍳C[camera_vsize]
+     Z[y+1]←⊂W render_row C y
+ :EndFor

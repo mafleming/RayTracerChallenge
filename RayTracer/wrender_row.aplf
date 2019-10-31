@@ -1,0 +1,12 @@
+ wrender_row Msg;x;y;yend;colors;Pnts
+ y←3 1⊃Msg
+ yend←3 2⊃Msg
+ :If y≤yend
+     Z←W render_row C y
+     colors←255⌊⌊255×Z
+     y←y+1
+     Pnts←{((y+40)(y+40))(⍵(1+⍵))}¨⍳⍴colors
+     'Win.line'⎕WS'Text'('Line ',⍕y)
+     ('Win.L',⍕y)⎕WC'Poly'(Pnts)('FCol'(colors))
+     ⎕NQ'Win' 1001(y yend)
+ :EndIf

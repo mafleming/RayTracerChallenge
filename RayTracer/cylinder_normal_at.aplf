@@ -1,0 +1,8 @@
+ cylinder_normal_at←{
+  ⍝ cylinder  cylinder_normal_at  point → vector
+  ⍝ dist← (⍵[1]*2)+⍵[3]*2
+     dist←+/⍵[1 3]*2
+     (cylinder_closed⊃⍺)∧(1>dist)∧(2⊃⍵)≥(cylinder_maximum⊃⍺)-EPSILON:vector 0 1 0
+     (cylinder_closed⊃⍺)∧(1>dist)∧(2⊃⍵)≤EPSILON+cylinder_minimum⊃⍺:vector 0 ¯1 0
+     vector(1⊃⍵)0(3⊃⍵)
+ }
